@@ -810,7 +810,6 @@ eval ($pd_v=$pd_x*   640.0) ANGLE  HHAD  NH_Y  HHAB $pd_v 109.500
  IMPRoper  HA   HA   C    HA        500.00 {sd=     0.031}    0    -70.4459 !EAB
  IMPRoper  C    CH1E O    NH2       500.00 {sd=     0.031}    0      0.0124
  IMPRoper  C    CH2E O    NH2       500.00 {sd=     0.031}    0      0.0124
- IMPRoper  C    CH2E NH2  O        500.00 {sd=     0.031}    0      0.0124 ! AHX->CTN planar
  IMPRoper  C    CH3E O    NH2       500.00 {sd=     0.031}    0      0.0124
  IMPRoper  C    CH2E OC   OC        500.00 {sd=     0.031}    0     -0.0137
  IMPRoper  C    CH2E OC   OH1       500.00 {sd=     0.031}    0     -0.0137
