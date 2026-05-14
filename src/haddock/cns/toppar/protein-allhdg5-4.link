@@ -3226,64 +3226,64 @@ link pept head - ACE tail + AHX end
 last CTER head - AHX end
 
 
-{ peptide linkages for VHL (VH032 C-terminal cap) }
-{ VHL only connects as tail (+) — it is a C-terminal cap like CTN }
+{ peptide linkages for VHP (VH032 C-terminal cap) }
+{ VHP only connects as tail (+) — it is a C-terminal cap like CTN }
 { Added 2026-03-19 for RAD51 PROTAC ternary docking }
 
-link PVHL head - ACE tail + VHL end
-link PVHL head - ALA tail + VHL end
-link PVHL head - CYS tail + VHL end
-link PVHL head - CFE tail + VHL end
-link PVHL head - CYM tail + VHL end
-link PVHL head - CYF tail + VHL end
-link PVHL head - CYC tail + VHL end
-link PVHL head - CSP tail + VHL end
-link PVHL head - ASP tail + VHL end
-link PVHL head - ASH tail + VHL end
-link PVHL head - GLU tail + VHL end
-link PVHL head - GLH tail + VHL end
-link PVHL head - PHE tail + VHL end
-link PVHL head - HIS tail + VHL end
-link PVHL head - NEP tail + VHL end
-link PVHL head - ILE tail + VHL end
-link PVHL head - LYS tail + VHL end
-link PVHL head - ALY tail + VHL end
-link PVHL head - HLY tail + VHL end
-link PVHL head - MLY tail + VHL end
-link PVHL head - MLZ tail + VHL end
-link PVHL head - M3L tail + VHL end
-link PVHL head - LEU tail + VHL end
-link PVHL head - MET tail + VHL end
-link PVHL head - MSE tail + VHL end
-link PVHL head - ASN tail + VHL end
-link PVHL head - PRO tail + VHL end
-link PVHL head - GLN tail + VHL end
-link PVHL head - ARG tail + VHL end
-link PVHL head - SER tail + VHL end
-link PVHL head - SEC tail + VHL end
-link PVHL head - SEP tail + VHL end
-link PVHL head - THR tail + VHL end
-link PVHL head - THP tail + VHL end
-link PVHL head - TOP tail + VHL end
-link PVHL head - VAL tail + VHL end
-link PVHL head - TRP tail + VHL end
-link PVHL head - TYR tail + VHL end
-link PVHL head - TYP tail + VHL end
-link PVHL head - PTR tail + VHL end
-link PVHL head - TYS tail + VHL end
-link PVHL head - HYP tail + VHL end
-link PVHL head - HY3 tail + VHL end
-link PVHL head - DDZ tail + VHL end
-link PVHL head - PNS tail + VHL end
-link PVHL head - QSR tail + VHL end
-link PVHL head - CIR tail + VHL end
-link PVHL head - IVA tail + VHL end
-link PVHL head - ADI tail + VHL end
-link PVHL head - AZH tail + VHL end
-link PVHL head - AHX tail + VHL end  ! custom patch: bonds -C to +NAS (not +N)
-link PVHL head - GLY tail + VHL end
+link PVHL head - ACE tail + VHP end
+link PVHL head - ALA tail + VHP end
+link PVHL head - CYS tail + VHP end
+link PVHL head - CFE tail + VHP end
+link PVHL head - CYM tail + VHP end
+link PVHL head - CYF tail + VHP end
+link PVHL head - CYC tail + VHP end
+link PVHL head - CSP tail + VHP end
+link PVHL head - ASP tail + VHP end
+link PVHL head - ASH tail + VHP end
+link PVHL head - GLU tail + VHP end
+link PVHL head - GLH tail + VHP end
+link PVHL head - PHE tail + VHP end
+link PVHL head - HIS tail + VHP end
+link PVHL head - NEP tail + VHP end
+link PVHL head - ILE tail + VHP end
+link PVHL head - LYS tail + VHP end
+link PVHL head - ALY tail + VHP end
+link PVHL head - HLY tail + VHP end
+link PVHL head - MLY tail + VHP end
+link PVHL head - MLZ tail + VHP end
+link PVHL head - M3L tail + VHP end
+link PVHL head - LEU tail + VHP end
+link PVHL head - MET tail + VHP end
+link PVHL head - MSE tail + VHP end
+link PVHL head - ASN tail + VHP end
+link PVHL head - PRO tail + VHP end
+link PVHL head - GLN tail + VHP end
+link PVHL head - ARG tail + VHP end
+link PVHL head - SER tail + VHP end
+link PVHL head - SEC tail + VHP end
+link PVHL head - SEP tail + VHP end
+link PVHL head - THR tail + VHP end
+link PVHL head - THP tail + VHP end
+link PVHL head - TOP tail + VHP end
+link PVHL head - VAL tail + VHP end
+link PVHL head - TRP tail + VHP end
+link PVHL head - TYR tail + VHP end
+link PVHL head - TYP tail + VHP end
+link PVHL head - PTR tail + VHP end
+link PVHL head - TYS tail + VHP end
+link PVHL head - HYP tail + VHP end
+link PVHL head - HY3 tail + VHP end
+link PVHL head - DDZ tail + VHP end
+link PVHL head - PNS tail + VHP end
+link PVHL head - QSR tail + VHP end
+link PVHL head - CIR tail + VHP end
+link PVHL head - IVA tail + VHP end
+link PVHL head - ADI tail + VHP end
+link PVHL head - AZH tail + VHP end
+link PVHL head - AHX tail + VHP end  ! custom patch: bonds -C to +NAS (not +N)
+link PVHL head - GLY tail + VHP end
 
-last CTER head - VHL end
+last CTER head - VHP end
 
 { VHP test variant with peptide-like head names for the VH032 entry point }
 link pept head - AHX tail + VHP end
