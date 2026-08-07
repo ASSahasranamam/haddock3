@@ -2957,6 +2957,81 @@ residue VHP
   ACCE OD1  CG
 end
 
+!----------------------------------------------------------------------
+
+residue POM  ! pomalidomide (ATB molid 927298); linker attaches at NAT (was N10)
+  group
+    ATOM O20  TYPE=O20  CHARge=-0.599   MASS=15.9994   END
+    ATOM C17  TYPE=C17  CHARge=0.737    MASS=12.0110   END
+    ATOM N16  TYPE=N16  CHARge=-0.635   MASS=14.0067   END
+    ATOM H09  TYPE=H09  CHARge=0.400    MASS=1.0080    END
+    ATOM C15  TYPE=C15  CHARge=0.626    MASS=12.0110   END
+    ATOM O19  TYPE=O19  CHARge=-0.552   MASS=15.9994   END
+    ATOM C12  TYPE=C121 CHARge=0.059    MASS=12.0110   END
+    ATOM H05  TYPE=H05  CHARge=0.102    MASS=1.0080    END
+    ATOM C14  TYPE=C14  CHARge=0.083    MASS=12.0110   END
+    ATOM H06  TYPE=H06  CHARge=0.043    MASS=1.0080    END
+    ATOM H08  TYPE=H08  CHARge=0.059    MASS=1.0080    END
+    ATOM C18  TYPE=C18  CHARge=-0.391   MASS=12.0110   END
+    ATOM H10  TYPE=H10  CHARge=0.144    MASS=1.0080    END
+    ATOM H11  TYPE=H111 CHARge=0.144    MASS=1.0080    END
+    ATOM N8   TYPE=N8   CHARge=-0.392   MASS=14.0067   END
+    ATOM C7   TYPE=C7   CHARge=0.654    MASS=12.0110   END
+    ATOM O13  TYPE=O13  CHARge=-0.543   MASS=15.9994   END
+    ATOM C4   TYPE=C4   CHARge=-0.129   MASS=12.0110   END
+    ATOM C3   TYPE=C3   CHARge=-0.145   MASS=12.0110   END
+    ATOM H02  TYPE=H02  CHARge=0.152    MASS=1.0080    END
+    ATOM C2   TYPE=C2   CHARge=-0.085   MASS=12.0110   END
+    ATOM H01  TYPE=H01  CHARge=0.161    MASS=1.0080    END
+    ATOM C1   TYPE=C1   CHARge=-0.315   MASS=12.0110   END
+    ATOM H07  TYPE=H07  CHARge=0.200    MASS=1.0080    END
+    ATOM C6   TYPE=C6   CHARge=0.474    MASS=12.0110   END
+    ATOM C5   TYPE=C51  CHARge=-0.224   MASS=12.0110   END
+    ATOM C9   TYPE=C91  CHARge=0.565    MASS=12.0110   END
+    ATOM O11  TYPE=O11  CHARge=-0.513   MASS=15.9994   END
+    ATOM NAT  TYPE=NAT  CHARge=-0.920   MASS=14.0067   END
+    ATOM HN   TYPE=HN   CHARge=0.420    MASS=1.0080    END
+    ATOM H04  TYPE=H04  CHARge=0.420    MASS=1.0080    END
+
+  BOND O20  C17     BOND C17  N16 
+  BOND C17  C18     BOND N16  H09 
+  BOND N16  C15     BOND C15  O19 
+  BOND C15  C12     BOND C12  H05 
+  BOND C12  C14     BOND C12  N8  
+  BOND C14  H06     BOND C14  H08 
+  BOND C14  C18     BOND C18  H10 
+  BOND C18  H11     BOND N8   C7  
+  BOND N8   C9      BOND C7   O13 
+  BOND C7   C4      BOND C4   C3  
+  BOND C4   C5      BOND C3   H02 
+  BOND C3   C2      BOND C2   H01 
+  BOND C2   C1      BOND C1   H07 
+  BOND C1   C6      BOND C6   C5  
+  BOND C6   NAT     BOND C5   C9  
+  BOND C9   O11     BOND NAT  HN  
+  BOND NAT  H04 
+
+  IMPRoper C1   C2   H07  C6  
+  IMPRoper C2   C3   H01  C1  
+  IMPRoper C3   C4   H02  C2  
+  IMPRoper C4   C7   C3   C5  
+  IMPRoper C5   C4   C6   C9  
+  IMPRoper C6   C1   C5   NAT 
+  IMPRoper C7   N8   O13  C4  
+  IMPRoper N8   C12  C7   C9  
+  IMPRoper C9   N8   C5   O11 
+  IMPRoper C15  N16  O19  C12 
+  IMPRoper N16  C17  H09  C15 
+  IMPRoper C17  O20  N16  C18 
+  IMPRoper C12  C14  N8   C15 
+
+  DONO HN   NAT
+  DONO H04  NAT
+  ACCE O20  C17
+  ACCE O19  C15
+  ACCE O13  C7
+  ACCE O11  C9
+end
 
 
 !----------------------------------------------------------------------
@@ -3442,19 +3517,36 @@ presidue PEPT     ! PEPTide BOND link, for all except the  *(-) - (+)PRO link
   add DIHEdral  -CB -CA -C -O mult 6         ! corrected from +O 16-Sept-02
 end
 
-presidue PVHL  ! peptide-like bond: previous C -> VHP NAT
-  delete ATOM +H25
+presidue PVHL  ! peptide-like bond: previous C -> VHP N (TYPE=NAT)
+  ! CNS requires trailing "end" on delete ATOM (else parser stays in ATOM>)
+  delete    ATOM +H25                       end
+  add BOND -C +N
+  add ANGLe -CE  -C  +N
+  add ANGLe -O   -C  +N
+  add ANGLe -C   +N +CA
+  add ANGLe -C   +N +HN
+  add DIHEdral -CE  -C  +N +CA mult 6
+  add DIHEdral -O   -C  +N +CA
+  add DIHEdral -C   +N +CA +C mult 6
+  add DIHEdral -C   +N +CA +CB mult 6
+  add IMPRoper -C  -CE  +N -O
+  add IMPRoper +N -C  +CA +HN
+end
+
+
+presidue PPOM  ! peptide-like bond: previous C -> POM NAT (glutarimide attachment, ATB N10)
+  delete    ATOM +H04                       end
   add BOND -C +NAT
   add ANGLe -CE  -C  +NAT
   add ANGLe -O   -C  +NAT
-  add ANGLe -C   +NAT +CBE
-  add ANGLe -C   +NAT +H02
-  add DIHEdral -CE  -C  +NAT +CBE mult 6
-  add DIHEdral -O   -C  +NAT +CBE
-  add DIHEdral -C   +NAT +CBE +CAX mult 6
-  add DIHEdral -C   +NAT +CBE +CBG mult 6
+  add ANGLe -C   +NAT +C6
+  add ANGLe -C   +NAT +HN
+  add DIHEdral -CE  -C  +NAT +C6 mult 6
+  add DIHEdral -O   -C  +NAT +C6
+  add DIHEdral -C   +NAT +C6 +C5 mult 6
+  add DIHEdral -C   +NAT +C6 +C9 mult 6
   add IMPRoper -C  -CE  +NAT -O
-  add IMPRoper +NAT -C  +CBE +H02
+  add IMPRoper +NAT -C  +C6 +HN
 end
 
  

@@ -3288,4 +3288,63 @@ last CTER head - VHP end
 { VHP test variant with peptide-like head names for the VH032 entry point }
 link pept head - AHX tail + VHP end
 
+{ peptide linkages for POM (pomalidomide C-terminal cap) }
+{ POM only connects as tail (+) — pomalidomide warhead via NAT }
+{ Added 2026-03-19 for RAD51 PROTAC ternary docking }
+
+link PPOM head - ACE tail + POM end
+link PPOM head - ALA tail + POM end
+link PPOM head - CYS tail + POM end
+link PPOM head - CFE tail + POM end
+link PPOM head - CYM tail + POM end
+link PPOM head - CYF tail + POM end
+link PPOM head - CYC tail + POM end
+link PPOM head - CSP tail + POM end
+link PPOM head - ASP tail + POM end
+link PPOM head - ASH tail + POM end
+link PPOM head - GLU tail + POM end
+link PPOM head - GLH tail + POM end
+link PPOM head - PHE tail + POM end
+link PPOM head - HIS tail + POM end
+link PPOM head - NEP tail + POM end
+link PPOM head - ILE tail + POM end
+link PPOM head - LYS tail + POM end
+link PPOM head - ALY tail + POM end
+link PPOM head - HLY tail + POM end
+link PPOM head - MLY tail + POM end
+link PPOM head - MLZ tail + POM end
+link PPOM head - M3L tail + POM end
+link PPOM head - LEU tail + POM end
+link PPOM head - MET tail + POM end
+link PPOM head - MSE tail + POM end
+link PPOM head - ASN tail + POM end
+link PPOM head - PRO tail + POM end
+link PPOM head - GLN tail + POM end
+link PPOM head - ARG tail + POM end
+link PPOM head - SER tail + POM end
+link PPOM head - SEC tail + POM end
+link PPOM head - SEP tail + POM end
+link PPOM head - THR tail + POM end
+link PPOM head - THP tail + POM end
+link PPOM head - TOP tail + POM end
+link PPOM head - VAL tail + POM end
+link PPOM head - TRP tail + POM end
+link PPOM head - TYR tail + POM end
+link PPOM head - TYP tail + POM end
+link PPOM head - PTR tail + POM end
+link PPOM head - TYS tail + POM end
+link PPOM head - HYP tail + POM end
+link PPOM head - HY3 tail + POM end
+link PPOM head - DDZ tail + POM end
+link PPOM head - PNS tail + POM end
+link PPOM head - QSR tail + POM end
+link PPOM head - CIR tail + POM end
+link PPOM head - IVA tail + POM end
+link PPOM head - ADI tail + POM end
+link PPOM head - AZH tail + POM end
+link PPOM head - AHX tail + POM end  ! custom patch: bonds -C to +NAT (ATB N10)
+link PPOM head - GLY tail + POM end
+
+
+
 set message=$old_message echo=$old_echo end

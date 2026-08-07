@@ -2243,6 +2243,7 @@ set message=$old_message echo=$old_echo end
    ! Peptide link and C-terminal patch bonds
    BOND C    N1   1000.000  1.341  ! ACE C -> VHL N (pepp link)
    BOND C1   OC   1000.000  1.249  ! VHL C-term carboxylate (CTER patch)
+   BOND CAX  OC   1000.000  1.249  ! VHP C-term carboxylate (CTER: C TYPE=CAX)
 
    ANGLe H211 CAN  NAR  120.7   120.0
    ANGLe H211 CAN  SAU  99.2    123.0
@@ -2364,6 +2365,9 @@ set message=$old_message echo=$old_echo end
    ANGLe NAS  C1   OC   500.00  124.0   ! CTER: NAS-C1-OC
    ANGLe OC   C1   CA1  500.00  121.0   ! CTER: OC-C1-CA1
    ANGLe OC   C1   OC   500.00  124.0   ! CTER: OC-C1-OC (carboxylate)
+   ANGLe CBE  CAX  OC   500.00  121.0   ! VHP CTER: CA-C-O/OXT
+   ANGLe OC   CAX  OC   500.00  124.0   ! VHP CTER: O-C-OXT
+   ANGLe N1   CAX  OC   500.00  124.0   ! VHP CTER: N2-C-OC
 
    DIHEdral CAN  NAR  CAZ  CBB  10.0    2  180.0
    DIHEdral NAR  CAN  SAU  CBB  10.0    2  180.0
@@ -2482,3 +2486,176 @@ set message=$old_message echo=$old_echo end
    NONBONDED H30  0.02829 2.37  0.02829 2.14  !GROMOS HC
    NONBONDED H31  0.02829 2.37  0.02829 2.14  !GROMOS HC
    NONBONDED H32  0       0     0       0     !GROMOS HS14
+
+! POM ATB bonded + junction params
+   BOND O20  C17  1625.2  1.220
+   BOND C17  N16  800.1   1.400
+   BOND C17  C18  406.3   1.510
+   BOND N16  H09  310.7   1.010
+   BOND N16  C15  1001.3  1.380
+   BOND C15  O19  262.9   1.220
+   BOND C15  C121 800.0   1.530
+   BOND C121 H05  698.5   1.090
+   BOND C121 C14  800.0   1.530
+   BOND C121 N8   600.4   1.435
+   BOND C14  H06  698.5   1.090
+   BOND C14  H08  698.5   1.090
+   BOND C14  C18  800.0   1.530
+   BOND C18  H10  698.5   1.090
+   BOND C18  H111 698.5   1.090
+   BOND N8   C7   800.1   1.400
+   BOND N8   C91  800.1   1.400
+   BOND C7   O13  1386.2  1.210
+   BOND C7   C4   900.2   1.500
+   BOND C4   C3   1001.3  1.380
+   BOND C4   C51  799.8   1.390
+   BOND C3   H02  698.5   1.090
+   BOND C3   C2   800.1   1.400
+   BOND C2   H01  698.5   1.090
+   BOND C2   C1   799.8   1.390
+   BOND C1   H07  698.5   1.090
+   BOND C1   C6   310.7   1.420
+   BOND C6   C51  799.8   1.390
+   BOND C6   NAT  901.8   1.360
+   BOND C51  C91  899.7   1.470
+   BOND C91  O11  1625.2  1.220
+   BOND NAT  HN  1027.7  1.010
+   BOND NAT  H04  1027.7  1.010
+   ANGLe O20  C17  N16  938.3   119.0
+   ANGLe O20  C17  C18  153.0   126.0
+   ANGLe N16  C17  C18  145.8   115.0
+   ANGLe C17  N16  H09  111.1   116.0
+   ANGLe C17  N16  C15  812.3   130.0
+   ANGLe H09  N16  C15  111.1   116.0
+   ANGLe N16  C15  O19  174.5   124.0
+   ANGLe N16  C15  C121 145.8   115.0
+   ANGLe O19  C15  C121 163.7   121.0
+   ANGLe C15  C121 H05  120.2   106.8
+   ANGLe C15  C121 C14  126.7   111.0
+   ANGLe C15  C121 N8   124.3   109.5
+   ANGLe H05  C121 C14  107.1   109.5
+   ANGLe H05  C121 N8   120.2   106.8
+   ANGLe C14  C121 N8   145.8   115.0
+   ANGLe C121 C14  H06  107.1   109.5
+   ANGLe C121 C14  H08  107.5   109.6
+   ANGLe C121 C14  C18  124.3   109.5
+   ANGLe H06  C14  H08  121.2   107.6
+   ANGLe H06  C14  C18  125.2   110.3
+   ANGLe H08  C14  C18  125.2   110.3
+   ANGLe C17  C18  C14  126.7   111.0
+   ANGLe C17  C18  H10  120.2   106.8
+   ANGLe C17  C18  H111 115.7   107.6
+   ANGLe C14  C18  H10  151.0   111.3
+   ANGLe C14  C18  H111 151.0   111.3
+   ANGLe H10  C18  H111 120.2   106.8
+   ANGLe C121 N8   C7   167.3   122.0
+   ANGLe C121 N8   C91  174.5   124.0
+   ANGLe C7   N8   C91  677.6   113.0
+   ANGLe N8   C7   O13  174.5   124.0
+   ANGLe N8   C7   C4   111.1   108.0
+   ANGLe O13  C7   C4   812.3   130.0
+   ANGLe C7   C4   C3   181.6   132.0
+   ANGLe C7   C4   C51  124.3   109.5
+   ANGLe C3   C4   C51  133.8   120.0
+   ANGLe C4   C3   H02  120.7   120.0
+   ANGLe C4   C3   C2   372.7   114.0
+   ANGLe H02  C3   C2   120.7   120.0
+   ANGLe C3   C2   H01  120.7   120.0
+   ANGLe C3   C2   C1   133.8   120.0
+   ANGLe H01  C2   C1   120.7   120.0
+   ANGLe C2   C1   H07  120.7   120.0
+   ANGLe C2   C1   C6   133.8   120.0
+   ANGLe H07  C1   C6   120.7   120.0
+   ANGLe C1   C6   C51  372.7   114.0
+   ANGLe C1   C6   NAT  133.8   120.0
+   ANGLe C51  C6   NAT  133.8   120.0
+   ANGLe C4   C51  C6   133.8   120.0
+   ANGLe C4   C51  C91  124.3   109.5
+   ANGLe C6   C51  C91  181.6   132.0
+   ANGLe N8   C91  C51  111.1   108.0
+   ANGLe N8   C91  O11  174.5   124.0
+   ANGLe C51  C91  O11  812.3   130.0
+   ANGLe C6   NAT  HN  111.1   116.0
+   ANGLe C6   NAT  H04  111.1   116.0
+   ANGLe HN  NAT  H04  109.9   115.0
+   DIHEdral C17  N16  C15  C121 8.0     2  180.0
+   DIHEdral N16  C17  C18  C14  0.2     6  0.0
+   DIHEdral N16  C15  C121 N8   0.2     6  0.0
+   DIHEdral C121 C14  C18  C17  1.4     3  0.0
+   DIHEdral C14  C121 N8   C7   0.2     6  180.0
+   DIHEdral C18  C17  N16  C15  8.0     2  180.0
+   DIHEdral N8   C121 C14  C18  1.4     3  0.0
+   DIHEdral N8   C7   C4   C51  10.0    2  180.0
+   DIHEdral C7   N8   C91  C51  10.0    2  180.0
+   DIHEdral C7   C4   C51  C91  10.0    2  180.0
+   DIHEdral C4   C3   C2   C1   10.0    2  180.0
+   DIHEdral C4   C51  C91  N8   10.0    2  180.0
+   DIHEdral C3   C2   C1   C6   10.0    2  180.0
+   DIHEdral C2   C1   C6   C51  10.0    2  180.0
+   DIHEdral C1   C6   C51  C4   10.0    2  180.0
+   DIHEdral C1   C6   NAT  HN  8.0     2  180.0
+   DIHEdral C51  C4   C3   C2   10.0    2  180.0
+   DIHEdral C91  N8   C7   C4   10.0    2  180.0
+   IMPRoper C1   C2   H07  C6   40.038  0  0.0
+   IMPRoper C2   C3   H01  C1   40.038  0  0.0
+   IMPRoper C3   C4   H02  C2   40.038  0  0.0
+   IMPRoper C4   C7   C3   C51  40.038  0  0.0
+   IMPRoper C51  C4   C6   C91  40.038  0  0.0
+   IMPRoper C6   C1   C51  NAT  40.038  0  0.0
+   IMPRoper C7   N8   O13  C4   40.038  0  0.0
+   IMPRoper N8   C121 C7   C91  40.038  0  0.0
+   IMPRoper C91  N8   C51  O11  40.038  0  0.0
+   IMPRoper C15  N16  O19  C121 40.038  0  0.0
+   IMPRoper N16  C17  H09  C15  40.038  0  0.0
+   IMPRoper C17  O20  N16  C18  40.038  0  0.0
+   IMPRoper C121 C14  N8   C15  80.076  0  35.3
+
+   ! POM (pomalidomide) AHX->NAT junction — mirrors PVHL/VHP pattern
+   BOND C    NAT  1000.0  1.329  ! AHX(C) -> POM(NAT)
+   ANGLe CH2E C   NAT  500.0  116.0
+   ANGLe O    C   NAT  500.0  123.0
+   ANGLe C    NAT C6   500.0  121.0
+   ANGLe C    NAT HN   500.0  119.0
+   DIHEdral CH2E C   NAT  C6   MULT 6   0.5   1 0.0000 0.4  2 0.0000  0.3   3 0.0000  0.2  4 0.0000  0.1   5 0.0000  0.05   6 0.0000 ! PPOM omega-like
+   DIHEdral O    C   NAT  C6   8.0     2 180.0  ! PPOM amide planarity
+   ! types: C5=C51, C9=C91 (atom names != chemical types)
+   DIHEdral C    NAT C6   C51  MULT 6   0.375  1 0.0000 0.3  2 0.0000  0.225  3 0.0000  0.15  4 0.0000  0.075  5 0.0000  0.0375  6 0.0000
+   DIHEdral C    NAT C6   C91  MULT 6   0.5   1 0.0000 0.4  2 0.0000  0.3   3 0.0000  0.2  4 0.0000  0.1   5 0.0000  0.05   6 0.0000
+   IMPRoper C    CH2E NAT  O    500.00  0  0.0     ! AHX->POM carbonyl plane
+   IMPRoper NAT  C    C6   HN   500.00  0  0.0     ! AHX->POM amide plane
+   IMPRoper CH2E C    NAT  C6   500.00  0  180.0   ! AHX->POM omega planarity
+
+! POM NONBONDED
+   NONBONDED	C1	0.2849	3.56	0.2849	3.2 !GROMOS LJ type: CAro
+   NONBONDED	C2	0.2849	3.56	0.2849	3.2 !GROMOS LJ type: CAro
+   NONBONDED	C3	0.2849	3.56	0.2849	3.2 !GROMOS LJ type: CAro
+   NONBONDED	C4	0.2849	3.56	0.2849	3.2 !GROMOS LJ type: CAro
+   NONBONDED	C51	0.2849	3.56	0.2849	3.2 !GROMOS LJ type: CAro
+   NONBONDED	C6	0.2849	3.56	0.2849	3.2 !GROMOS LJ type: CAro
+   NONBONDED	C7	0.2849	3.56	0.2849	3.2 !GROMOS LJ type: CAro
+   NONBONDED	N8	0.6398	3.14	0.6398	2.82 !GROMOS LJ type: N
+   NONBONDED	C91	0.2849	3.56	0.2849	3.2 !GROMOS LJ type: CAro
+   NONBONDED	NAT	1.604	3.45	1.604	3.1 !GROMOS LJ type: NPri
+   NONBONDED	O11	0.4997	3.4	0.4997	3.06 !GROMOS LJ type: OOpt
+   NONBONDED	C121	0.2773	3.5	0.2773	3.15 !GROMOS LJ type: COpt
+   NONBONDED	O13	0.4997	3.4	0.4997	3.06 !GROMOS LJ type: OOpt
+   NONBONDED	C14	0.2773	3.5	0.2773	3.15 !GROMOS LJ type: COpt
+   NONBONDED	C15	0.2773	3.5	0.2773	3.15 !GROMOS LJ type: COpt
+   NONBONDED	N16	0.6398	3.14	0.6398	2.82 !GROMOS LJ type: N
+   NONBONDED	C17	0.2773	3.5	0.2773	3.15 !GROMOS LJ type: COpt
+   NONBONDED	C18	0.2773	3.5	0.2773	3.15 !GROMOS LJ type: COpt
+   NONBONDED	O19	0.4997	3.4	0.4997	3.06 !GROMOS LJ type: OOpt
+   NONBONDED	O20	0.4997	3.4	0.4997	3.06 !GROMOS LJ type: OOpt
+   NONBONDED	H01	0.108	2.38	0.108	2.14 !GROMOS LJ type: HCAr
+   NONBONDED	H02	0.108	2.38	0.108	2.14 !GROMOS LJ type: HCAr
+   NONBONDED	HN	0	0	0	0 !GROMOS LJ type: HS14
+   NONBONDED	H04	0	0	0	0 !GROMOS LJ type: HS14
+   NONBONDED	H05	0.1114	2.46	0.1114	2.22 !GROMOS LJ type: HOpt
+   NONBONDED	H06	0.1114	2.46	0.1114	2.22 !GROMOS LJ type: HOpt
+   NONBONDED	H07	0.108	2.38	0.108	2.14 !GROMOS LJ type: HCAr
+   NONBONDED	H08	0.1114	2.46	0.1114	2.22 !GROMOS LJ type: HOpt
+   NONBONDED	H09	0	0	0	0 !GROMOS LJ type: HS14
+   NONBONDED	H10	0.1114	2.46	0.1114	2.22 !GROMOS LJ type: HOpt
+   NONBONDED	H111	0.1114	2.46	0.1114	2.22 !GROMOS LJ type: HOpt
+   
+
