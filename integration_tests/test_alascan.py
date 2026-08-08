@@ -194,13 +194,77 @@ def test_alascan_mutation_resiudes():
 
 def test_alascan_with_ligand_topar(alascan_module_protlig, mocker):
     """Test the use of alascan in presence of a ligand."""
+    import sys
+    import logging
+    from haddock.modules.analysis.alascan import scan as alascan_scan
+
+    # ---- DEBUG: intercept get_score_string to dump raw CNS stdout ----
+    _orig_get_score_string = alascan_scan.get_score_string
+
+    def _patched_get_score_string(pdb_f, run_dir, **kwargs):
+        lines = _orig_get_score_string(pdb_f, run_dir, **kwargs)
+        print(
+            f"\n[DBG get_score_string] pdb={pdb_f} run_dir={run_dir}\n"
+            f"  kwargs={kwargs}\n"
+            f"  output ({len(lines)} lines):\n" +
+            "\n".join(f"    {l}" for l in lines if l.strip()),
+            file=sys.stderr,
+        )
+        return lines
+
+    mocker.patch.object(alascan_scan, "get_score_string", _patched_get_score_string)
+
+    # ---- DEBUG: intercept calc_score to log failures ----
+    _orig_calc_score = alascan_scan.calc_score
+
+    def _patched_calc_score(pdb_f, run_dir, **kwargs):
+        try:
+            result = _orig_calc_score(pdb_f, run_dir, **kwargs)
+            print(
+                f"[DBG calc_score OK] pdb={pdb_f}  score={result[0]:.3f}",
+                file=sys.stderr,
+            )
+            return result
+        except Exception as exc:
+            print(
+                f"[DBG calc_score FAIL] pdb={pdb_f}  error={exc!r}",
+                file=sys.stderr,
+            )
+            raise
+
+    mocker.patch.object(alascan_scan, "calc_score", _patched_calc_score)
+
+    # ---- enable haddock logging at DEBUG level ----
+    from haddock import log as haddock_log
+    haddock_log.setLevel(logging.DEBUG)
+    _dbg_handler = logging.StreamHandler(sys.stderr)
+    _dbg_handler.setLevel(logging.DEBUG)
+    haddock_log.addHandler(_dbg_handler)
+
+    # ---- run ----
     alascan_module_protlig.previous_io = MockPreviousIO_protlig(
         path=alascan_module_protlig.path
     )
     alascan_module_protlig.run()
 
+    # ---- DEBUG: dump all files in module path ----
+    import os
+    print("\n[DBG module path listing]", file=sys.stderr)
+    for root, dirs, files in os.walk(alascan_module_protlig.path):
+        level = root.replace(str(alascan_module_protlig.path), "").count(os.sep)
+        indent = "  " * level
+        print(f"{indent}{os.path.basename(root)}/", file=sys.stderr)
+        for fname in files:
+            fpath = Path(root, fname)
+            print(f"{indent}  {fname}  ({fpath.stat().st_size} bytes)", file=sys.stderr)
+
     expected_csv = Path(alascan_module_protlig.path, "scan_protlig_complex_1.tsv")
     expected_clt_csv = Path(alascan_module_protlig.path, "scan_clt_unclustered.tsv")
+
+    # ---- DEBUG: print TSV contents if they exist ----
+    for tsv in [expected_csv, expected_clt_csv]:
+        if tsv.exists():
+            print(f"\n[DBG {tsv.name}]\n{tsv.read_text()[:2000]}", file=sys.stderr)
 
     assert expected_csv.exists(), f"{expected_csv} does not exist"
     assert expected_clt_csv.exists(), f"{expected_clt_csv} does not exist"
