@@ -1,14 +1,14 @@
 # Higginson Lab fork — toppar changes (POM / VHP)
 
-Fork-specific CNS topology/parameter work for peptide–PROTAC docking with **pomalidomide (POM)** and **VH032 (VHP)** C-terminal warheads. Upstream HADDOCK3 docs still apply; this file only records local toppar deltas.
+Fork-specific CNS topology/parameter work for peptide–PROTAC docking with **pomalidomide (POM)** and **VH032 (VHP)** C-terminal warheads, plus **HyT** hydrophobic tags and ω-amino spacers from ATB. Upstream HADDOCK3 docs still apply; this file only records local toppar deltas.
 
 ## Files touched
 
 | Path | Role |
 |------|------|
-| `src/haddock/cns/toppar/protein-allhdg5-4.top` | `residue POM`, `presidue PPOM`; `presidue PVHL` fix |
-| `src/haddock/cns/toppar/protein-allhdg5-4.param` | POM bonded + AHX→NAT junction; VHP CTER `CAX`–`OC` |
-| `src/haddock/cns/toppar/protein-allhdg5-4*.link` | `link PPOM … + POM`; CTER policy for POM/VHP |
+| `src/haddock/cns/toppar/protein-allhdg5-4.top` | `residue POM`, `presidue PPOM`; `presidue PVHL` fix; HyT `residue` APX/ABX/AVX/ASX/AOX/AEA/AEE/ADA/ADM/NBA/NBM/FLA/FLM |
+| `src/haddock/cns/toppar/protein-allhdg5-4.param` | POM bonded + AHX→NAT junction; VHP CTER `CAX`–`OC`; HyT ATB bonded/NONBONDED |
+| `src/haddock/cns/toppar/protein-allhdg5-4*.link` | `link PPOM … + POM`; CTER policy for POM/VHP; HyT `first/last NOP` |
 | `src/haddock/cns/toppar/pom.top` / `pom.param` | Standalone POM copies (also embedded in protein toppar) |
 
 ## POM residue + PPOM presidue
@@ -40,6 +40,30 @@ Standalone `pom.top` / `pom.param` mirror the embedded POM block for reference o
 - Bond/angles/dihedrals use atoms **`N` / `CA` / `HN` / `C` / `CB`** (`N` has `TYPE=NAT`).
 
 The **VHP residue block itself was not rewritten** for the POM work; only PVHL and the CAX–OC param support were adjusted.
+
+## HyT tags and spacers (ATB dump → CNS toppar)
+
+Residue names match the current HyT inventory (`ADA`/`ABX`/`ADM` unchanged; PEG1 is `AEA` not `AE1`). Source is ATB GROMOS 54A7 all-atom CNS (`dump.txt`). **AHX** was already in toppar (B9SH). **AET** (PEG3 / 0YSW) is not built.
+
+| res3 | role | ATB | molid |
+|------|------|-----|-------|
+| APX | spacer, propyl (β-Ala) | 1WFO | 32657 |
+| ABX | spacer, butyl (GABA) | C6MK | 1728534 |
+| AVX | spacer, valeric | OWSW | 38088 |
+| ASX | spacer, heptanoic | S1CK | 39065 |
+| AOX | spacer, octanoic | IJO3 | 41737 |
+| AEA | spacer, one ethoxy (PE1) | JCCR | 795954 |
+| AEE | spacer, two ethoxy (PE2) | KKB9 | 41725 |
+| ADA | N-cap, adamantaneacetic acid | WSCI | 205520 |
+| ADM | C-cap, adamantylmethanamine | ZYZF | 178547 |
+| NBA | N-cap, norbornene acid | A71B | 48194 |
+| NBM | C-cap, norbornene methanamine | EHYZ | 2061472 |
+| FLA | N-cap, fluorene acetic acid | E6UC | 140269 |
+| FLM | C-cap, fluorenylmethylamine | OE4E | 125645 |
+
+- **`.top`**: `residue` blocks with ATB atom names and unique chemical types (`AD00`… / `AB00`…).
+- **`.param`**: bonded + NONBONDED from the same dump.
+- **`.link`**: `first NOP` / `last NOP` so topoaa does **not** apply NTER/CTER. The dump is the free acid/amine; there are no amide-junction parameters yet. Peptide `link PEPT` to ADA/ADM is **not** in this commit.
 
 ## Operational note
 

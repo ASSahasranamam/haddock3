@@ -33,6 +33,7 @@ checkversion 1.3
 ! of calculating structures from NMR restraints.                        !
 !***********************************************************************!
 ! History:
+! 2026-10-18: ATB dump residues APX ABX AVX ASX AOX AEA AEE ADA ADM NBA NBM FLA FLM copied verbatim (types relabeled to 4 chars).
 ! 13-Feb-2026 (Adithya Subramanian Sahsranamam): added IVA (D-Isovaline) residue and D-like CA chirality via IMPRoper CB2 C N CB1; added no-op ACET patch for ACE-capped inputs.
 ! HADDOCK2.2, additions for CFE (CYS with iron cluster)
 ! CNS v1.3, revision 7, 1-10-2012, added IMPRoper NE2 CE1 CD2 HE2 for HIS residue
@@ -3367,6 +3368,1450 @@ RESIdue QSR ! Added by Rodrigo Honorato / Alexandre Bonvin 06/01/2021
 
 !----------------------------------------------------------------------
 
+
+!----------------------------------------------------------------------
+! ATB residues copied from structures/peptides/hyt_caps/atb/dump.txt
+! Charges, masses, bonds, angles, dihedrals, impropers, and LJ terms
+! are the dump values. CNS atom types are CHARACTER*4 and global, so
+! each ATB type is relabeled (see the ATOM comment). The numbers are not.
+! No peptide-link patch: the dump is the free acid/amine, and it has
+! no amide-junction parameters.
+! Alkyl spacers: APX ABX AVX AHX ASX AOX (propyl, butyl, valeric, hexanoic, heptanoic, octanoic).
+! PEG spacers: AEA (1 ethoxy), AEE (2 ethoxy). AET is reserved for the 3-ethoxy
+! acid (0YSW); that dump has parameters only, no RESIdue block, so AET is not built.
+presidue NOP
+end
+
+!----------------------------------------------------------------------
+residue APX  ! propyl; ATB source 1WFO molid 32657
+  group
+    ATOM H7   TYPE=BA00 CHARge=0.483 MASS=1.0080 END  ! ATB type H7
+    ATOM O2   TYPE=BA01 CHARge=-0.659 MASS=15.9994 END  ! ATB type O2
+    ATOM C3   TYPE=BA02 CHARge=0.779 MASS=12.0110 END  ! ATB type C3
+    ATOM O1   TYPE=BA03 CHARge=-0.635 MASS=15.9994 END  ! ATB type O1
+    ATOM C2   TYPE=BA04 CHARge=-0.347 MASS=12.0110 END  ! ATB type C2
+    ATOM H5   TYPE=BA05 CHARge=0.139 MASS=1.0080 END  ! ATB type H5
+    ATOM H6   TYPE=BA06 CHARge=0.139 MASS=1.0080 END  ! ATB type H6
+    ATOM C1   TYPE=BA07 CHARge=0.375 MASS=12.0110 END  ! ATB type C1
+    ATOM H3   TYPE=BA08 CHARge=-0.006 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=BA09 CHARge=-0.006 MASS=1.0080 END  ! ATB type H4
+    ATOM N1   TYPE=BA10 CHARge=-1.006 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=BA11 CHARge=0.372 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=BA12 CHARge=0.372 MASS=1.0080 END  ! ATB type H2
+
+  BOND H7    O2  
+  BOND O2    C3  
+  BOND C3    O1  
+  BOND C3    C2  
+  BOND C2    H5  
+  BOND C2    H6  
+  BOND C2    C1  
+  BOND C1    H3  
+  BOND C1    H4  
+  BOND C1    N1  
+  BOND N1    H1  
+  BOND N1    H2  
+  ANGLe H7    O2    C3  
+  ANGLe O2    C3    O1  
+  ANGLe O2    C3    C2  
+  ANGLe O1    C3    C2  
+  ANGLe C3    C2    H5  
+  ANGLe C3    C2    H6  
+  ANGLe C3    C2    C1  
+  ANGLe H5    C2    H6  
+  ANGLe H5    C2    C1  
+  ANGLe H6    C2    C1  
+  ANGLe C2    C1    H3  
+  ANGLe C2    C1    H4  
+  ANGLe C2    C1    N1  
+  ANGLe H3    C1    H4  
+  ANGLe H3    C1    N1  
+  ANGLe H4    C1    N1  
+  ANGLe C1    N1    H1  
+  ANGLe C1    N1    H2  
+  ANGLe H1    N1    H2  
+  DIHEdral H7    O2    C3    C2  
+  DIHEdral C3    C2    C1    N1  
+  DIHEdral O1    C3    C2    C1  
+  DIHEdral C2    C1    N1    H1  
+  IMPRoper C3    O2    O1    C2  
+end
+
+!----------------------------------------------------------------------
+residue ABX  ! butyl; ATB source C6MK molid 1728534
+  group
+    ATOM H9   TYPE=AB00 CHARge=0.310 MASS=1.0080 END  ! ATB type H9
+    ATOM N1   TYPE=AB01 CHARge=-0.628 MASS=14.0067 END  ! ATB type N1
+    ATOM H8   TYPE=AB02 CHARge=0.310 MASS=1.0080 END  ! ATB type H8
+    ATOM C4   TYPE=AB03 CHARge=0.144 MASS=12.0110 END  ! ATB type C4
+    ATOM H6   TYPE=AB04 CHARge=0.029 MASS=1.0080 END  ! ATB type H6
+    ATOM H7   TYPE=AB05 CHARge=0.029 MASS=1.0080 END  ! ATB type H7
+    ATOM C1   TYPE=AB06 CHARge=0.009 MASS=12.0110 END  ! ATB type C1
+    ATOM H1   TYPE=AB07 CHARge=0.028 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=AB08 CHARge=0.028 MASS=1.0080 END  ! ATB type H2
+    ATOM C2   TYPE=AB09 CHARge=-0.241 MASS=12.0110 END  ! ATB type C2
+    ATOM H3   TYPE=AB10 CHARge=0.087 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=AB11 CHARge=0.087 MASS=1.0080 END  ! ATB type H4
+    ATOM C3   TYPE=AB12 CHARge=0.791 MASS=12.0110 END  ! ATB type C3
+    ATOM O1   TYPE=AB13 CHARge=-0.676 MASS=15.9994 END  ! ATB type O1
+    ATOM O2   TYPE=AB14 CHARge=-0.655 MASS=15.9994 END  ! ATB type O2
+    ATOM H5   TYPE=AB15 CHARge=0.348 MASS=1.0080 END  ! ATB type H5
+
+  BOND H9    N1  
+  BOND N1    H8  
+  BOND N1    C4  
+  BOND C4    H6  
+  BOND C4    H7  
+  BOND C4    C1  
+  BOND C1    H1  
+  BOND C1    H2  
+  BOND C1    C2  
+  BOND C2    H3  
+  BOND C2    H4  
+  BOND C2    C3  
+  BOND C3    O1  
+  BOND C3    O2  
+  BOND O2    H5  
+  ANGLe H9    N1    H8  
+  ANGLe H9    N1    C4  
+  ANGLe H8    N1    C4  
+  ANGLe N1    C4    H6  
+  ANGLe N1    C4    H7  
+  ANGLe N1    C4    C1  
+  ANGLe H6    C4    H7  
+  ANGLe H6    C4    C1  
+  ANGLe H7    C4    C1  
+  ANGLe C4    C1    H1  
+  ANGLe C4    C1    H2  
+  ANGLe C4    C1    C2  
+  ANGLe H1    C1    H2  
+  ANGLe H1    C1    C2  
+  ANGLe H2    C1    C2  
+  ANGLe C1    C2    H3  
+  ANGLe C1    C2    H4  
+  ANGLe C1    C2    C3  
+  ANGLe H3    C2    H4  
+  ANGLe H3    C2    C3  
+  ANGLe H4    C2    C3  
+  ANGLe C2    C3    O1  
+  ANGLe C2    C3    O2  
+  ANGLe O1    C3    O2  
+  ANGLe C3    O2    H5  
+  DIHEdral N1    C4    C1    C2  
+  DIHEdral H8    N1    C4    C1  
+  DIHEdral C4    C1    C2    C3  
+  DIHEdral C1    C2    C3    O1  
+  DIHEdral C2    C3    O2    H5  
+  IMPRoper C3    C2    O1    O2  
+end
+
+!----------------------------------------------------------------------
+residue AVX  ! valeric; ATB source OWSW molid 38088
+  group
+    ATOM H11  TYPE=AV00 CHARge=0.483 MASS=1.0080 END  ! ATB type H111
+    ATOM O2   TYPE=AV01 CHARge=-0.650 MASS=15.9994 END  ! ATB type O2
+    ATOM C5   TYPE=AV02 CHARge=0.759 MASS=12.0110 END  ! ATB type C51
+    ATOM O1   TYPE=AV03 CHARge=-0.585 MASS=15.9994 END  ! ATB type O1
+    ATOM C4   TYPE=AV04 CHARge=-0.320 MASS=12.0110 END  ! ATB type C4
+    ATOM H9   TYPE=AV05 CHARge=0.100 MASS=1.0080 END  ! ATB type H9
+    ATOM H10  TYPE=AV06 CHARge=0.100 MASS=1.0080 END  ! ATB type H10
+    ATOM C3   TYPE=AV07 CHARge=0.097 MASS=12.0110 END  ! ATB type C3
+    ATOM H7   TYPE=AV08 CHARge=-0.004 MASS=1.0080 END  ! ATB type H7
+    ATOM H8   TYPE=AV09 CHARge=-0.004 MASS=1.0080 END  ! ATB type H8
+    ATOM C2   TYPE=AV10 CHARge=-0.142 MASS=12.0110 END  ! ATB type C2
+    ATOM H5   TYPE=AV11 CHARge=0.067 MASS=1.0080 END  ! ATB type H5
+    ATOM H6   TYPE=AV12 CHARge=0.067 MASS=1.0080 END  ! ATB type H6
+    ATOM C1   TYPE=AV13 CHARge=0.284 MASS=12.0110 END  ! ATB type C1
+    ATOM H3   TYPE=AV14 CHARge=0.006 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=AV15 CHARge=0.006 MASS=1.0080 END  ! ATB type H4
+    ATOM N1   TYPE=AV16 CHARge=-1.026 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=AV17 CHARge=0.381 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=AV18 CHARge=0.381 MASS=1.0080 END  ! ATB type H2
+
+  BOND H11   O2  
+  BOND O2    C5  
+  BOND C5    O1  
+  BOND C5    C4  
+  BOND C4    H9  
+  BOND C4    H10 
+  BOND C4    C3  
+  BOND C3    H7  
+  BOND C3    H8  
+  BOND C3    C2  
+  BOND C2    H5  
+  BOND C2    H6  
+  BOND C2    C1  
+  BOND C1    H3  
+  BOND C1    H4  
+  BOND C1    N1  
+  BOND N1    H1  
+  BOND N1    H2  
+  ANGLe H11   O2    C5  
+  ANGLe O2    C5    O1  
+  ANGLe O2    C5    C4  
+  ANGLe O1    C5    C4  
+  ANGLe C5    C4    H9  
+  ANGLe C5    C4    H10 
+  ANGLe C5    C4    C3  
+  ANGLe H9    C4    H10 
+  ANGLe H9    C4    C3  
+  ANGLe H10   C4    C3  
+  ANGLe C4    C3    H7  
+  ANGLe C4    C3    H8  
+  ANGLe C4    C3    C2  
+  ANGLe H7    C3    H8  
+  ANGLe H7    C3    C2  
+  ANGLe H8    C3    C2  
+  ANGLe C3    C2    H5  
+  ANGLe C3    C2    H6  
+  ANGLe C3    C2    C1  
+  ANGLe H5    C2    H6  
+  ANGLe H5    C2    C1  
+  ANGLe H6    C2    C1  
+  ANGLe C2    C1    H3  
+  ANGLe C2    C1    H4  
+  ANGLe C2    C1    N1  
+  ANGLe H3    C1    H4  
+  ANGLe H3    C1    N1  
+  ANGLe H4    C1    N1  
+  ANGLe C1    N1    H1  
+  ANGLe C1    N1    H2  
+  ANGLe H1    N1    H2  
+  DIHEdral H11   O2    C5    C4  
+  DIHEdral C5    C4    C3    C2  
+  DIHEdral O1    C5    C4    C3  
+  DIHEdral C4    C3    C2    C1  
+  DIHEdral C3    C2    C1    N1  
+  DIHEdral C2    C1    N1    H1  
+  IMPRoper C5    O2    O1    C4  
+end
+
+!----------------------------------------------------------------------
+residue ASX  ! heptanoic; ATB source S1CK molid 39065
+  group
+    ATOM H15  TYPE=AP00 CHARge=0.490 MASS=1.0080 END  ! ATB type H151
+    ATOM O2   TYPE=AP01 CHARge=-0.670 MASS=15.9994 END  ! ATB type O2
+    ATOM C7   TYPE=AP02 CHARge=0.708 MASS=12.0110 END  ! ATB type C7
+    ATOM O1   TYPE=AP03 CHARge=-0.614 MASS=15.9994 END  ! ATB type O1
+    ATOM C6   TYPE=AP04 CHARge=-0.038 MASS=12.0110 END  ! ATB type C6
+    ATOM H13  TYPE=AP05 CHARge=0.064 MASS=1.0080 END  ! ATB type H131
+    ATOM H14  TYPE=AP06 CHARge=0.064 MASS=1.0080 END  ! ATB type H141
+    ATOM C5   TYPE=AP07 CHARge=-0.042 MASS=12.0110 END  ! ATB type C51
+    ATOM H11  TYPE=AP08 CHARge=0.026 MASS=1.0080 END  ! ATB type H111
+    ATOM H12  TYPE=AP09 CHARge=0.026 MASS=1.0080 END  ! ATB type H121
+    ATOM C4   TYPE=AP10 CHARge=-0.128 MASS=12.0110 END  ! ATB type C4
+    ATOM H9   TYPE=AP11 CHARge=0.057 MASS=1.0080 END  ! ATB type H9
+    ATOM H10  TYPE=AP12 CHARge=0.057 MASS=1.0080 END  ! ATB type H10
+    ATOM C3   TYPE=AP13 CHARge=-0.258 MASS=12.0110 END  ! ATB type C3
+    ATOM H7   TYPE=AP14 CHARge=0.092 MASS=1.0080 END  ! ATB type H7
+    ATOM H8   TYPE=AP15 CHARge=0.092 MASS=1.0080 END  ! ATB type H8
+    ATOM C2   TYPE=AP16 CHARge=-0.054 MASS=12.0110 END  ! ATB type C2
+    ATOM H5   TYPE=AP17 CHARge=0.036 MASS=1.0080 END  ! ATB type H5
+    ATOM H6   TYPE=AP18 CHARge=0.036 MASS=1.0080 END  ! ATB type H6
+    ATOM C1   TYPE=AP19 CHARge=0.382 MASS=12.0110 END  ! ATB type C1
+    ATOM H3   TYPE=AP20 CHARge=-0.014 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=AP21 CHARge=-0.014 MASS=1.0080 END  ! ATB type H4
+    ATOM N1   TYPE=AP22 CHARge=-1.050 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=AP23 CHARge=0.376 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=AP24 CHARge=0.376 MASS=1.0080 END  ! ATB type H2
+
+  BOND H15   O2  
+  BOND O2    C7  
+  BOND C7    O1  
+  BOND C7    C6  
+  BOND C6    H13 
+  BOND C6    H14 
+  BOND C6    C5  
+  BOND C5    H11 
+  BOND C5    H12 
+  BOND C5    C4  
+  BOND C4    H9  
+  BOND C4    H10 
+  BOND C4    C3  
+  BOND C3    H7  
+  BOND C3    H8  
+  BOND C3    C2  
+  BOND C2    H5  
+  BOND C2    H6  
+  BOND C2    C1  
+  BOND C1    H3  
+  BOND C1    H4  
+  BOND C1    N1  
+  BOND N1    H1  
+  BOND N1    H2  
+  ANGLe H15   O2    C7  
+  ANGLe O2    C7    O1  
+  ANGLe O2    C7    C6  
+  ANGLe O1    C7    C6  
+  ANGLe C7    C6    H13 
+  ANGLe C7    C6    H14 
+  ANGLe C7    C6    C5  
+  ANGLe H13   C6    H14 
+  ANGLe H13   C6    C5  
+  ANGLe H14   C6    C5  
+  ANGLe C6    C5    H11 
+  ANGLe C6    C5    H12 
+  ANGLe C6    C5    C4  
+  ANGLe H11   C5    H12 
+  ANGLe H11   C5    C4  
+  ANGLe H12   C5    C4  
+  ANGLe C5    C4    H9  
+  ANGLe C5    C4    H10 
+  ANGLe C5    C4    C3  
+  ANGLe H9    C4    H10 
+  ANGLe H9    C4    C3  
+  ANGLe H10   C4    C3  
+  ANGLe C4    C3    H7  
+  ANGLe C4    C3    H8  
+  ANGLe C4    C3    C2  
+  ANGLe H7    C3    H8  
+  ANGLe H7    C3    C2  
+  ANGLe H8    C3    C2  
+  ANGLe C3    C2    H5  
+  ANGLe C3    C2    H6  
+  ANGLe C3    C2    C1  
+  ANGLe H5    C2    H6  
+  ANGLe H5    C2    C1  
+  ANGLe H6    C2    C1  
+  ANGLe C2    C1    H3  
+  ANGLe C2    C1    H4  
+  ANGLe C2    C1    N1  
+  ANGLe H3    C1    H4  
+  ANGLe H3    C1    N1  
+  ANGLe H4    C1    N1  
+  ANGLe C1    N1    H1  
+  ANGLe C1    N1    H2  
+  ANGLe H1    N1    H2  
+  DIHEdral H15   O2    C7    C6  
+  DIHEdral C7    C6    C5    C4  
+  DIHEdral O1    C7    C6    C5  
+  DIHEdral C6    C5    C4    C3  
+  DIHEdral C5    C4    C3    C2  
+  DIHEdral C4    C3    C2    C1  
+  DIHEdral C3    C2    C1    N1  
+  DIHEdral C2    C1    N1    H1  
+  IMPRoper C7    O2    O1    C6  
+end
+
+!----------------------------------------------------------------------
+residue AOX  ! octanoic; ATB source IJO3 molid 41737
+  group
+    ATOM H17  TYPE=AO00 CHARge=0.481 MASS=1.0080 END  ! ATB type H171
+    ATOM O2   TYPE=AO01 CHARge=-0.655 MASS=15.9994 END  ! ATB type O2
+    ATOM C8   TYPE=AO02 CHARge=0.692 MASS=12.0110 END  ! ATB type C8
+    ATOM O1   TYPE=AO03 CHARge=-0.582 MASS=15.9994 END  ! ATB type O1
+    ATOM C7   TYPE=AO04 CHARge=-0.125 MASS=12.0110 END  ! ATB type C7
+    ATOM H15  TYPE=AO05 CHARge=0.090 MASS=1.0080 END  ! ATB type H151
+    ATOM H16  TYPE=AO06 CHARge=0.090 MASS=1.0080 END  ! ATB type H161
+    ATOM C6   TYPE=AO07 CHARge=-0.134 MASS=12.0110 END  ! ATB type C6
+    ATOM H13  TYPE=AO08 CHARge=0.053 MASS=1.0080 END  ! ATB type H131
+    ATOM H14  TYPE=AO09 CHARge=0.053 MASS=1.0080 END  ! ATB type H141
+    ATOM C5   TYPE=AO10 CHARge=-0.081 MASS=12.0110 END  ! ATB type C51
+    ATOM H11  TYPE=AO11 CHARge=0.033 MASS=1.0080 END  ! ATB type H111
+    ATOM H12  TYPE=AO12 CHARge=0.033 MASS=1.0080 END  ! ATB type H121
+    ATOM C4   TYPE=AO13 CHARge=0.186 MASS=12.0110 END  ! ATB type C4
+    ATOM H9   TYPE=AO14 CHARge=-0.031 MASS=1.0080 END  ! ATB type H9
+    ATOM H10  TYPE=AO15 CHARge=-0.031 MASS=1.0080 END  ! ATB type H10
+    ATOM C3   TYPE=AO16 CHARge=-0.088 MASS=12.0110 END  ! ATB type C3
+    ATOM H7   TYPE=AO17 CHARge=-0.004 MASS=1.0080 END  ! ATB type H7
+    ATOM H8   TYPE=AO18 CHARge=-0.004 MASS=1.0080 END  ! ATB type H8
+    ATOM C2   TYPE=AO19 CHARge=-0.061 MASS=12.0110 END  ! ATB type C2
+    ATOM H5   TYPE=AO20 CHARge=0.004 MASS=1.0080 END  ! ATB type H5
+    ATOM H6   TYPE=AO21 CHARge=0.004 MASS=1.0080 END  ! ATB type H6
+    ATOM C1   TYPE=AO22 CHARge=0.445 MASS=12.0110 END  ! ATB type C1
+    ATOM H3   TYPE=AO23 CHARge=-0.024 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=AO24 CHARge=-0.024 MASS=1.0080 END  ! ATB type H4
+    ATOM N1   TYPE=AO25 CHARge=-1.098 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=AO26 CHARge=0.389 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=AO27 CHARge=0.389 MASS=1.0080 END  ! ATB type H2
+
+  BOND H17   O2  
+  BOND O2    C8  
+  BOND C8    O1  
+  BOND C8    C7  
+  BOND C7    H15 
+  BOND C7    H16 
+  BOND C7    C6  
+  BOND C6    H13 
+  BOND C6    H14 
+  BOND C6    C5  
+  BOND C5    H11 
+  BOND C5    H12 
+  BOND C5    C4  
+  BOND C4    H9  
+  BOND C4    H10 
+  BOND C4    C3  
+  BOND C3    H7  
+  BOND C3    H8  
+  BOND C3    C2  
+  BOND C2    H5  
+  BOND C2    H6  
+  BOND C2    C1  
+  BOND C1    H3  
+  BOND C1    H4  
+  BOND C1    N1  
+  BOND N1    H1  
+  BOND N1    H2  
+  ANGLe H17   O2    C8  
+  ANGLe O2    C8    O1  
+  ANGLe O2    C8    C7  
+  ANGLe O1    C8    C7  
+  ANGLe C8    C7    H15 
+  ANGLe C8    C7    H16 
+  ANGLe C8    C7    C6  
+  ANGLe H15   C7    H16 
+  ANGLe H15   C7    C6  
+  ANGLe H16   C7    C6  
+  ANGLe C7    C6    H13 
+  ANGLe C7    C6    H14 
+  ANGLe C7    C6    C5  
+  ANGLe H13   C6    H14 
+  ANGLe H13   C6    C5  
+  ANGLe H14   C6    C5  
+  ANGLe C6    C5    H11 
+  ANGLe C6    C5    H12 
+  ANGLe C6    C5    C4  
+  ANGLe H11   C5    H12 
+  ANGLe H11   C5    C4  
+  ANGLe H12   C5    C4  
+  ANGLe C5    C4    H9  
+  ANGLe C5    C4    H10 
+  ANGLe C5    C4    C3  
+  ANGLe H9    C4    H10 
+  ANGLe H9    C4    C3  
+  ANGLe H10   C4    C3  
+  ANGLe C4    C3    H7  
+  ANGLe C4    C3    H8  
+  ANGLe C4    C3    C2  
+  ANGLe H7    C3    H8  
+  ANGLe H7    C3    C2  
+  ANGLe H8    C3    C2  
+  ANGLe C3    C2    H5  
+  ANGLe C3    C2    H6  
+  ANGLe C3    C2    C1  
+  ANGLe H5    C2    H6  
+  ANGLe H5    C2    C1  
+  ANGLe H6    C2    C1  
+  ANGLe C2    C1    H3  
+  ANGLe C2    C1    H4  
+  ANGLe C2    C1    N1  
+  ANGLe H3    C1    H4  
+  ANGLe H3    C1    N1  
+  ANGLe H4    C1    N1  
+  ANGLe C1    N1    H1  
+  ANGLe C1    N1    H2  
+  ANGLe H1    N1    H2  
+  DIHEdral H17   O2    C8    C7  
+  DIHEdral C8    C7    C6    C5  
+  DIHEdral O1    C8    C7    C6  
+  DIHEdral C7    C6    C5    C4  
+  DIHEdral C6    C5    C4    C3  
+  DIHEdral C5    C4    C3    C2  
+  DIHEdral C4    C3    C2    C1  
+  DIHEdral C3    C2    C1    N1  
+  DIHEdral C2    C1    N1    H1  
+  IMPRoper C8    O2    O1    C7  
+end
+
+!----------------------------------------------------------------------
+residue AEA  ! spacer ATB JCCR molid 795954
+  group
+    ATOM H3   TYPE=EA00 CHARge=0.318 MASS=1.0080 END  ! ATB type H3
+    ATOM N1   TYPE=EA01 CHARge=-0.619 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=EA02 CHARge=0.318 MASS=1.0080 END  ! ATB type H1
+    ATOM C1   TYPE=EA03 CHARge=0.147 MASS=12.0110 END  ! ATB type C1
+    ATOM H4   TYPE=EA04 CHARge=0.043 MASS=1.0080 END  ! ATB type H4
+    ATOM H5   TYPE=EA05 CHARge=0.043 MASS=1.0080 END  ! ATB type H5
+    ATOM C2   TYPE=EA06 CHARge=-0.118 MASS=12.0110 END  ! ATB type C2
+    ATOM H6   TYPE=EA07 CHARge=0.126 MASS=1.0080 END  ! ATB type H6
+    ATOM H7   TYPE=EA08 CHARge=0.126 MASS=1.0080 END  ! ATB type H7
+    ATOM O1   TYPE=EA09 CHARge=-0.347 MASS=15.9994 END  ! ATB type O1
+    ATOM C3   TYPE=EA10 CHARge=-0.097 MASS=12.0110 END  ! ATB type C3
+    ATOM H8   TYPE=EA11 CHARge=0.111 MASS=1.0080 END  ! ATB type H8
+    ATOM H9   TYPE=EA12 CHARge=0.111 MASS=1.0080 END  ! ATB type H9
+    ATOM C4   TYPE=EA13 CHARge=0.820 MASS=12.0110 END  ! ATB type C4
+    ATOM O3   TYPE=EA14 CHARge=-0.681 MASS=15.9994 END  ! ATB type O3
+    ATOM O2   TYPE=EA15 CHARge=-0.609 MASS=15.9994 END  ! ATB type O2
+    ATOM H2   TYPE=EA16 CHARge=0.308 MASS=1.0080 END  ! ATB type H2
+
+  BOND H3    N1  
+  BOND N1    H1  
+  BOND N1    C1  
+  BOND C1    H4  
+  BOND C1    H5  
+  BOND C1    C2  
+  BOND C2    H6  
+  BOND C2    H7  
+  BOND C2    O1  
+  BOND O1    C3  
+  BOND C3    H8  
+  BOND C3    H9  
+  BOND C3    C4  
+  BOND C4    O3  
+  BOND C4    O2  
+  BOND O2    H2  
+  ANGLe H3    N1    H1  
+  ANGLe H3    N1    C1  
+  ANGLe H1    N1    C1  
+  ANGLe N1    C1    H4  
+  ANGLe N1    C1    H5  
+  ANGLe N1    C1    C2  
+  ANGLe H4    C1    H5  
+  ANGLe H4    C1    C2  
+  ANGLe H5    C1    C2  
+  ANGLe C1    C2    H6  
+  ANGLe C1    C2    H7  
+  ANGLe C1    C2    O1  
+  ANGLe H6    C2    H7  
+  ANGLe H6    C2    O1  
+  ANGLe H7    C2    O1  
+  ANGLe C2    O1    C3  
+  ANGLe O1    C3    H8  
+  ANGLe O1    C3    H9  
+  ANGLe O1    C3    C4  
+  ANGLe H8    C3    H9  
+  ANGLe H8    C3    C4  
+  ANGLe H9    C3    C4  
+  ANGLe C3    C4    O3  
+  ANGLe C3    C4    O2  
+  ANGLe O3    C4    O2  
+  ANGLe C4    O2    H2  
+  DIHEdral N1    C1    C2    O1  
+  DIHEdral H1    N1    C1    C2  
+  DIHEdral C1    C2    O1    C3  
+  DIHEdral C2    O1    C3    C4  
+  DIHEdral O1    C3    C4    O2  
+  DIHEdral C3    C4    O2    H2  
+  IMPRoper C4    C3    O3    O2  
+end
+
+!----------------------------------------------------------------------
+residue AEE  ! spacer ATB KKB9 molid 41725
+  group
+    ATOM H13  TYPE=EE00 CHARge=0.343 MASS=1.0080 END  ! ATB type H131
+    ATOM O4   TYPE=EE01 CHARge=-0.630 MASS=15.9994 END  ! ATB type O4
+    ATOM C6   TYPE=EE02 CHARge=0.846 MASS=12.0110 END  ! ATB type C6
+    ATOM O3   TYPE=EE03 CHARge=-0.655 MASS=15.9994 END  ! ATB type O3
+    ATOM C5   TYPE=EE04 CHARge=-0.166 MASS=12.0110 END  ! ATB type C51
+    ATOM H11  TYPE=EE05 CHARge=0.129 MASS=1.0080 END  ! ATB type H111
+    ATOM H12  TYPE=EE06 CHARge=0.129 MASS=1.0080 END  ! ATB type H121
+    ATOM O2   TYPE=EE07 CHARge=-0.304 MASS=15.9994 END  ! ATB type O2
+    ATOM C4   TYPE=EE08 CHARge=-0.019 MASS=12.0110 END  ! ATB type C4
+    ATOM H9   TYPE=EE09 CHARge=0.106 MASS=1.0080 END  ! ATB type H9
+    ATOM H10  TYPE=EE10 CHARge=0.106 MASS=1.0080 END  ! ATB type H10
+    ATOM C3   TYPE=EE11 CHARge=0.041 MASS=12.0110 END  ! ATB type C3
+    ATOM H7   TYPE=EE12 CHARge=0.083 MASS=1.0080 END  ! ATB type H7
+    ATOM H8   TYPE=EE13 CHARge=0.083 MASS=1.0080 END  ! ATB type H8
+    ATOM O1   TYPE=EE14 CHARge=-0.375 MASS=15.9994 END  ! ATB type O1
+    ATOM C2   TYPE=EE15 CHARge=0.093 MASS=12.0110 END  ! ATB type C2
+    ATOM H5   TYPE=EE16 CHARge=0.057 MASS=1.0080 END  ! ATB type H5
+    ATOM H6   TYPE=EE17 CHARge=0.057 MASS=1.0080 END  ! ATB type H6
+    ATOM C1   TYPE=EE18 CHARge=0.281 MASS=12.0110 END  ! ATB type C1
+    ATOM H3   TYPE=EE19 CHARge=0.027 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=EE20 CHARge=0.027 MASS=1.0080 END  ! ATB type H4
+    ATOM N1   TYPE=EE21 CHARge=-1.037 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=EE22 CHARge=0.389 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=EE23 CHARge=0.389 MASS=1.0080 END  ! ATB type H2
+
+  BOND H13   O4  
+  BOND O4    C6  
+  BOND C6    O3  
+  BOND C6    C5  
+  BOND C5    H11 
+  BOND C5    H12 
+  BOND C5    O2  
+  BOND O2    C4  
+  BOND C4    H9  
+  BOND C4    H10 
+  BOND C4    C3  
+  BOND C3    H7  
+  BOND C3    H8  
+  BOND C3    O1  
+  BOND O1    C2  
+  BOND C2    H5  
+  BOND C2    H6  
+  BOND C2    C1  
+  BOND C1    H3  
+  BOND C1    H4  
+  BOND C1    N1  
+  BOND N1    H1  
+  BOND N1    H2  
+  ANGLe H13   O4    C6  
+  ANGLe O4    C6    O3  
+  ANGLe O4    C6    C5  
+  ANGLe O3    C6    C5  
+  ANGLe C6    C5    H11 
+  ANGLe C6    C5    H12 
+  ANGLe C6    C5    O2  
+  ANGLe H11   C5    H12 
+  ANGLe H11   C5    O2  
+  ANGLe H12   C5    O2  
+  ANGLe C5    O2    C4  
+  ANGLe O2    C4    H9  
+  ANGLe O2    C4    H10 
+  ANGLe O2    C4    C3  
+  ANGLe H9    C4    H10 
+  ANGLe H9    C4    C3  
+  ANGLe H10   C4    C3  
+  ANGLe C4    C3    H7  
+  ANGLe C4    C3    H8  
+  ANGLe C4    C3    O1  
+  ANGLe H7    C3    H8  
+  ANGLe H7    C3    O1  
+  ANGLe H8    C3    O1  
+  ANGLe C3    O1    C2  
+  ANGLe O1    C2    H5  
+  ANGLe O1    C2    H6  
+  ANGLe O1    C2    C1  
+  ANGLe H5    C2    H6  
+  ANGLe H5    C2    C1  
+  ANGLe H6    C2    C1  
+  ANGLe C2    C1    H3  
+  ANGLe C2    C1    H4  
+  ANGLe C2    C1    N1  
+  ANGLe H3    C1    H4  
+  ANGLe H3    C1    N1  
+  ANGLe H4    C1    N1  
+  ANGLe C1    N1    H1  
+  ANGLe C1    N1    H2  
+  ANGLe H1    N1    H2  
+  DIHEdral H13   O4    C6    C5  
+  DIHEdral C6    C5    O2    C4  
+  DIHEdral O3    C6    C5    O2  
+  DIHEdral C5    O2    C4    C3  
+  DIHEdral O2    C4    C3    O1  
+  DIHEdral C4    C3    O1    C2  
+  DIHEdral C3    O1    C2    C1  
+  DIHEdral O1    C2    C1    N1  
+  DIHEdral C2    C1    N1    H1  
+  IMPRoper C6    O4    O3    C5  
+end
+
+!----------------------------------------------------------------------
+residue ADA  ! N-cap ATB WSCI molid 205520
+  group
+    ATOM H14  TYPE=AD00 CHARge=0.136 MASS=1.0080 END  ! ATB type H141
+    ATOM C10  TYPE=AD01 CHARge=-0.665 MASS=12.0110 END  ! ATB type C101
+    ATOM H13  TYPE=AD02 CHARge=0.141 MASS=1.0080 END  ! ATB type H131
+    ATOM C5   TYPE=AD03 CHARge=0.606 MASS=12.0110 END  ! ATB type C51
+    ATOM H6   TYPE=AD04 CHARge=-0.031 MASS=1.0080 END  ! ATB type H6
+    ATOM C4   TYPE=AD05 CHARge=-0.653 MASS=12.0110 END  ! ATB type C4
+    ATOM H4   TYPE=AD06 CHARge=0.130 MASS=1.0080 END  ! ATB type H4
+    ATOM H5   TYPE=AD07 CHARge=0.130 MASS=1.0080 END  ! ATB type H5
+    ATOM C3   TYPE=AD08 CHARge=0.842 MASS=12.0110 END  ! ATB type C3
+    ATOM C2   TYPE=AD09 CHARge=-0.495 MASS=12.0110 END  ! ATB type C2
+    ATOM H2   TYPE=AD10 CHARge=0.137 MASS=1.0080 END  ! ATB type H2
+    ATOM H3   TYPE=AD11 CHARge=0.137 MASS=1.0080 END  ! ATB type H3
+    ATOM C1   TYPE=AD12 CHARge=0.772 MASS=12.0110 END  ! ATB type C1
+    ATOM O2   TYPE=AD13 CHARge=-0.623 MASS=15.9994 END  ! ATB type O2
+    ATOM O1   TYPE=AD14 CHARge=-0.613 MASS=15.9994 END  ! ATB type O1
+    ATOM H1   TYPE=AD15 CHARge=0.461 MASS=1.0080 END  ! ATB type H1
+    ATOM C11  TYPE=AD16 CHARge=-0.653 MASS=12.0110 END  ! ATB type C111
+    ATOM H15  TYPE=AD17 CHARge=0.130 MASS=1.0080 END  ! ATB type H151
+    ATOM H16  TYPE=AD18 CHARge=0.130 MASS=1.0080 END  ! ATB type H161
+    ATOM C9   TYPE=AD19 CHARge=0.606 MASS=12.0110 END  ! ATB type C91
+    ATOM H12  TYPE=AD20 CHARge=-0.031 MASS=1.0080 END  ! ATB type H121
+    ATOM C8   TYPE=AD21 CHARge=-0.665 MASS=12.0110 END  ! ATB type C8
+    ATOM H10  TYPE=AD22 CHARge=0.141 MASS=1.0080 END  ! ATB type H10
+    ATOM H11  TYPE=AD23 CHARge=0.136 MASS=1.0080 END  ! ATB type H111
+    ATOM C7   TYPE=AD24 CHARge=0.606 MASS=12.0110 END  ! ATB type C7
+    ATOM H9   TYPE=AD25 CHARge=-0.031 MASS=1.0080 END  ! ATB type H9
+    ATOM C6   TYPE=AD26 CHARge=-0.665 MASS=12.0110 END  ! ATB type C6
+    ATOM H7   TYPE=AD27 CHARge=0.136 MASS=1.0080 END  ! ATB type H7
+    ATOM H8   TYPE=AD28 CHARge=0.141 MASS=1.0080 END  ! ATB type H8
+    ATOM C12  TYPE=AD29 CHARge=-0.653 MASS=12.0110 END  ! ATB type C121
+    ATOM H17  TYPE=AD30 CHARge=0.130 MASS=1.0080 END  ! ATB type H171
+    ATOM H18  TYPE=AD31 CHARge=0.130 MASS=1.0080 END  ! ATB type H181
+
+  BOND H14   C10 
+  BOND C10   H13 
+  BOND C10   C5  
+  BOND C10   C9  
+  BOND C5    H6  
+  BOND C5    C4  
+  BOND C5    C6  
+  BOND C4    H4  
+  BOND C4    H5  
+  BOND C4    C3  
+  BOND C3    C2  
+  BOND C3    C11 
+  BOND C3    C12 
+  BOND C2    H2  
+  BOND C2    H3  
+  BOND C2    C1  
+  BOND C1    O2  
+  BOND C1    O1  
+  BOND O1    H1  
+  BOND C11   H15 
+  BOND C11   H16 
+  BOND C11   C9  
+  BOND C9    H12 
+  BOND C9    C8  
+  BOND C8    H10 
+  BOND C8    H11 
+  BOND C8    C7  
+  BOND C7    H9  
+  BOND C7    C6  
+  BOND C7    C12 
+  BOND C6    H7  
+  BOND C6    H8  
+  BOND C12   H17 
+  BOND C12   H18 
+  ANGLe H14   C10   H13 
+  ANGLe H14   C10   C5  
+  ANGLe H14   C10   C9  
+  ANGLe H13   C10   C5  
+  ANGLe H13   C10   C9  
+  ANGLe C5    C10   C9  
+  ANGLe C10   C5    H6  
+  ANGLe C10   C5    C4  
+  ANGLe C10   C5    C6  
+  ANGLe H6    C5    C4  
+  ANGLe H6    C5    C6  
+  ANGLe C4    C5    C6  
+  ANGLe C5    C4    H4  
+  ANGLe C5    C4    H5  
+  ANGLe C5    C4    C3  
+  ANGLe H4    C4    H5  
+  ANGLe H4    C4    C3  
+  ANGLe H5    C4    C3  
+  ANGLe C4    C3    C2  
+  ANGLe C4    C3    C11 
+  ANGLe C4    C3    C12 
+  ANGLe C2    C3    C11 
+  ANGLe C2    C3    C12 
+  ANGLe C11   C3    C12 
+  ANGLe C3    C2    H2  
+  ANGLe C3    C2    H3  
+  ANGLe C3    C2    C1  
+  ANGLe H2    C2    H3  
+  ANGLe H2    C2    C1  
+  ANGLe H3    C2    C1  
+  ANGLe C2    C1    O2  
+  ANGLe C2    C1    O1  
+  ANGLe O2    C1    O1  
+  ANGLe C1    O1    H1  
+  ANGLe C3    C11   H15 
+  ANGLe C3    C11   H16 
+  ANGLe C3    C11   C9  
+  ANGLe H15   C11   H16 
+  ANGLe H15   C11   C9  
+  ANGLe H16   C11   C9  
+  ANGLe C10   C9    C11 
+  ANGLe C10   C9    H12 
+  ANGLe C10   C9    C8  
+  ANGLe C11   C9    H12 
+  ANGLe C11   C9    C8  
+  ANGLe H12   C9    C8  
+  ANGLe C9    C8    H10 
+  ANGLe C9    C8    H11 
+  ANGLe C9    C8    C7  
+  ANGLe H10   C8    H11 
+  ANGLe H10   C8    C7  
+  ANGLe H11   C8    C7  
+  ANGLe C8    C7    H9  
+  ANGLe C8    C7    C6  
+  ANGLe C8    C7    C12 
+  ANGLe H9    C7    C6  
+  ANGLe H9    C7    C12 
+  ANGLe C6    C7    C12 
+  ANGLe C5    C6    C7  
+  ANGLe C5    C6    H7  
+  ANGLe C5    C6    H8  
+  ANGLe C7    C6    H7  
+  ANGLe C7    C6    H8  
+  ANGLe H7    C6    H8  
+  ANGLe C3    C12   C7  
+  ANGLe C3    C12   H17 
+  ANGLe C3    C12   H18 
+  ANGLe C7    C12   H17 
+  ANGLe C7    C12   H18 
+  ANGLe H17   C12   H18 
+  DIHEdral C10   C9    C8    C7  
+  DIHEdral C5    C10   C9    C8  
+  DIHEdral C5    C4    C3    C2  
+  DIHEdral C4    C5    C6    C7  
+  DIHEdral C4    C3    C2    C1  
+  DIHEdral C3    C2    C1    O1  
+  DIHEdral C3    C11   C9    C8  
+  DIHEdral C2    C3    C11   C9  
+  DIHEdral C2    C3    C12   C7  
+  DIHEdral O2    C1    O1    H1  
+  DIHEdral C9    C10   C5    C4  
+  DIHEdral C9    C8    C7    C6  
+  DIHEdral C8    C7    C6    C5  
+  DIHEdral C6    C5    C4    C3  
+  DIHEdral C6    C7    C12   C3  
+  IMPRoper C1    C2    O2    O1  
+  IMPRoper C5    C4    C6    C10 
+  IMPRoper C7    C8    C6    C12 
+  IMPRoper C9    C10   C8    C11 
+end
+
+!----------------------------------------------------------------------
+residue ADM  ! C-cap ATB ZYZF molid 178547
+  group
+    ATOM H15  TYPE=AM00 CHARge=0.144 MASS=1.0080 END  ! ATB type H151
+    ATOM C9   TYPE=AM01 CHARge=-0.725 MASS=12.0110 END  ! ATB type C91
+    ATOM H14  TYPE=AM02 CHARge=0.142 MASS=1.0080 END  ! ATB type H141
+    ATOM C4   TYPE=AM03 CHARge=0.710 MASS=12.0110 END  ! ATB type C4
+    ATOM H7   TYPE=AM04 CHARge=-0.056 MASS=1.0080 END  ! ATB type H7
+    ATOM C3   TYPE=AM05 CHARge=-0.674 MASS=12.0110 END  ! ATB type C3
+    ATOM H5   TYPE=AM06 CHARge=0.116 MASS=1.0080 END  ! ATB type H5
+    ATOM H6   TYPE=AM07 CHARge=0.116 MASS=1.0080 END  ! ATB type H6
+    ATOM C2   TYPE=AM08 CHARge=0.688 MASS=12.0110 END  ! ATB type C2
+    ATOM C1   TYPE=AM09 CHARge=0.392 MASS=12.0110 END  ! ATB type C1
+    ATOM H3   TYPE=AM10 CHARge=-0.062 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=AM11 CHARge=-0.062 MASS=1.0080 END  ! ATB type H4
+    ATOM N1   TYPE=AM12 CHARge=-0.985 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=AM13 CHARge=0.355 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=AM14 CHARge=0.355 MASS=1.0080 END  ! ATB type H2
+    ATOM C10  TYPE=AM15 CHARge=-0.674 MASS=12.0110 END  ! ATB type C101
+    ATOM H16  TYPE=AM16 CHARge=0.116 MASS=1.0080 END  ! ATB type H161
+    ATOM H17  TYPE=AM17 CHARge=0.116 MASS=1.0080 END  ! ATB type H171
+    ATOM C8   TYPE=AM18 CHARge=0.710 MASS=12.0110 END  ! ATB type C8
+    ATOM H13  TYPE=AM19 CHARge=-0.056 MASS=1.0080 END  ! ATB type H131
+    ATOM C7   TYPE=AM20 CHARge=-0.725 MASS=12.0110 END  ! ATB type C7
+    ATOM H11  TYPE=AM21 CHARge=0.142 MASS=1.0080 END  ! ATB type H111
+    ATOM H12  TYPE=AM22 CHARge=0.144 MASS=1.0080 END  ! ATB type H121
+    ATOM C6   TYPE=AM23 CHARge=0.710 MASS=12.0110 END  ! ATB type C6
+    ATOM H10  TYPE=AM24 CHARge=-0.056 MASS=1.0080 END  ! ATB type H10
+    ATOM C5   TYPE=AM25 CHARge=-0.725 MASS=12.0110 END  ! ATB type C51
+    ATOM H8   TYPE=AM26 CHARge=0.144 MASS=1.0080 END  ! ATB type H8
+    ATOM H9   TYPE=AM27 CHARge=0.142 MASS=1.0080 END  ! ATB type H9
+    ATOM C11  TYPE=AM28 CHARge=-0.674 MASS=12.0110 END  ! ATB type C111
+    ATOM H18  TYPE=AM29 CHARge=0.116 MASS=1.0080 END  ! ATB type H181
+    ATOM H19  TYPE=AM30 CHARge=0.116 MASS=1.0080 END  ! ATB type H191
+
+  BOND H15   C9  
+  BOND C9    H14 
+  BOND C9    C4  
+  BOND C9    C8  
+  BOND C4    H7  
+  BOND C4    C3  
+  BOND C4    C5  
+  BOND C3    H5  
+  BOND C3    H6  
+  BOND C3    C2  
+  BOND C2    C1  
+  BOND C2    C10 
+  BOND C2    C11 
+  BOND C1    H3  
+  BOND C1    H4  
+  BOND C1    N1  
+  BOND N1    H1  
+  BOND N1    H2  
+  BOND C10   H16 
+  BOND C10   H17 
+  BOND C10   C8  
+  BOND C8    H13 
+  BOND C8    C7  
+  BOND C7    H11 
+  BOND C7    H12 
+  BOND C7    C6  
+  BOND C6    H10 
+  BOND C6    C5  
+  BOND C6    C11 
+  BOND C5    H8  
+  BOND C5    H9  
+  BOND C11   H18 
+  BOND C11   H19 
+  ANGLe H15   C9    H14 
+  ANGLe H15   C9    C4  
+  ANGLe H15   C9    C8  
+  ANGLe H14   C9    C4  
+  ANGLe H14   C9    C8  
+  ANGLe C4    C9    C8  
+  ANGLe C9    C4    H7  
+  ANGLe C9    C4    C3  
+  ANGLe C9    C4    C5  
+  ANGLe H7    C4    C3  
+  ANGLe H7    C4    C5  
+  ANGLe C3    C4    C5  
+  ANGLe C4    C3    H5  
+  ANGLe C4    C3    H6  
+  ANGLe C4    C3    C2  
+  ANGLe H5    C3    H6  
+  ANGLe H5    C3    C2  
+  ANGLe H6    C3    C2  
+  ANGLe C3    C2    C1  
+  ANGLe C3    C2    C10 
+  ANGLe C3    C2    C11 
+  ANGLe C1    C2    C10 
+  ANGLe C1    C2    C11 
+  ANGLe C10   C2    C11 
+  ANGLe C2    C1    H3  
+  ANGLe C2    C1    H4  
+  ANGLe C2    C1    N1  
+  ANGLe H3    C1    H4  
+  ANGLe H3    C1    N1  
+  ANGLe H4    C1    N1  
+  ANGLe C1    N1    H1  
+  ANGLe C1    N1    H2  
+  ANGLe H1    N1    H2  
+  ANGLe C2    C10   H16 
+  ANGLe C2    C10   H17 
+  ANGLe C2    C10   C8  
+  ANGLe H16   C10   H17 
+  ANGLe H16   C10   C8  
+  ANGLe H17   C10   C8  
+  ANGLe C9    C8    C10 
+  ANGLe C9    C8    H13 
+  ANGLe C9    C8    C7  
+  ANGLe C10   C8    H13 
+  ANGLe C10   C8    C7  
+  ANGLe H13   C8    C7  
+  ANGLe C8    C7    H11 
+  ANGLe C8    C7    H12 
+  ANGLe C8    C7    C6  
+  ANGLe H11   C7    H12 
+  ANGLe H11   C7    C6  
+  ANGLe H12   C7    C6  
+  ANGLe C7    C6    H10 
+  ANGLe C7    C6    C5  
+  ANGLe C7    C6    C11 
+  ANGLe H10   C6    C5  
+  ANGLe H10   C6    C11 
+  ANGLe C5    C6    C11 
+  ANGLe C4    C5    C6  
+  ANGLe C4    C5    H8  
+  ANGLe C4    C5    H9  
+  ANGLe C6    C5    H8  
+  ANGLe C6    C5    H9  
+  ANGLe H8    C5    H9  
+  ANGLe C2    C11   C6  
+  ANGLe C2    C11   H18 
+  ANGLe C2    C11   H19 
+  ANGLe C6    C11   H18 
+  ANGLe C6    C11   H19 
+  ANGLe H18   C11   H19 
+  DIHEdral C9    C8    C7    C6  
+  DIHEdral C4    C9    C8    C7  
+  DIHEdral C4    C3    C2    C1  
+  DIHEdral C3    C4    C5    C6  
+  DIHEdral C3    C2    C1    N1  
+  DIHEdral C2    C1    N1    H1  
+  DIHEdral C2    C10   C8    C7  
+  DIHEdral C1    C2    C10   C8  
+  DIHEdral C1    C2    C11   C6  
+  DIHEdral C8    C9    C4    C3  
+  DIHEdral C8    C7    C6    C5  
+  DIHEdral C7    C6    C5    C4  
+  DIHEdral C5    C4    C3    C2  
+  DIHEdral C5    C6    C11   C2  
+  IMPRoper C4    C3    C5    C9  
+  IMPRoper C6    C7    C5    C11 
+  IMPRoper C8    C9    C7    C10 
+end
+
+!----------------------------------------------------------------------
+residue NBA  ! N-cap ATB A71B molid 48194
+  group
+    ATOM H10  TYPE=NB00 CHARge=0.158 MASS=1.0080 END  ! ATB type H10
+    ATOM C8   TYPE=NB01 CHARge=-0.253 MASS=12.0110 END  ! ATB type C8
+    ATOM C4   TYPE=NB02 CHARge=0.202 MASS=12.0110 END  ! ATB type C4
+    ATOM H5   TYPE=NB03 CHARge=0.036 MASS=1.0080 END  ! ATB type H5
+    ATOM C3   TYPE=NB04 CHARge=-0.271 MASS=12.0110 END  ! ATB type C3
+    ATOM H3   TYPE=NB05 CHARge=0.107 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=NB06 CHARge=0.113 MASS=1.0080 END  ! ATB type H4
+    ATOM C2   TYPE=NB07 CHARge=-0.097 MASS=12.0110 END  ! ATB type C2
+    ATOM H2   TYPE=NB08 CHARge=0.108 MASS=1.0080 END  ! ATB type H2
+    ATOM C1   TYPE=NB09 CHARge=0.690 MASS=12.0110 END  ! ATB type C1
+    ATOM O2   TYPE=NB10 CHARge=-0.591 MASS=15.9994 END  ! ATB type O2
+    ATOM O1   TYPE=NB11 CHARge=-0.636 MASS=15.9994 END  ! ATB type O1
+    ATOM H1   TYPE=NB12 CHARge=0.477 MASS=1.0080 END  ! ATB type H1
+    ATOM C6   TYPE=NB13 CHARge=0.082 MASS=12.0110 END  ! ATB type C6
+    ATOM H8   TYPE=NB14 CHARge=0.063 MASS=1.0080 END  ! ATB type H8
+    ATOM C7   TYPE=NB15 CHARge=-0.212 MASS=12.0110 END  ! ATB type C7
+    ATOM H9   TYPE=NB16 CHARge=0.149 MASS=1.0080 END  ! ATB type H9
+    ATOM C5   TYPE=NB17 CHARge=-0.394 MASS=12.0110 END  ! ATB type C51
+    ATOM H6   TYPE=NB18 CHARge=0.138 MASS=1.0080 END  ! ATB type H6
+    ATOM H7   TYPE=NB19 CHARge=0.131 MASS=1.0080 END  ! ATB type H7
+
+  BOND H10   C8  
+  BOND C8    C4  
+  BOND C8    C7  
+  BOND C4    H5  
+  BOND C4    C3  
+  BOND C4    C5  
+  BOND C3    H3  
+  BOND C3    H4  
+  BOND C3    C2  
+  BOND C2    H2  
+  BOND C2    C1  
+  BOND C2    C6  
+  BOND C1    O2  
+  BOND C1    O1  
+  BOND O1    H1  
+  BOND C6    H8  
+  BOND C6    C7  
+  BOND C6    C5  
+  BOND C7    H9  
+  BOND C5    H6  
+  BOND C5    H7  
+  ANGLe H10   C8    C4  
+  ANGLe H10   C8    C7  
+  ANGLe C4    C8    C7  
+  ANGLe C8    C4    H5  
+  ANGLe C8    C4    C3  
+  ANGLe C8    C4    C5  
+  ANGLe H5    C4    C3  
+  ANGLe H5    C4    C5  
+  ANGLe C3    C4    C5  
+  ANGLe C4    C3    H3  
+  ANGLe C4    C3    H4  
+  ANGLe C4    C3    C2  
+  ANGLe H3    C3    H4  
+  ANGLe H3    C3    C2  
+  ANGLe H4    C3    C2  
+  ANGLe C3    C2    H2  
+  ANGLe C3    C2    C1  
+  ANGLe C3    C2    C6  
+  ANGLe H2    C2    C1  
+  ANGLe H2    C2    C6  
+  ANGLe C1    C2    C6  
+  ANGLe C2    C1    O2  
+  ANGLe C2    C1    O1  
+  ANGLe O2    C1    O1  
+  ANGLe C1    O1    H1  
+  ANGLe C2    C6    H8  
+  ANGLe C2    C6    C7  
+  ANGLe C2    C6    C5  
+  ANGLe H8    C6    C7  
+  ANGLe H8    C6    C5  
+  ANGLe C7    C6    C5  
+  ANGLe C8    C7    C6  
+  ANGLe C8    C7    H9  
+  ANGLe C6    C7    H9  
+  ANGLe C4    C5    C6  
+  ANGLe C4    C5    H6  
+  ANGLe C4    C5    H7  
+  ANGLe C6    C5    H6  
+  ANGLe C6    C5    H7  
+  ANGLe H6    C5    H7  
+  DIHEdral C4    C8    C7    C6  
+  DIHEdral C4    C3    C2    C1  
+  DIHEdral C3    C4    C5    C6  
+  DIHEdral C3    C2    C1    O1  
+  DIHEdral C2    C6    C7    C8  
+  DIHEdral C2    C6    C5    C4  
+  DIHEdral C1    C2    C6    C5  
+  DIHEdral O2    C1    O1    H1  
+  DIHEdral C7    C8    C4    C3  
+  DIHEdral C5    C4    C3    C2  
+  IMPRoper C1    C2    O2    O1  
+  IMPRoper C7    C8    C6    H9  
+  IMPRoper C8    H10   C4    C7  
+  IMPRoper C2    C1    C3    C6  
+  IMPRoper C4    C3    C5    C8  
+  IMPRoper C6    C5    C2    C7  
+end
+
+!----------------------------------------------------------------------
+residue NBM  ! C-cap ATB EHYZ molid 2061472
+! ATB: Initial Guess Topology Generation:
+! ATB: The topology was generated from a GFN2-xTB optimized geometry and MULLIKEN charges.
+  group
+    ATOM H9   TYPE=NM00 CHARge=0.028 MASS=1.0080 END  ! ATB type H9
+    ATOM C5   TYPE=NM01 CHARge=-0.047 MASS=12.0110 END  ! ATB type C51
+    ATOM C4   TYPE=NM02 CHARge=-0.020 MASS=12.0110 END  ! ATB type C4
+    ATOM H8   TYPE=NM03 CHARge=0.030 MASS=1.0080 END  ! ATB type H8
+    ATOM C3   TYPE=NM04 CHARge=-0.062 MASS=12.0110 END  ! ATB type C3
+    ATOM H6   TYPE=NM05 CHARge=0.039 MASS=1.0080 END  ! ATB type H6
+    ATOM H7   TYPE=NM06 CHARge=0.029 MASS=1.0080 END  ! ATB type H7
+    ATOM C2   TYPE=NM07 CHARge=-0.029 MASS=12.0110 END  ! ATB type C2
+    ATOM H5   TYPE=NM08 CHARge=0.048 MASS=1.0080 END  ! ATB type H5
+    ATOM C1   TYPE=NM09 CHARge=0.024 MASS=12.0110 END  ! ATB type C1
+    ATOM H3   TYPE=NM10 CHARge=0.031 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=NM11 CHARge=0.000 MASS=1.0080 END  ! ATB type H4
+    ATOM N1   TYPE=NM12 CHARge=-0.391 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=NM13 CHARge=0.161 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=NM14 CHARge=0.161 MASS=1.0080 END  ! ATB type H2
+    ATOM C7   TYPE=NM15 CHARge=-0.023 MASS=12.0110 END  ! ATB type C7
+    ATOM H11  TYPE=NM16 CHARge=0.029 MASS=1.0080 END  ! ATB type H111
+    ATOM C6   TYPE=NM17 CHARge=-0.045 MASS=12.0110 END  ! ATB type C6
+    ATOM H10  TYPE=NM18 CHARge=0.026 MASS=1.0080 END  ! ATB type H10
+    ATOM C8   TYPE=NM19 CHARge=-0.063 MASS=12.0110 END  ! ATB type C8
+    ATOM H12  TYPE=NM20 CHARge=0.035 MASS=1.0080 END  ! ATB type H121
+    ATOM H13  TYPE=NM21 CHARge=0.039 MASS=1.0080 END  ! ATB type H131
+
+  BOND H9    C5  
+  BOND C5    C4  
+  BOND C5    C6  
+  BOND C4    H8  
+  BOND C4    C3  
+  BOND C4    C8  
+  BOND C3    H6  
+  BOND C3    H7  
+  BOND C3    C2  
+  BOND C2    H5  
+  BOND C2    C1  
+  BOND C2    C7  
+  BOND C1    H3  
+  BOND C1    H4  
+  BOND C1    N1  
+  BOND N1    H1  
+  BOND N1    H2  
+  BOND C7    H11 
+  BOND C7    C6  
+  BOND C7    C8  
+  BOND C6    H10 
+  BOND C8    H12 
+  BOND C8    H13 
+  ANGLe H9    C5    C4  
+  ANGLe H9    C5    C6  
+  ANGLe C4    C5    C6  
+  ANGLe C5    C4    H8  
+  ANGLe C5    C4    C3  
+  ANGLe C5    C4    C8  
+  ANGLe H8    C4    C3  
+  ANGLe H8    C4    C8  
+  ANGLe C3    C4    C8  
+  ANGLe C4    C3    H6  
+  ANGLe C4    C3    H7  
+  ANGLe C4    C3    C2  
+  ANGLe H6    C3    H7  
+  ANGLe H6    C3    C2  
+  ANGLe H7    C3    C2  
+  ANGLe C3    C2    H5  
+  ANGLe C3    C2    C1  
+  ANGLe C3    C2    C7  
+  ANGLe H5    C2    C1  
+  ANGLe H5    C2    C7  
+  ANGLe C1    C2    C7  
+  ANGLe C2    C1    H3  
+  ANGLe C2    C1    H4  
+  ANGLe C2    C1    N1  
+  ANGLe H3    C1    H4  
+  ANGLe H3    C1    N1  
+  ANGLe H4    C1    N1  
+  ANGLe C1    N1    H1  
+  ANGLe C1    N1    H2  
+  ANGLe H1    N1    H2  
+  ANGLe C2    C7    H11 
+  ANGLe C2    C7    C6  
+  ANGLe C2    C7    C8  
+  ANGLe H11   C7    C6  
+  ANGLe H11   C7    C8  
+  ANGLe C6    C7    C8  
+  ANGLe C5    C6    C7  
+  ANGLe C5    C6    H10 
+  ANGLe C7    C6    H10 
+  ANGLe C4    C8    C7  
+  ANGLe C4    C8    H12 
+  ANGLe C4    C8    H13 
+  ANGLe C7    C8    H12 
+  ANGLe C7    C8    H13 
+  ANGLe H12   C8    H13 
+  DIHEdral C5    C4    C3    C2  
+  DIHEdral C4    C5    C6    C7  
+  DIHEdral C4    C3    C2    C1  
+  DIHEdral C3    C4    C8    C7  
+  DIHEdral C3    C2    C1    N1  
+  DIHEdral C2    C1    N1    H1  
+  DIHEdral C2    C7    C6    C5  
+  DIHEdral C2    C7    C8    C4  
+  DIHEdral C1    C2    C7    C6  
+  DIHEdral C6    C5    C4    C3  
+  IMPRoper C5    H9    C4    C6  
+  IMPRoper C6    C5    C7    H10 
+  IMPRoper C2    C1    C3    C7  
+end
+
+!----------------------------------------------------------------------
+residue FLA  ! N-cap ATB E6UC molid 140269
+  group
+    ATOM H10  TYPE=FL00 CHARge=0.151 MASS=1.0080 END  ! ATB type H10
+    ATOM C12  TYPE=FL01 CHARge=-0.158 MASS=12.0110 END  ! ATB type C121
+    ATOM C11  TYPE=FL02 CHARge=-0.196 MASS=12.0110 END  ! ATB type C111
+    ATOM H9   TYPE=FL03 CHARge=0.157 MASS=1.0080 END  ! ATB type H9
+    ATOM C10  TYPE=FL04 CHARge=0.024 MASS=12.0110 END  ! ATB type C101
+    ATOM C9   TYPE=FL05 CHARge=0.024 MASS=12.0110 END  ! ATB type C91
+    ATOM C4   TYPE=FL06 CHARge=0.062 MASS=12.0110 END  ! ATB type C4
+    ATOM C5   TYPE=FL07 CHARge=-0.245 MASS=12.0110 END  ! ATB type C51
+    ATOM H5   TYPE=FL08 CHARge=0.171 MASS=1.0080 END  ! ATB type H5
+    ATOM C6   TYPE=FL09 CHARge=-0.127 MASS=12.0110 END  ! ATB type C6
+    ATOM H6   TYPE=FL10 CHARge=0.145 MASS=1.0080 END  ! ATB type H6
+    ATOM C7   TYPE=FL11 CHARge=-0.158 MASS=12.0110 END  ! ATB type C7
+    ATOM H7   TYPE=FL12 CHARge=0.151 MASS=1.0080 END  ! ATB type H7
+    ATOM C8   TYPE=FL13 CHARge=-0.196 MASS=12.0110 END  ! ATB type C8
+    ATOM H8   TYPE=FL14 CHARge=0.157 MASS=1.0080 END  ! ATB type H8
+    ATOM C3   TYPE=FL15 CHARge=-0.092 MASS=12.0110 END  ! ATB type C3
+    ATOM H4   TYPE=FL16 CHARge=0.107 MASS=1.0080 END  ! ATB type H4
+    ATOM C15  TYPE=FL17 CHARge=0.062 MASS=12.0110 END  ! ATB type C15
+    ATOM C14  TYPE=FL18 CHARge=-0.245 MASS=12.0110 END  ! ATB type C14
+    ATOM H12  TYPE=FL19 CHARge=0.171 MASS=1.0080 END  ! ATB type H121
+    ATOM C13  TYPE=FL20 CHARge=-0.127 MASS=12.0110 END  ! ATB type C13
+    ATOM H11  TYPE=FL21 CHARge=0.145 MASS=1.0080 END  ! ATB type H111
+    ATOM C2   TYPE=FL22 CHARge=-0.152 MASS=12.0110 END  ! ATB type C2
+    ATOM H2   TYPE=FL23 CHARge=0.104 MASS=1.0080 END  ! ATB type H2
+    ATOM H3   TYPE=FL24 CHARge=0.104 MASS=1.0080 END  ! ATB type H3
+    ATOM C1   TYPE=FL25 CHARge=0.724 MASS=12.0110 END  ! ATB type C1
+    ATOM O2   TYPE=FL26 CHARge=-0.599 MASS=15.9994 END  ! ATB type O2
+    ATOM O1   TYPE=FL27 CHARge=-0.648 MASS=15.9994 END  ! ATB type O1
+    ATOM H1   TYPE=FL28 CHARge=0.484 MASS=1.0080 END  ! ATB type H1
+
+  BOND H10   C12 
+  BOND C12   C11 
+  BOND C12   C13 
+  BOND C11   H9  
+  BOND C11   C10 
+  BOND C10   C9  
+  BOND C10   C15 
+  BOND C9    C4  
+  BOND C9    C8  
+  BOND C4    C5  
+  BOND C4    C3  
+  BOND C5    H5  
+  BOND C5    C6  
+  BOND C6    H6  
+  BOND C6    C7  
+  BOND C7    H7  
+  BOND C7    C8  
+  BOND C8    H8  
+  BOND C3    H4  
+  BOND C3    C15 
+  BOND C3    C2  
+  BOND C15   C14 
+  BOND C14   H12 
+  BOND C14   C13 
+  BOND C13   H11 
+  BOND C2    H2  
+  BOND C2    H3  
+  BOND C2    C1  
+  BOND C1    O2  
+  BOND C1    O1  
+  BOND O1    H1  
+  ANGLe H10   C12   C11 
+  ANGLe H10   C12   C13 
+  ANGLe C11   C12   C13 
+  ANGLe C12   C11   H9  
+  ANGLe C12   C11   C10 
+  ANGLe H9    C11   C10 
+  ANGLe C11   C10   C9  
+  ANGLe C11   C10   C15 
+  ANGLe C9    C10   C15 
+  ANGLe C10   C9    C4  
+  ANGLe C10   C9    C8  
+  ANGLe C4    C9    C8  
+  ANGLe C9    C4    C5  
+  ANGLe C9    C4    C3  
+  ANGLe C5    C4    C3  
+  ANGLe C4    C5    H5  
+  ANGLe C4    C5    C6  
+  ANGLe H5    C5    C6  
+  ANGLe C5    C6    H6  
+  ANGLe C5    C6    C7  
+  ANGLe H6    C6    C7  
+  ANGLe C6    C7    H7  
+  ANGLe C6    C7    C8  
+  ANGLe H7    C7    C8  
+  ANGLe C9    C8    C7  
+  ANGLe C9    C8    H8  
+  ANGLe C7    C8    H8  
+  ANGLe C4    C3    H4  
+  ANGLe C4    C3    C15 
+  ANGLe C4    C3    C2  
+  ANGLe H4    C3    C15 
+  ANGLe H4    C3    C2  
+  ANGLe C15   C3    C2  
+  ANGLe C10   C15   C3  
+  ANGLe C10   C15   C14 
+  ANGLe C3    C15   C14 
+  ANGLe C15   C14   H12 
+  ANGLe C15   C14   C13 
+  ANGLe H12   C14   C13 
+  ANGLe C12   C13   C14 
+  ANGLe C12   C13   H11 
+  ANGLe C14   C13   H11 
+  ANGLe C3    C2    H2  
+  ANGLe C3    C2    H3  
+  ANGLe C3    C2    C1  
+  ANGLe H2    C2    H3  
+  ANGLe H2    C2    C1  
+  ANGLe H3    C2    C1  
+  ANGLe C2    C1    O2  
+  ANGLe C2    C1    O1  
+  ANGLe O2    C1    O1  
+  ANGLe C1    O1    H1  
+  DIHEdral C12   C11   C10   C15 
+  DIHEdral C11   C12   C13   C14 
+  DIHEdral C11   C10   C15   C14 
+  DIHEdral C10   C15   C14   C13 
+  DIHEdral C9    C4    C5    C6  
+  DIHEdral C9    C4    C3    C15 
+  DIHEdral C4    C9    C8    C7  
+  DIHEdral C4    C5    C6    C7  
+  DIHEdral C4    C3    C15   C10 
+  DIHEdral C4    C3    C2    C1  
+  DIHEdral C5    C6    C7    C8  
+  DIHEdral C6    C7    C8    C9  
+  DIHEdral C8    C9    C4    C5  
+  DIHEdral C3    C2    C1    O1  
+  DIHEdral C15   C10   C9    C4  
+  DIHEdral C15   C14   C13   C12 
+  DIHEdral C13   C12   C11   C10 
+  DIHEdral O2    C1    O1    H1  
+  IMPRoper C1    C2    O2    O1  
+  IMPRoper C4    C9    C5    C3  
+  IMPRoper C5    C4    H5    C6  
+  IMPRoper C6    C5    H6    C7  
+  IMPRoper C7    C6    H7    C8  
+  IMPRoper C8    C9    C7    H8  
+  IMPRoper C9    C10   C4    C8  
+  IMPRoper C10   C11   C9    C15 
+  IMPRoper C11   C12   H9    C10 
+  IMPRoper C12   H10   C11   C13 
+  IMPRoper C13   C12   C14   H11 
+  IMPRoper C14   C15   H12   C13 
+  IMPRoper C15   C10   C3    C14 
+  IMPRoper C3    C2    C4    C15 
+end
+
+!----------------------------------------------------------------------
+residue FLM  ! C-cap ATB OE4E molid 125645
+  group
+    ATOM H12  TYPE=FM00 CHARge=0.139 MASS=1.0080 END  ! ATB type H121
+    ATOM C12  TYPE=FM01 CHARge=-0.114 MASS=12.0110 END  ! ATB type C121
+    ATOM C11  TYPE=FM02 CHARge=-0.163 MASS=12.0110 END  ! ATB type C111
+    ATOM H11  TYPE=FM03 CHARge=0.148 MASS=1.0080 END  ! ATB type H111
+    ATOM C10  TYPE=FM04 CHARge=-0.191 MASS=12.0110 END  ! ATB type C101
+    ATOM H10  TYPE=FM05 CHARge=0.154 MASS=1.0080 END  ! ATB type H10
+    ATOM C9   TYPE=FM06 CHARge=0.028 MASS=12.0110 END  ! ATB type C91
+    ATOM C8   TYPE=FM07 CHARge=0.028 MASS=12.0110 END  ! ATB type C8
+    ATOM C3   TYPE=FM08 CHARge=0.058 MASS=12.0110 END  ! ATB type C3
+    ATOM C4   TYPE=FM09 CHARge=-0.253 MASS=12.0110 END  ! ATB type C4
+    ATOM H6   TYPE=FM10 CHARge=0.171 MASS=1.0080 END  ! ATB type H6
+    ATOM C5   TYPE=FM11 CHARge=-0.114 MASS=12.0110 END  ! ATB type C51
+    ATOM H7   TYPE=FM12 CHARge=0.139 MASS=1.0080 END  ! ATB type H7
+    ATOM C6   TYPE=FM13 CHARge=-0.163 MASS=12.0110 END  ! ATB type C6
+    ATOM H8   TYPE=FM14 CHARge=0.148 MASS=1.0080 END  ! ATB type H8
+    ATOM C7   TYPE=FM15 CHARge=-0.191 MASS=12.0110 END  ! ATB type C7
+    ATOM H9   TYPE=FM16 CHARge=0.154 MASS=1.0080 END  ! ATB type H9
+    ATOM C2   TYPE=FM17 CHARge=-0.193 MASS=12.0110 END  ! ATB type C2
+    ATOM H5   TYPE=FM18 CHARge=0.146 MASS=1.0080 END  ! ATB type H5
+    ATOM C14  TYPE=FM19 CHARge=0.058 MASS=12.0110 END  ! ATB type C14
+    ATOM C13  TYPE=FM20 CHARge=-0.253 MASS=12.0110 END  ! ATB type C13
+    ATOM H13  TYPE=FM21 CHARge=0.171 MASS=1.0080 END  ! ATB type H131
+    ATOM C1   TYPE=FM22 CHARge=0.357 MASS=12.0110 END  ! ATB type C1
+    ATOM H3   TYPE=FM23 CHARge=-0.004 MASS=1.0080 END  ! ATB type H3
+    ATOM H4   TYPE=FM24 CHARge=-0.004 MASS=1.0080 END  ! ATB type H4
+    ATOM N1   TYPE=FM25 CHARge=-1.022 MASS=14.0067 END  ! ATB type N1
+    ATOM H1   TYPE=FM26 CHARge=0.383 MASS=1.0080 END  ! ATB type H1
+    ATOM H2   TYPE=FM27 CHARge=0.383 MASS=1.0080 END  ! ATB type H2
+
+  BOND H12   C12 
+  BOND C12   C11 
+  BOND C12   C13 
+  BOND C11   H11 
+  BOND C11   C10 
+  BOND C10   H10 
+  BOND C10   C9  
+  BOND C9    C8  
+  BOND C9    C14 
+  BOND C8    C3  
+  BOND C8    C7  
+  BOND C3    C4  
+  BOND C3    C2  
+  BOND C4    H6  
+  BOND C4    C5  
+  BOND C5    H7  
+  BOND C5    C6  
+  BOND C6    H8  
+  BOND C6    C7  
+  BOND C7    H9  
+  BOND C2    H5  
+  BOND C2    C14 
+  BOND C2    C1  
+  BOND C14   C13 
+  BOND C13   H13 
+  BOND C1    H3  
+  BOND C1    H4  
+  BOND C1    N1  
+  BOND N1    H1  
+  BOND N1    H2  
+  ANGLe H12   C12   C11 
+  ANGLe H12   C12   C13 
+  ANGLe C11   C12   C13 
+  ANGLe C12   C11   H11 
+  ANGLe C12   C11   C10 
+  ANGLe H11   C11   C10 
+  ANGLe C11   C10   H10 
+  ANGLe C11   C10   C9  
+  ANGLe H10   C10   C9  
+  ANGLe C10   C9    C8  
+  ANGLe C10   C9    C14 
+  ANGLe C8    C9    C14 
+  ANGLe C9    C8    C3  
+  ANGLe C9    C8    C7  
+  ANGLe C3    C8    C7  
+  ANGLe C8    C3    C4  
+  ANGLe C8    C3    C2  
+  ANGLe C4    C3    C2  
+  ANGLe C3    C4    H6  
+  ANGLe C3    C4    C5  
+  ANGLe H6    C4    C5  
+  ANGLe C4    C5    H7  
+  ANGLe C4    C5    C6  
+  ANGLe H7    C5    C6  
+  ANGLe C5    C6    H8  
+  ANGLe C5    C6    C7  
+  ANGLe H8    C6    C7  
+  ANGLe C8    C7    C6  
+  ANGLe C8    C7    H9  
+  ANGLe C6    C7    H9  
+  ANGLe C3    C2    H5  
+  ANGLe C3    C2    C14 
+  ANGLe C3    C2    C1  
+  ANGLe H5    C2    C14 
+  ANGLe H5    C2    C1  
+  ANGLe C14   C2    C1  
+  ANGLe C9    C14   C2  
+  ANGLe C9    C14   C13 
+  ANGLe C2    C14   C13 
+  ANGLe C12   C13   C14 
+  ANGLe C12   C13   H13 
+  ANGLe C14   C13   H13 
+  ANGLe C2    C1    H3  
+  ANGLe C2    C1    H4  
+  ANGLe C2    C1    N1  
+  ANGLe H3    C1    H4  
+  ANGLe H3    C1    N1  
+  ANGLe H4    C1    N1  
+  ANGLe C1    N1    H1  
+  ANGLe C1    N1    H2  
+  ANGLe H1    N1    H2  
+  DIHEdral C12   C11   C10   C9  
+  DIHEdral C11   C12   C13   C14 
+  DIHEdral C11   C10   C9    C14 
+  DIHEdral C10   C9    C14   C13 
+  DIHEdral C9    C14   C13   C12 
+  DIHEdral C8    C3    C4    C5  
+  DIHEdral C8    C3    C2    C14 
+  DIHEdral C3    C8    C7    C6  
+  DIHEdral C3    C4    C5    C6  
+  DIHEdral C3    C2    C14   C9  
+  DIHEdral C3    C2    C1    N1  
+  DIHEdral C4    C5    C6    C7  
+  DIHEdral C5    C6    C7    C8  
+  DIHEdral C7    C8    C3    C4  
+  DIHEdral C2    C1    N1    H1  
+  DIHEdral C14   C9    C8    C3  
+  DIHEdral C13   C12   C11   C10 
+  IMPRoper C3    C8    C4    C2  
+  IMPRoper C4    C3    H6    C5  
+  IMPRoper C5    C4    H7    C6  
+  IMPRoper C6    C5    H8    C7  
+  IMPRoper C7    C8    C6    H9  
+  IMPRoper C8    C9    C3    C7  
+  IMPRoper C9    C10   C8    C14 
+  IMPRoper C10   C11   H10   C9  
+  IMPRoper C11   C12   H11   C10 
+  IMPRoper C12   H12   C11   C13 
+  IMPRoper C13   C12   C14   H13 
+  IMPRoper C14   C9    C2    C13 
+  IMPRoper C2    C3    C1    C14 
+end
 
 presidue NTER                      ! patch as "NTER - *" to any except PRO
   group

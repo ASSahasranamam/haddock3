@@ -25,7 +25,7 @@ This is a version that has been custom made for [Higginson Lab](https://www.mskc
 
 * This package is still a work in progress. *
 
-Fork-specific CNS toppar changes (POM / VHP / PPOM / PVHL): see [CHANGES_FORK.md](CHANGES_FORK.md).
+Fork-specific CNS toppar changes (POM / VHP / PPOM / PVHL and HyT tags ADA/ADM/ABX/AEA/…): see [CHANGES_FORK.md](CHANGES_FORK.md).
 
  
 ## Installation

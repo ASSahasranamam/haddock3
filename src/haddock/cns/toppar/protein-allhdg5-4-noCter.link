@@ -3278,5 +3278,35 @@ link PPOM head - GLY tail + POM end
 
 
 
+
+{ ATB residues from dump.txt. NOP is empty: do not apply NTER/CTER. }
+{ No peptide LINK: the dump has no amide-junction parameters. }
+first NOP tail + APX end  ! ATB 1WFO
+last NOP head - APX end  ! ATB 1WFO
+first NOP tail + ABX end  ! ATB C6MK
+last NOP head - ABX end  ! ATB C6MK
+first NOP tail + AVX end  ! ATB OWSW
+last NOP head - AVX end  ! ATB OWSW
+first NOP tail + ASX end  ! ATB S1CK
+last NOP head - ASX end  ! ATB S1CK
+first NOP tail + AOX end  ! ATB IJO3
+last NOP head - AOX end  ! ATB IJO3
+first NOP tail + AEA end
+last NOP head - AEA end
+first NOP tail + AEE end
+last NOP head - AEE end
+first NOP tail + ADA end
+last NOP head - ADA end
+first NOP tail + ADM end
+last NOP head - ADM end
+first NOP tail + NBA end
+last NOP head - NBA end
+first NOP tail + NBM end
+last NOP head - NBM end
+first NOP tail + FLA end
+last NOP head - FLA end
+first NOP tail + FLM end
+last NOP head - FLM end
+
 set message=$old_message echo=$old_echo end
 
