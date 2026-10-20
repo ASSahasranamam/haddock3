@@ -25,7 +25,6 @@ evaluate ($ini_count    =1)
 
 evaluate ($data.ncomponents=$ncomponents)
 
-
 ! non-bonded parameter set to use
 evaluate ($toppar.par_nonbonded = "OPLSX" )
 
@@ -90,6 +89,8 @@ else
     set message=off echo=off end
 end if
 
+! initialize random number generator
+set seed $seed end
 
 {* Change segid of CG model and read AA pdb, psf files =========== *}
 
@@ -147,7 +148,7 @@ evaluate ($nchain=0)
 while ($nchain < $data.ncomponents) loop nloop1
     evaluate ($nchain = $nchain + 1)
     if ($mol_shape_$nchain eq false) then
-        if ($exists_input_cgtbl_filename_$nchain eq false) then
+        if ($exist_input_cgtbl_filename_$nchain eq true) then
             noe @@$input_cgtbl_filename_$nchain end
         end if
     end if

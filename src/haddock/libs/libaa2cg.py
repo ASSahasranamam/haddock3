@@ -5,7 +5,7 @@ Reduces complexity of protein residue to the MARTINI coarse grained model:
 CA, O, Bead(s) in specific atom location.
 
 Reference:
-Monticelli et al. The MARTINI coarse-grained force field: extension to proteins. 
+Monticelli et al. The MARTINI coarse-grained force field: extension to proteins.
 J. Chem. Theory Comput. (2008) vol. 4 (5) pp. 819-834
 
 Martinize Script from Tserk Wassenaar
@@ -13,7 +13,7 @@ Martinize Script from Tserk Wassenaar
 Uses Biopython to parse the structure and DSSP output.
 Uses pieces of the martinize-1.1.py script to convert the SS types
 
-Outputs a coarse grained pdb file (*_ss.pdb) with assigned bfactors.
+Outputs a coarse grained pdb file (``*_ss.pdb``) with assigned bfactors.
 Outputs a tbl file to map the beads to the atoms they represent.
 
 Updates
@@ -37,6 +37,7 @@ import warnings
 from pathlib import Path
 from io import StringIO
 
+from Bio import BiopythonWarning
 from Bio.PDB import Entity, PDBIO, PDBParser
 from Bio.PDB.Structure import Structure
 from Bio.PDB.StructureBuilder import StructureBuilder
@@ -46,9 +47,20 @@ from haddock.core.exceptions import ModuleError
 from haddock.core.typing import Optional
 from haddock.libs.libontology import Format
 
-warnings.filterwarnings("ignore")
+# Silence only Biopython's own (noisy) PDB-parsing warnings. A blanket
+# ``warnings.filterwarnings("ignore")`` here would suppress *every* Python
+# warning process-wide (DeprecationWarning, numpy RuntimeWarning, ...) as a
+# side effect of importing this module, which is imported by common modules
+# such as `caprieval`.
+warnings.filterwarnings("ignore", category=BiopythonWarning)
 
 CRYST_LINE = "CRYST1 " + os.linesep
+
+# Fallback seed for the ``SCD*`` dummy beads, used by callers that have no
+# ``iniseed`` parameter of their own. Kept equal to the ``topocg`` default; the
+# test suite asserts that.
+DEFAULT_SEED = 917
+
 
 def norm(a):
     """
@@ -164,14 +176,16 @@ def ss_classification(ss, program="dssp"):
     # If the ss type is not in the patterns lists, do not substitute
     # (use empty lists for substitutions)
 
-    typ = [typesub(sep[i], patterns.get(i, []), pattypes.get(i, []))
-           for i in sstd.keys()]
+    typ = [
+        typesub(sep[i], patterns.get(i, []), pattypes.get(i, [])) for i in sstd.keys()
+    ]
     # Translate all types to numerical values
     typ = [[ord(j) for j in list(i)] for i in typ]
     # Sum characters back to get a full typed sequence
     typ = "".join([chr(sum(i)) for i in zip(*typ)])
     # Return both the actual as well as the fully typed sequence
     return ss, typ
+
 
 # ----+--------------------------------------+
 #   A | SECONDARY STRUCTURE TYPE DEFINITIONS |
@@ -182,7 +196,7 @@ ssdefs = {
     "dssp": list(".HGIBETSC~"),  # DSSP one letter secondary structure code     #@#
     "pymol": list(".H...S...L"),  # Pymol one letter secondary structure code    #@#
     "gmx": list(".H...ETS.C"),  # Gromacs secondary structure dump code        #@#
-    "self": list("FHHHEETSCC")  # Internal CG secondary structure codes        #@#
+    "self": list("FHHHEETSCC"),  # Internal CG secondary structure codes        #@#
 }
 cgss = list("FHHHEETSCC")  # Corresponding CG secondary structure types   #@#
 
@@ -193,17 +207,18 @@ pattypes = {
     "H": pat(".3. .33. .333. .3333. .13332. .113322. .1113222. .1111 2222.")  # @#
 }
 
-ss_to_code = {"C": 1,  # Free,
-              " ": 1,
-              "S": 2,
-              "H": 3,
-              "1": 4,
-              "2": 5,
-              "3": 6,
-              "E": 7,  # Extended
-              "T": 8,  # Turn
-              "F": 9  # Fibril
-              }
+ss_to_code = {
+    "C": 1,  # Free,
+    " ": 1,
+    "S": 2,
+    "H": 3,
+    "1": 4,
+    "2": 5,
+    "3": 6,
+    "E": 7,  # Extended
+    "T": 8,  # Turn
+    "F": 9,  # Fibril
+}
 
 ss_eq = list("CBHHHHBTF")
 
@@ -250,7 +265,7 @@ prot_atoms = {
     "VAL": [bb, "CB CG1 CG2"],
     "TRP": [bb, "CB CG CD2", "CD1 NE1 CE2", "CE3 CZ3", "CZ2 CH2"],
     "TYR": [bb, "CB CG CD1", "CD2 CE2", "CE1 CZ OH"],
-    }
+}
 
 bead_names = ["BB", "SC1", "SC2", "SC3", "SC4"]
 
@@ -357,50 +372,50 @@ pairing = {
     ("C", "G"): [("O2", "N2"), ("N3", "N1"), ("N4", "O6")],
     ("A", "U"): [("N6", "O4"), ("N1", "N3")],
     ("U", "A"): [("O4", "N6"), ("N3", "N1")],
-
 }
 
 polar = ["GLN", "ASN", "SER", "THR"]
 charged = ["ARG", "LYS", "ASP", "GLU"]
 
 
-def add_dummy(bead_list, dist=0.11, n=2):
-    """
+def add_dummy(bead_list, rng, dist, n):
+    """Place the ``SCD*`` dummy beads around the last bead of a residue.
+
+    The beads are laid out along a randomly oriented axis through the parent
+    bead: the first at ``+dist``, the second (if any) at ``-dist``, so that a
+    pair straddles the parent symmetrically. Only the *orientation* is random.
 
     Args:
-        bead_list:
-        dist:
-        n:
+        bead_list: ``(name, coordinates)`` pairs of the residue's real beads.
+            The dummy beads are attached to the last one.
+        rng: ``random.Random`` instance used to orient the dummy beads.
+        dist: Distance from the parent bead, in angstrom (see ``map_cg``).
+        n: Number of dummy beads, 1 or 2.
 
     Returns:
-
+        Mapping of bead name (``SCD1``, ``SCD2``) to its coordinates.
     """
-    new_bead_dic = {}
+    # Random direction, uniform on the unit sphere. Normalising a vector drawn
+    # from a cube would bias the direction towards the cube's corners; a
+    # Gaussian vector is isotropic, so normalising it is unbiased.
+    v = [rng.gauss(0.0, 1.0) for _ in range(3)]
+    scale = dist / norm(v)
+    vn = [i * scale for i in v]
 
-    # Generate a random vector in a sphere of -1 to +1, to add to the bead position
-    v = [random.random() * 2. - 1, random.random() * 2. - 1, random.random() * 2. - 1]
-
-    # Calculated the length of the vector and divide by the final distance of the dummy bead
-    norm_v = norm(v) / dist
-
-    # Resize the vector
-    vn = [i / norm_v for i in v]
-
-    # m sets the direction of the added vector, currently only works when adding one or two beads.
-    m = 1
-    for j in range(n):  # create two new beads
-        bead_s = str(j + 1)
-        new_name = f"SCD{bead_s}"  # set the name of the new bead
-        new_bead_dic[new_name] = [i + (m * j) for i, j in zip(bead_list[-1][1], vn)]
-        m *= -2
-    return new_bead_dic
+    parent_coord = bead_list[-1][1]
+    # The signs straddle the parent bead, and cap the layout at two beads.
+    return {
+        f"SCD{idx}": [coord + sign * offset for coord, offset in zip(parent_coord, vn)]
+        for idx, sign in enumerate((1, -1)[:n], start=1)
+    }
 
 
-def map_cg(chain):
+def map_cg(chain, rng):
     """
 
     Args:
         chain:
+        rng: ``random.Random`` instance used to orient the dummy beads.
 
     Returns:
 
@@ -423,10 +438,13 @@ def map_cg(chain):
             atoms = [aares[a] for a in atom_segment.split() if a in aares.child_dict]
 
             if atoms:
-                if "*" in atom_segment:  # this is important to correctly place CG DNA beads
-
+                if (
+                    "*" in atom_segment
+                ):  # this is important to correctly place CG DNA beads
                     # this * means it belongs to the previous residue... find it!
-                    target_previous_atom_list = [a for a in atom_segment.split() if "*" in a]
+                    target_previous_atom_list = [
+                        a for a in atom_segment.split() if "*" in a
+                    ]
 
                     for target_atom in target_previous_atom_list:
                         # does it exist?
@@ -443,8 +461,11 @@ def map_cg(chain):
                             pass
 
             if not atoms:
-                log.warning('Residue {} {:d} of chain {} cannot be processed: missing atoms {} '.
-                                 format(resn, resi, aares.parent.id, atom_segment))
+                log.warning(
+                    "Residue {} {:d} of chain {} cannot be processed: missing atoms {} ".format(
+                        resn, resi, aares.parent.id, atom_segment
+                    )
+                )
                 continue
 
             bead_name = cg_mapping[resn][atom_segment]
@@ -466,21 +487,32 @@ def map_cg(chain):
             atom_segment = " ".join(list(atom_segment.split())).replace("*", "")
 
             # restrain for backmapping
-            restrain = "assign (segid {}CG and resid {:d} and name {})"\
-                " (segid {} and resid {:d} and (name {})) 0 0 0".\
-                format(segid, resi, bead_name, segid, resi, " or name ".join(atom_segment.split()))
+            restrain = (
+                "assign (segid {}CG and resid {:d} and name {})"
+                " (segid {} and resid {:d} and (name {})) 0 0 0".format(
+                    segid,
+                    resi,
+                    bead_name,
+                    segid,
+                    resi,
+                    " or name ".join(atom_segment.split()),
+                )
+            )
 
             m_dic[aares][bead_name] = bead_coord, code, restrain
 
     # add dummy beads whenever its needed
+    # Distances are in angstrom, matching the SCd bond lengths of
+    # cns/toppar/protein-CG-Martini-2-2.param: a pair placed at +/-1.4 A is
+    # 2.8 A apart (BOND SCd SCd), and a lone bead sits at the 1.1 A
+    # parent-SCd bond length.
     for r in m_dic:
-
         if r.resname in polar:
-            d = 0.14  # distance
+            d = 1.4  # distance
             n = 2  # number of dummy beads to be placed
 
         elif r.resname in charged:
-            d = 0.11  # distance
+            d = 1.1  # distance
             n = 1  # number of dummy beads to be placed
 
         else:
@@ -489,7 +521,7 @@ def map_cg(chain):
         # add to data structure
         # this special beads have no HADDOCK code
         bead_list = [(b, m_dic[r][b][0]) for b in m_dic[r]]
-        dummy_bead_dic = add_dummy(bead_list, dist=d, n=n)
+        dummy_bead_dic = add_dummy(bead_list, rng, dist=d, n=n)
         for db in dummy_bead_dic:
             db_coords = dummy_bead_dic[db]
             # code should be the same as the residue
@@ -519,8 +551,10 @@ def center_of_mass(entity, geometric=False):
     elif hasattr(entity, "__iter__") and [x for x in entity if x.level == "A"]:
         atom_list = entity
     else:  # Some other weirdo object
-        raise ValueError("Center of Mass can only be calculated from the following objects:\n"
-                         "Structure, Model, Chain, Residue, list of Atoms.")
+        raise ValueError(
+            "Center of Mass can only be calculated from the following objects:\n"
+            "Structure, Model, Chain, Residue, list of Atoms."
+        )
 
     masses = []
     positions = [[], [], []]  # [ [X1, X2, ..] , [Y1, Y2, ...] , [Z1, Z2, ...] ]
@@ -533,9 +567,11 @@ def center_of_mass(entity, geometric=False):
 
     # If there is a single atom with undefined mass complain loudly.
     if "ukn" in set(masses) and not geometric:
-        raise ValueError(f"Some Atoms don't have an element assigned.{os.linesep}"
-                         "Try adding them manually or calculate the geometrical "
-                         "center of mass instead.")
+        raise ValueError(
+            f"Some Atoms don't have an element assigned.{os.linesep}"
+            "Try adding them manually or calculate the geometrical "
+            "center of mass instead."
+        )
 
     if geometric:
         return [sum(coord_list) / len(masses) for coord_list in positions]
@@ -559,20 +595,40 @@ def determine_hbonds(structure: Structure):
 
     """
     nuc = ["DA", "DC", "DG", "DT", "A", "C", "G", "U"]
-    aa = ["ALA", "CYS", "ASP", "GLU", "PHE",
-          "GLY", "HIS", "ILE", "LYS", "LEU",
-          "MET", "ASN", "PRO", "GLN", "ARG",
-          "SER", "THR", "VAL", "TRP", "TYR"]
+    aa = [
+        "ALA",
+        "CYS",
+        "ASP",
+        "GLU",
+        "PHE",
+        "GLY",
+        "HIS",
+        "ILE",
+        "LYS",
+        "LEU",
+        "MET",
+        "ASN",
+        "PRO",
+        "GLN",
+        "ARG",
+        "SER",
+        "THR",
+        "VAL",
+        "TRP",
+        "TYR",
+    ]
 
     pair_list = []
     for model in structure:
-
         dna_chain_l = []
 
         for chain in model:
-
-            prot_comp = len([r for r in chain.get_residues() if r.resname.split()[0] in aa])
-            dna_comp = len([r for r in chain.get_residues() if r.resname.split()[0] in nuc])
+            prot_comp = len(
+                [r for r in chain.get_residues() if r.resname.split()[0] in aa]
+            )
+            dna_comp = len(
+                [r for r in chain.get_residues() if r.resname.split()[0] in nuc]
+            )
 
             if prot_comp:
                 # protein
@@ -583,7 +639,7 @@ def determine_hbonds(structure: Structure):
                 dna_chain_l.append(chain)
 
         if len(dna_chain_l) == 1:
-            log.warning('Only one DNA/RNA chain detected, is this correct?')
+            log.warning("Only one DNA/RNA chain detected, is this correct?")
 
             chain_a = dna_chain_l[0]
             reslist_a = [r for r in chain_a.get_residues()]
@@ -593,7 +649,9 @@ def determine_hbonds(structure: Structure):
                 if pair:
                     pair_list.append(pair)
 
-        if len(dna_chain_l) > 1:  # list sizes could be different, this might be improbable
+        if (
+            len(dna_chain_l) > 1
+        ):  # list sizes could be different, this might be improbable
             for chain_a, chain_b in itertools.combinations(dna_chain_l, 2):
                 reslist_a = [r for r in chain_a.get_residues()]
                 reslist_b = [r for r in chain_b.get_residues()]
@@ -630,7 +688,6 @@ def identify_pairing(ra, rb):
     distance_l = []
 
     for atom_list in atom_pair_list:
-
         try:
             a = ra[atom_list[0]]
             b = rb[atom_list[1]]
@@ -664,7 +721,9 @@ def identify_pairing(ra, rb):
         resnum_a = ra.id[1]
         resnum_b = rb.id[1]
 
-        if all(e < basedist_cutoff for e in distance_l):  # if ALL bonds are within range
+        if all(
+            e < basedist_cutoff for e in distance_l
+        ):  # if ALL bonds are within range
             # KEEP IN MIND THAT this will not account for badly paired DNA
             # Implement a way to search for the closest possible pair? ##
             segid_a = ra.get_segid().split()[0]
@@ -680,62 +739,6 @@ def identify_pairing(ra, rb):
     return pair
 
 
-def output_cg_restraints(pair_list):
-    """
-
-    Args:
-        pair_list:
-
-    Returns:
-
-    """
-    out = open("dna_restraints.def", "w")
-    for i, e in enumerate(pair_list):
-        idx = i + 1
-        res_a = e[0][0]
-        segid_a = e[0][1]
-        res_b = e[1][0]
-        segid_b = e[1][1]
-        out.write(f"{{===>}} base_a_{idx}=(resid {res_a} and segid {segid_a});\n"
-                  f"{{===>}} base_b_{idx}=(resid {res_b} and segid {segid_b});\n\n")
-    out.close()
-
-
-def extract_groups(pair_list):
-    """
-
-    Args:
-        pair_list:
-
-    Returns:
-
-    """
-    # this will be used to define AA restraints
-    out = open("dna-aa_groups.dat", "w")
-    # extract groups
-    group_a = [a[0][0] for a in pair_list]
-    segid_a = list(set([a[0][1] for a in pair_list]))
-
-    group_b = [a[1][0] for a in pair_list]
-    segid_b = list(set([a[0][1] for a in pair_list]))
-
-    if len(segid_a) != 1:
-        emsg = "Something is wrong with SEGID A"
-        raise ModuleError(emsg)
-
-    if len(segid_b) != 1:
-        emsg = "Something is wrong with SEGID B"
-        raise ModuleError(emsg)
-
-    segid_a = segid_a[0]
-    segid_b = segid_b[0]
-
-    group_a.sort()
-    group_b.sort()
-    out.write(f"{group_a[0]}:{group_a[-1]}\n{segid_a}\n{group_b[0]}:{group_b[-1]}\n{segid_b}")
-    out.close()
-
-
 def create_file_with_cryst(pdb_file: str) -> None:
     """
     This function creates a new pdb because the CRYST line is missing from the pdf file.
@@ -749,8 +752,10 @@ def create_file_with_cryst(pdb_file: str) -> None:
         pdb_file_copy: str
 
     """
-    with open(pdb_file, "r") as file_in,\
-    tempfile.NamedTemporaryFile(mode = "w", delete=False) as file_out:
+    with (
+        open(pdb_file, "r") as file_in,
+        tempfile.NamedTemporaryFile(mode="w", delete=False) as file_out,
+    ):
         content = file_in.read()
         file_out.write(CRYST_LINE + content)
 
@@ -771,23 +776,26 @@ def determine_ss(structure: Structure, skipss: bool, pdbf_path: str) -> Structur
     """
     # calculate SS
     for model in structure:
-
         if skipss:
             continue
         try:
             tmp_file_name = create_file_with_cryst(pdbf_path)
-            p = subprocess.Popen(["dssp", tmp_file_name, "--output-format", "dssp"],
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE,
-                                 text=True)
+            p = subprocess.Popen(
+                ["dssp", tmp_file_name, "--output-format", "dssp"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
             dssp_raw, _ = p.communicate()
-            dssp_raw = dssp_raw.split('#')[1].split('\n')[1:-1]
-        except:  # TODO: think about making this exception more specific
+            dssp_raw = dssp_raw.split("#")[1].split("\n")[1:-1]
+        except Exception:
+            # dssp missing/failed or its output could not be parsed:
             # no secondary structure detected for this model
-            log.warning('SS could not be assigned, assigning code 1 to all residues')
+            log.warning("SS could not be assigned, assigning code 1 to all residues")
             continue
         finally:
-            if Path(tmp_file_name).exists(): Path(tmp_file_name).unlink()
+            if Path(tmp_file_name).exists():
+                Path(tmp_file_name).unlink()
 
         dssp = {}
 
@@ -800,11 +808,15 @@ def determine_ss(structure: Structure, skipss: bool, pdbf_path: str) -> Structur
         # this could still be improved
         for chain in model:
             dssp_ss = "".join(dssp[chain.id])
-            _, martini_types = ss_classification(dssp_ss)  # ancestral function, keep it there
+            _, martini_types = ss_classification(
+                dssp_ss
+            )  # ancestral function, keep it there
 
             # transform MARTINI > HADDOCK
             # and add it to the bfactor col
-            for residue, ss in zip(chain, martini_types): # chain and martini_types order must match
+            for residue, ss in zip(
+                chain, martini_types
+            ):  # chain and martini_types order must match
                 code = ss_to_code[ss]
                 # for atom in residue.get_atoms():
                 for atom in residue:
@@ -826,14 +838,30 @@ def rename_nucbases(structure: Structure) -> None:
         for c in m
     }
 
-    nucleotide_list = ["CYT", "C", "DC", "THY", "T", "DT", "ADE",
-                       "A", "DA", "G", "GUA", "DG", "U", "URI"]
+    nucleotide_list = [
+        "CYT",
+        "C",
+        "DC",
+        "THY",
+        "T",
+        "DT",
+        "ADE",
+        "A",
+        "DA",
+        "G",
+        "GUA",
+        "DG",
+        "U",
+        "URI",
+    ]
     rna_resname_mapper = {"CYT": "C", "URI": "U", "ADE": "A", "GUA": "G"}
     dna_rename_mapper = {"CYT": "DC", "THY": "DT", "ADE": "DA", "GUA": "DG"}
 
     if [True for c in chainresdic for e in chainresdic[c] if e in nucleotide_list]:
         # Check if this is an RNA
-        is_rna = [True for c in chainresdic for e in chainresdic[c] if e in ["U", "URI"]]
+        is_rna = [
+            True for c in chainresdic for e in chainresdic[c] if e in ["U", "URI"]
+        ]
         ref_dic = rna_resname_mapper if is_rna else dna_rename_mapper
         # Loop over models
         for model in structure:
@@ -845,27 +873,30 @@ def rename_nucbases(structure: Structure) -> None:
 
 
 def martinize(
-        input_pdb: str,
-        output_path: str,
-        skipss: bool,
-    ) -> tuple[str, bool]:
+    input_pdb: str,
+    output_path: str,
+    skipss: bool,
+    seed: int = DEFAULT_SEED,
+) -> tuple[str, bool]:
     """
     Converts an all-atom (AA) PDB structure into a coarse-grained (CG) model
     using a MARTINI2.2 mapping and generating CG-to-AA restraints for backmapping.
     Optionally uses secondary structure for mapping.
-    
+
     Args:
         input_pdb (str):
             Path to the input AA PDB file.
         output_path (str):
             Directory where the output files will be written.
-                - A CG PDB file (*_cg.pdb)
-                - A restraint table (*_cg_to_aa.tbl)
+                - A CG PDB file (``*_cg.pdb``)
+                - A restraint table (``*_cg_to_aa.tbl``)
         skipss (bool):
             If True, skips secondary structure assignment (DSSP step).
             If False, assigns secondary structure and encodes it
             into HADDOCK-compatible B-factors.
-    
+        seed (int):
+            Pseudo-random seed used to orient the ``SCD*`` dummy beads.
+
     Returns:
         tuple[str, bool]:
             cg_pdb_name: Path to the generated CG PDB file.
@@ -876,6 +907,11 @@ def martinize(
     if not input_pdb:
         emsg = "No input file detected"
         raise ModuleError(emsg)
+
+    # Dedicated generator, built fresh per call: never touch the global
+    # `random` state, which would make the result depend on whatever else ran
+    # first in this interpreter.
+    rng = random.Random(seed)
 
     p = PDBParser()
     io = PDBIO()
@@ -902,10 +938,12 @@ def martinize(
     # WARNING, THIS ASSUMES THAT INPUT DNA/RNA IS 3-LETTER CODE
     rename_nucbases(aa_model)
 
-    # Assign HADDOCK code for hydrogen bonding capable nucleotides (0-1)
-    pair_list = determine_hbonds(aa_model)
-    if pair_list:
-        output_cg_restraints(pair_list)
+    # Assign HADDOCK code for hydrogen bonding capable nucleotides (0-1).
+    # The returned pair list is not used here: base-pair restraints for CG
+    # models are derived in CNS by `dna-rna_restraints.cns`. What matters is
+    # the side effect, marking the paired bases with bfactor 1 so that
+    # `patch-types-cg-hbond-dna-rna.cns` can patch their bead types.
+    determine_hbonds(aa_model)
 
     # Map CG beads to AA structure
     structure_builder = StructureBuilder()
@@ -915,38 +953,31 @@ def martinize(
     tbl_cg_to_aa = []
     restrain_counter = 0
     for model in aa_model:
-
         structure_builder.init_model(model.id)
 
         for chain in model:
-
             structure_builder.init_chain(chain.id)
             structure_builder.init_seg(chain.id)
 
-            mapping_dic = map_cg(chain)
+            mapping_dic = map_cg(chain, rng)
 
             for residue in mapping_dic:
                 if residue.id[0] != " ":  # filter HETATMS
                     continue
 
-                structure_builder.init_residue(residue.resname, residue.id[0],
-                                               residue.id[1], residue.id[2])
+                structure_builder.init_residue(
+                    residue.resname, residue.id[0], residue.id[1], residue.id[2]
+                )
 
                 for i, bead in enumerate(mapping_dic[residue]):
-
                     bead_name = bead
                     bead_coord = mapping_dic[residue][bead_name][0]
                     haddock_code = mapping_dic[residue][bead_name][1]
                     restrain = mapping_dic[residue][bead_name][2]
 
                     structure_builder.init_atom(
-                        bead_name,
-                        bead_coord,
-                        haddock_code,
-                        1.00,
-                        " ",
-                        bead_name,
-                        i)
+                        bead_name, bead_coord, haddock_code, 1.00, " ", bead_name, i
+                    )
 
                     tbl_cg_to_aa.append(restrain)
                     restrain_counter += 1
@@ -985,11 +1016,11 @@ def martinize(
 
 
 def gen_cg_filename(
-        output_dir: str,
-        input_fname: str,
-        force_field: Optional[str] = None,
-        ext: Optional[str] = None,
-        ) -> str:
+    output_dir: str,
+    input_fname: str,
+    force_field: Optional[str] = None,
+    ext: Optional[str] = None,
+) -> str:
     """Helper function to standarize CG filename from input file.
 
     Parameters
@@ -1013,10 +1044,7 @@ def gen_cg_filename(
     # Set file extension
     file_ext = ext if ext else Format.PDB
     # Generate filepath
-    cg_fpath = Path(
-        output_dir,
-        f"{Path(input_fname).stem}_cg{ff_suffix}.{file_ext}"
-        )
+    cg_fpath = Path(output_dir, f"{Path(input_fname).stem}_cg{ff_suffix}.{file_ext}")
     cg_fname = str(cg_fpath)
     return cg_fname
 

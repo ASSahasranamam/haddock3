@@ -97,13 +97,6 @@ define(
 
 {========================= generate parameters =============================}
 
-{* hydrogen flag - determines whether hydrogens will be output *}
-{* must be true for NMR, atomic resolution X-ray crystallography 
-   or modelling.  Set to false for most X-ray crystallographic 
-   applications at resolution > 1A *}
-{+ choice: true false +}
-{===>} hydrogen_flag=true;
-
 {* selection of atoms other than hydrogens for which coordinates
    will be generated *}
 {* to generate coordinates for all unknown atoms use: (not(known)) *}
@@ -348,7 +341,7 @@ end if
 inline @MODULE:bondglycans.cns
 
 if ($delenph = true) then
-    delete sele=(name H* and attr charge = 0) end
+    delete sele=(name H* and attr charge = 0 and not name HA) end
 end if
 
 set seed=$iniseed end
@@ -420,6 +413,17 @@ $seg1.$counter[a4] $res1.$counter[a4] to $seg2.$counter[a4] $res2.$counter[a4]
     end
     evaluate ($counter=$counter+1)
 end loop disu
+
+
+! check first for covalently-linked Acetylated Nter to CYS
+! if detected cyclicpept will be set to false to avoid
+! potentially adding an additional cyclic peptide bond
+
+if ($cyclicpept eq TRUE ) then
+
+    inline @MODULE:coval-ace-cys.cns
+
+end if
 
 
 ! check for cyclid peptidic bonds
@@ -505,10 +509,6 @@ $seg1.$counter[a4] $res1.$counter[a4] and $seg2.$counter[a4] $res2.$counter[a4]
         end
         evaluate ($counter=$counter+1)
     end loop cypep
-
-    ! check for covalently-linked Acetylated Nter to CYS
-
-    inline @MODULE:coval-ace-cys.cns
 
 end if ! check for cyclic peptide
 
@@ -658,10 +658,6 @@ for $id in id ( &atom_select and name ca and resn PRO) loop cisp
     end if
 
 end loop cisp
-
-if (&hydrogen_flag=false) then
-    delete selection=( hydrogen ) end
-end if
 
 delete selection=( &atom_delete ) end
 

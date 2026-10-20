@@ -1,20 +1,21 @@
 haddock3-logo
 
-[DOI](https://doi.org/10.5281/zenodo.16914680)
-[Research Software Directory](https://research-software-directory.org/software/haddock3)
-[fair-software.eu](https://fair-software.eu)
-[OpenSSF Best Practices](https://www.bestpractices.dev/projects/8844)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20028293.svg)](https://doi.org/10.5281/zenodo.20028293)
+[![Research Software Directory](https://img.shields.io/badge/rsd-haddock3-00a3e3.svg)](https://research-software-directory.org/software/haddock3)
+[![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F-green)](https://fair-software.eu)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8844/badge)](https://www.bestpractices.dev/projects/8844)
 
 [Downloads](https://pepy.tech/project/haddock3)
 PyPI - Version
 PyPI - Python Version
 [SBGrid Badge](https://sbgrid.org/software/titles/haddock3)
 
-[ci](https://github.com/haddocking/haddock3/actions/workflows/ci.yml)
-[pages](https://github.com/haddocking/haddock3/actions/workflows/pages.yml)
-[CodeQL](https://github.com/haddocking/haddock3/actions/workflows/github-code-scanning/codeql)
-[Codacy Badge](https://app.codacy.com/gh/haddocking/haddock3/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[Codacy Badge](https://app.codacy.com/gh/haddocking/haddock3/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+[![ci](https://github.com/haddocking/haddock3/actions/workflows/ci.yml/badge.svg)](https://github.com/haddocking/haddock3/actions/workflows/ci.yml)
+[![pages](https://github.com/haddocking/haddock3/actions/workflows/pages.yml/badge.svg)](https://github.com/haddocking/haddock3/actions/workflows/pages.yml)
+[![CodeQL](https://github.com/haddocking/haddock3/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/haddocking/haddock3/actions/workflows/github-code-scanning/codeql)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e11e7f45400f4e8589cdf5941f95233a)](https://app.codacy.com/gh/haddocking/haddock3/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/e11e7f45400f4e8589cdf5941f95233a)](https://app.codacy.com/gh/haddocking/haddock3/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+![AI Declaration Format](https://img.shields.io/badge/AI_Declaration_Format-validated-blue)
 
 ## Introduction
 
@@ -30,16 +31,16 @@ Fork-specific CNS toppar changes (POM / VHP / PPOM / PVHL and HyT tags ADA/ADM/A
  
 ## Installation
 
-Simple installation of the [latest release](https://pypi.org/project/haddock3/) of HADDOCK3 (requires Python 3.9+):
+Simple installation of the [latest release](https://pypi.org/project/haddock3/) of HADDOCK3 (requires Python 3.10+):
 
 ```bash
 pip install haddock3
 ```
 
-For Python environment setup and installation instructions, see [docs/PYTHON.md](docs/PYTHON.md).
+For Python environment setup and installation instructions, see [docs/pages/PYTHON.md](docs/pages/PYTHON.md).
 
 For development installation or to install the latest unreleased version
-please refer to [docs/DEVELOPMENT.md](/docs/DEVELOPMENT.md)
+please refer to [docs/pages/DEVELOPMENT.md](/docs/pages/DEVELOPMENT.md)
 
 ## Usage
 
@@ -72,7 +73,7 @@ If you clone this repository and use `haddock3` for your research, please suppor
 
 ## Development
 
-For development setup and guidelines, see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+For development setup and guidelines, see [docs/pages/DEVELOPMENT.md](docs/pages/DEVELOPMENT.md).
 
 ## Contributing
 

@@ -9,8 +9,8 @@ contributing effectively.
 
 ### 1. Prerequisites
 
-- Install HADDOCK3 following [INSTALL.md](docs/INSTALL.md)
-- Python 3.9+ development environment
+- Install HADDOCK3 following [INSTALL.md](https://github.com/haddocking/haddock3/blob/main/docs/pages/INSTALL.md)
+- Python 3.10+ development environment
 - Familiarity with Git and GitHub workflows
 
 ### 2. Development Process
@@ -36,11 +36,15 @@ src/haddock/
 
 ### Coding Standards
 
-- **Python Version**: Minimum 3.9 compatibility
+- **Python Version**: Minimum 3.10 compatibility
 - **Function Design**: Small, testable functions preferred over complex classes
 - **Naming**: Use descriptive variable names
 - **Comments**: Explain *why* not *how*
+- **Reuse**: Existing code being functional doesn't mean it's the best
+  implementation. If you ctrl-c ctrl-v code from elsewhere in the codebase evaluate it on its own merits and improve it if you can.
 - **Documentation**: Update docstrings and markdown files
+- **Formatting**: Code is formatted with [ruff](https://docs.astral.sh/ruff/)
+  (`ruff format`); CI checks formatting of changed files on every pull request
 
 ### Testing Requirements
 
@@ -61,24 +65,13 @@ HADDOCK3 maintains minimal dependencies:
 
 ## Documentation Contributions
 
-HADDOCK3 documentation uses Sphinx with Markdown and reStructuredText:
+- Update docstrings for any function, class, or module you add or change.
+- Update the relevant pages under `docs/pages/` for user-facing changes.
+- New modules need a title to be added manually in `docs/titles.yaml`.
+- Confirm `docs/` still builds without introducing new warnings before submitting.
 
-### Local Documentation Build
-
-```bash
-# Install documentation dependencies
-pip install -e '.[docs]'
-
-# Build documentation
-sphinx-apidoc -f -e -o docs/ src/haddock -d 1
-sphinx-build -b html docs haddock3-docs
-```
-
-### Documentation Structure
-
-- Source files in `docs/` directory
-- Follow existing organization and formatting
-- Update both code docstrings and markdown files
+See [docs/README.md](https://github.com/haddocking/haddock3/blob/main/docs/README.md)
+for how to build the docs locally and how docstrings should be formatted.
 
 ## Pull Request Requirements
 
@@ -87,6 +80,23 @@ sphinx-build -b html docs haddock3-docs
 3. **CHANGELOG**: Add entry for significant changes
 4. **Version**: Update `pyproject.toml` if applicable
 5. **Code Review**: Address all feedback
+
+## Create a new release
+
+Here are the guidelines to create a new release:
+
+1. On the `haddock3` repository:
+ - Update the release version in the `pyproject.toml` file: `version = "YYYY.M.0"` (e.g.: version = "2026.8.0")
+ - Create a pull request and merge it
+ - Create a new release from [https://github.com/haddocking/haddock3/releases](https://github.com/haddocking/haddock3/releases)
+ - The new version will automatically be published on PyPI thanks to the `.github/workflows/publish.yml`
+2. On the `haddock3-user-manual` repository:
+ - Create a new [release/tag](https://github.com/haddocking/haddock3-user-manual/releases) with the same version name, so both are matching 
+
+## Use of AI tools
+
+See [AI-POLICY.md](https://github.com/haddocking/haddock3/blob/main/AI-POLICY.md) for guidance on how AI coding assistants
+may and may not be used when contributing.
 
 ## Support and Communication
 
