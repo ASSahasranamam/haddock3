@@ -2771,8 +2771,6 @@ first PROP tail + PRO end
 first PROP tail + HYP end
 first PROP tail + HY3 end
 
-first ACET tail + ACE end
-
 first NTER tail + ALA end
 first NTER tail + CYS end
 first NTER tail + CFE end
@@ -3278,35 +3276,201 @@ link PPOM head - GLY tail + POM end
 
 
 
+{ ADA/ADM amide like PPOM/PVHL }
+link PADM head - ACE tail + ADM end
+link PADM head - ACE tail + NBM end
+link PADM head - ALA tail + ADM end
+link PADM head - ALA tail + NBM end
+link PADM head - CYS tail + ADM end
+link PADM head - CYS tail + NBM end
+link PADM head - CFE tail + ADM end
+link PADM head - CFE tail + NBM end
+link PADM head - CYM tail + ADM end
+link PADM head - CYM tail + NBM end
+link PADM head - CYF tail + ADM end
+link PADM head - CYF tail + NBM end
+link PADM head - CYC tail + ADM end
+link PADM head - CYC tail + NBM end
+link PADM head - CSP tail + ADM end
+link PADM head - CSP tail + NBM end
+link PADM head - ASP tail + ADM end
+link PADM head - ASP tail + NBM end
+link PADM head - ASH tail + ADM end
+link PADM head - ASH tail + NBM end
+link PADM head - GLU tail + ADM end
+link PADM head - GLU tail + NBM end
+link PADM head - GLH tail + ADM end
+link PADM head - GLH tail + NBM end
+link PADM head - PHE tail + ADM end
+link PADM head - PHE tail + NBM end
+link PADM head - HIS tail + ADM end
+link PADM head - HIS tail + NBM end
+link PADM head - NEP tail + ADM end
+link PADM head - NEP tail + NBM end
+link PADM head - ILE tail + ADM end
+link PADM head - ILE tail + NBM end
+link PADM head - LYS tail + ADM end
+link PADM head - LYS tail + NBM end
+link PADM head - ALY tail + ADM end
+link PADM head - ALY tail + NBM end
+link PADM head - HLY tail + ADM end
+link PADM head - HLY tail + NBM end
+link PADM head - MLY tail + ADM end
+link PADM head - MLY tail + NBM end
+link PADM head - MLZ tail + ADM end
+link PADM head - MLZ tail + NBM end
+link PADM head - M3L tail + ADM end
+link PADM head - M3L tail + NBM end
+link PADM head - LEU tail + ADM end
+link PADM head - LEU tail + NBM end
+link PADM head - MET tail + ADM end
+link PADM head - MET tail + NBM end
+link PADM head - MSE tail + ADM end
+link PADM head - MSE tail + NBM end
+link PADM head - ASN tail + ADM end
+link PADM head - ASN tail + NBM end
+link PADM head - PRO tail + ADM end
+link PADM head - PRO tail + NBM end
+link PADM head - GLN tail + ADM end
+link PADM head - GLN tail + NBM end
+link PADM head - ARG tail + ADM end
+link PADM head - ARG tail + NBM end
+link PADM head - SER tail + ADM end
+link PADM head - SER tail + NBM end
+link PADM head - SEC tail + ADM end
+link PADM head - SEC tail + NBM end
+link PADM head - SEP tail + ADM end
+link PADM head - SEP tail + NBM end
+link PADM head - THR tail + ADM end
+link PADM head - THR tail + NBM end
+link PADM head - THP tail + ADM end
+link PADM head - TOP tail + ADM end
+link PADM head - TOP tail + NBM end
+link PADM head - VAL tail + ADM end
+link PADM head - VAL tail + NBM end
+link PADM head - TRP tail + ADM end
+link PADM head - TRP tail + NBM end
+link PADM head - TYR tail + ADM end
+link PADM head - TYR tail + NBM end
+link PADM head - TYP tail + ADM end
+link PADM head - TYP tail + NBM end
+link PADM head - PTR tail + ADM end
+link PADM head - PTR tail + NBM end
+link PADM head - TYS tail + ADM end
+link PADM head - TYS tail + NBM end
+link PADM head - HYP tail + ADM end
+link PADM head - HYP tail + NBM end
+link PADM head - HY3 tail + ADM end
+link PADM head - HY3 tail + NBM end
+link PADM head - DDZ tail + ADM end
+link PADM head - DDZ tail + NBM end
+link PADM head - PNS tail + ADM end
+link PADM head - PNS tail + NBM end
+link PADM head - QSR tail + ADM end
+link PADM head - CIR tail + ADM end
+link PADM head - CIR tail + NBM end
+link PADM head - IVA tail + ADM end
+link PADM head - IVA tail + NBM end
+link PADM head - ADI tail + ADM end
+link PADM head - ADI tail + NBM end
+link PADM head - AZH tail + ADM end
+link PADM head - AHX tail + ADM end
+link PADM head - AHX tail + NBM end
+link PADM head - GLY tail + ADM end
+link PADM head - GLY tail + NBM end
 
-{ ATB residues from dump.txt. NOP is empty: do not apply NTER/CTER. }
-{ No peptide LINK: the dump has no amide-junction parameters. }
-first NOP tail + APX end  ! ATB 1WFO
-last NOP head - APX end  ! ATB 1WFO
-first NOP tail + ABX end  ! ATB C6MK
-last NOP head - ABX end  ! ATB C6MK
-first NOP tail + AVX end  ! ATB OWSW
-last NOP head - AVX end  ! ATB OWSW
-first NOP tail + ASX end  ! ATB S1CK
-last NOP head - ASX end  ! ATB S1CK
-first NOP tail + AOX end  ! ATB IJO3
-last NOP head - AOX end  ! ATB IJO3
-first NOP tail + AEA end
-last NOP head - AEA end
-first NOP tail + AEE end
-last NOP head - AEE end
-first NOP tail + ADA end
-last NOP head - ADA end
-first NOP tail + ADM end
-last NOP head - ADM end
-first NOP tail + NBA end
-last NOP head - NBA end
-first NOP tail + NBM end
-last NOP head - NBM end
-first NOP tail + FLA end
-last NOP head - FLA end
-first NOP tail + FLM end
-last NOP head - FLM end
-
+link PADA head - ADA tail + ALA end
+link PADA head - NBA tail + ALA end
+link PADA head - ADA tail + CYS end
+link PADA head - NBA tail + CYS end
+link PADA head - ADA tail + CFE end
+link PADA head - NBA tail + CFE end
+link PADA head - ADA tail + CYM end
+link PADA head - NBA tail + CYM end
+link PADA head - ADA tail + CYF end
+link PADA head - NBA tail + CYF end
+link PADA head - ADA tail + CYC end
+link PADA head - NBA tail + CYC end
+link PADA head - ADA tail + CSP end
+link PADA head - NBA tail + CSP end
+link PADA head - ADA tail + ASP end
+link PADA head - NBA tail + ASP end
+link PADA head - ADA tail + ASH end
+link PADA head - NBA tail + ASH end
+link PADA head - ADA tail + GLU end
+link PADA head - NBA tail + GLU end
+link PADA head - ADA tail + GLH end
+link PADA head - NBA tail + GLH end
+link PADA head - ADA tail + PHE end
+link PADA head - NBA tail + PHE end
+link PADA head - ADA tail + HIS end
+link PADA head - NBA tail + HIS end
+link PADA head - ADA tail + NEP end
+link PADA head - NBA tail + NEP end
+link PADA head - ADA tail + ILE end
+link PADA head - NBA tail + ILE end
+link PADA head - ADA tail + LYS end
+link PADA head - NBA tail + LYS end
+link PADA head - ADA tail + ALY end
+link PADA head - NBA tail + ALY end
+link PADA head - ADA tail + HLY end
+link PADA head - NBA tail + HLY end
+link PADA head - ADA tail + MLY end
+link PADA head - NBA tail + MLY end
+link PADA head - ADA tail + MLZ end
+link PADA head - NBA tail + MLZ end
+link PADA head - ADA tail + M3L end
+link PADA head - NBA tail + M3L end
+link PADA head - ADA tail + LEU end
+link PADA head - NBA tail + LEU end
+link PADA head - ADA tail + MET end
+link PADA head - NBA tail + MET end
+link PADA head - ADA tail + MSE end
+link PADA head - NBA tail + MSE end
+link PADA head - ADA tail + ASN end
+link PADA head - NBA tail + ASN end
+link PADA head - ADA tail + GLN end
+link PADA head - NBA tail + GLN end
+link PADA head - ADA tail + ARG end
+link PADA head - NBA tail + ARG end
+link PADA head - ADA tail + SER end
+link PADA head - NBA tail + SER end
+link PADA head - ADA tail + SEC end
+link PADA head - NBA tail + SEC end
+link PADA head - ADA tail + SEP end
+link PADA head - NBA tail + SEP end
+link PADA head - ADA tail + THR end
+link PADA head - NBA tail + THR end
+link PADA head - ADA tail + THP end
+link PADA head - ADA tail + TOP end
+link PADA head - NBA tail + TOP end
+link PADA head - ADA tail + VAL end
+link PADA head - NBA tail + VAL end
+link PADA head - ADA tail + TRP end
+link PADA head - NBA tail + TRP end
+link PADA head - ADA tail + TYR end
+link PADA head - NBA tail + TYR end
+link PADA head - ADA tail + TYP end
+link PADA head - NBA tail + TYP end
+link PADA head - ADA tail + PTR end
+link PADA head - NBA tail + PTR end
+link PADA head - ADA tail + TYS end
+link PADA head - NBA tail + TYS end
+link PADA head - ADA tail + DDZ end
+link PADA head - NBA tail + DDZ end
+link PADA head - ADA tail + PNS end
+link PADA head - NBA tail + PNS end
+link PADA head - ADA tail + QSR end
+link PADA head - ADA tail + CIR end
+link PADA head - NBA tail + CIR end
+link PADA head - ADA tail + IVA end
+link PADA head - NBA tail + IVA end
+link PADA head - ADA tail + ADI end
+link PADA head - NBA tail + ADI end
+link PADA head - ADA tail + AZH end
+link PADA head - ADA tail + AHX end
+link PADA head - NBA tail + AHX end
+link PADA head - ADA tail + GLY end
+link PADA head - NBA tail + GLY end
 set message=$old_message echo=$old_echo end
 

@@ -4049,3 +4049,101 @@ set message=$old_message echo=$old_echo end
    NONBONDED FM00 0.108 2.38 0.108 2.14  ! FLM H12
    NONBONDED FM21 0.108 2.38 0.108 2.14  ! FLM H13
 
+! Amide junctions for PADA (ADA, NBA) and PADM (ADM, NBM).
+! Internal lines copy the ATB term for the same atoms after C1->C / O2->O or N1->NH1 / H1->H.
+! Amide lines copy the existing peptide term named in the comment. No new constants.
+
+! ADA internals (AD12->C, AD13->O)
+BOND AD09 C           450.1 1.500          ! ADA C2-C1, was BOND AD09 AD12
+ANGLe AD08 AD09 C     55.2 111.0           ! ADA C3-C2-C1, was ANGLe AD08 AD09 AD12
+ANGLe AD10 AD09 C     55.1 106.8           ! ADA H2-C2-C1, was ANGLe AD10 AD09 AD12
+ANGLe AD11 AD09 C     55.1 106.8           ! ADA H3-C2-C1, was ANGLe AD11 AD09 AD12
+ANGLe AD09 C    O     45.0 126.0           ! ADA C2-C1-O2, was ANGLe AD09 AD12 AD13
+DIHEdral AD05 AD08 AD09 C  1.4 3 0.0       ! ADA C4-C3-C2-C1, was DIHEdral AD05 AD08 AD09 AD12
+
+! ADA amide, numbers from ANGLe CH2E C NH1 / IMPRoper C CH1E NH1 O / IMPRoper CH2E C NH1 *
+ANGLe AD09 C NH1      500.00 {sd=     0.031}    116.1998  ! same as ANGLe CH2E C NH1
+DIHEdral AD09 C NH1 CH1E  500.0 2 180.0    ! same as DIHEdral CH2E NH1 C CH3E
+DIHEdral AD09 C NH1 CH2E  500.0 2 180.0
+DIHEdral AD09 C NH1 CH2G  500.0 2 180.0
+DIHEdral AD09 C NH1 CH0   500.0 2 180.0
+DIHEdral O    C NH1 CH1E  500.0 2   0.0    ! same as DIHEdral CH2E NH1 C O
+DIHEdral O    C NH1 CH2G  500.0 2   0.0
+DIHEdral O    C NH1 CH0   500.0 2   0.0
+IMPRoper C    AD09 NH1 O       500.00   0      0.0000  ! same as IMPRoper C CH1E NH1 O
+IMPRoper AD09 C    NH1 CH1E    500.00 {sd=     0.031}    0   -180.0067  ! same as IMPRoper CH2E C NH1 CH1E
+IMPRoper AD09 C    NH1 CH2E    500.00 {sd=     0.031}    0   -180.0067  ! same as IMPRoper CH2E C NH1 CH2E
+IMPRoper AD09 C    NH1 CH2G    500.00 {sd=     0.031}    0   -179.9916  ! same as IMPRoper CH2E C NH1 CH2G
+IMPRoper AD09 C    NH1 CH0     500.00 {sd=     0.031}    0   -180.0067
+
+! NBA internals (NB09->C, NB10->O)
+BOND NB07 C           450.1 1.500          ! NBA C2-C1, was BOND NB07 NB09
+ANGLe NB04 NB07 C     55.2 111.0           ! NBA C3-C2-C1, was ANGLe NB04 NB07 NB09
+ANGLe NB08 NB07 C     52.6 107.6           ! NBA H2-C2-C1, was ANGLe NB08 NB07 NB09
+ANGLe C    NB07 NB13  55.2 111.0           ! NBA C1-C2-C6, was ANGLe NB09 NB07 NB13
+ANGLe NB07 C    O     45.0 126.0           ! NBA C2-C1-O2, was ANGLe NB07 NB09 NB10
+DIHEdral NB02 NB04 NB07 C   0.2 3 180.0    ! NBA C4-C3-C2-C1, was DIHEdral NB02 NB04 NB07 NB09
+DIHEdral C    NB07 NB13 NB17  1.4 3 0.0    ! NBA C1-C2-C6-C5, was DIHEdral NB09 NB07 NB13 NB17
+IMPRoper NB07 C    NB04 NB13  40.014 0 35.3 ! NBA, was IMPRoper NB07 NB09 NB04 NB13
+
+! NBA amide, same peptide numbers as ADA
+ANGLe NB07 C NH1      500.00 {sd=     0.031}    116.1998  ! same as ANGLe CH2E C NH1
+DIHEdral NB07 C NH1 CH1E  500.0 2 180.0
+DIHEdral NB07 C NH1 CH2E  500.0 2 180.0
+DIHEdral NB07 C NH1 CH2G  500.0 2 180.0
+DIHEdral NB07 C NH1 CH0   500.0 2 180.0
+IMPRoper C    NB07 NH1 O       500.00   0      0.0000  ! same as IMPRoper C CH1E NH1 O
+IMPRoper NB07 C    NH1 CH1E    500.00 {sd=     0.031}    0   -180.0067
+IMPRoper NB07 C    NH1 CH2E    500.00 {sd=     0.031}    0   -180.0067
+IMPRoper NB07 C    NH1 CH2G    500.00 {sd=     0.031}    0   -179.9916
+IMPRoper NB07 C    NH1 CH0     500.00 {sd=     0.031}    0   -180.0067
+
+! ADM internals (AM12->NH1, AM13->H)
+BOND AM09 NH1         449.8 1.470          ! ADM C1-N1, was BOND AM09 AM12
+ANGLe AM08 AM09 NH1   59.9 115.0           ! ADM C2-C1-N1, was ANGLe AM08 AM09 AM12
+ANGLe AM10 AM09 NH1   55.0 107.6           ! ADM H3-C1-N1, was ANGLe AM10 AM09 AM12
+ANGLe AM11 AM09 NH1   55.0 107.6           ! ADM H4-C1-N1, was ANGLe AM11 AM09 AM12
+ANGLe AM09 NH1  H     500.00 {sd=     0.031}    118.0987  ! amide C-N-H, same as ANGLe CH2E NH1 H
+DIHEdral AM05 AM08 AM09 NH1  1.4 3 0.0     ! ADM C3-C2-C1-N1, was DIHEdral AM05 AM08 AM09 AM12
+DIHEdral AM08 AM09 NH1  H    0.2 6 180.0   ! ADM C2-C1-N1-H1, was DIHEdral AM08 AM09 AM12 AM13
+
+! ADM amide. Angle/improper numbers from C NH1 CH2E and CH* C NH1 CH2E.
+ANGLe C NH1 AM09      500.00 {sd=     0.031}    124.1226  ! same as ANGLe C NH1 CH2E
+DIHEdral CH1E C NH1 AM09  500.0 2 180.0    ! same as DIHEdral CH2E NH1 C CH3E
+DIHEdral CH2E C NH1 AM09  500.0 2 180.0
+DIHEdral CH2G C NH1 AM09  500.0 2 180.0
+DIHEdral CH0  C NH1 AM09  500.0 2 180.0
+DIHEdral CH3E C NH1 AM09  500.0 2 180.0
+DIHEdral O    C NH1 AM09  500.0 2   0.0    ! same as DIHEdral CH2E NH1 C O
+DIHEdral C NH1 AM09 AM08  MULT 6   0.5   1 0.0000 0.4  2 0.0000  0.3   3 0.0000  0.2  4 0.0000  0.1   5 0.0000  0.05   6 0.0000  ! same as DIHEdral C NH1 CH2E CH2E
+IMPRoper NH1  C    AM09 H      500.00   0      0.0000  ! same as IMPRoper NH1 C CH1E H
+IMPRoper CH1E C    NH1  AM09   500.00 {sd=     0.031}    0   -180.0067  ! same as IMPRoper CH1E C NH1 CH2E
+IMPRoper CH2E C    NH1  AM09   500.00 {sd=     0.031}    0   -180.0067  ! same as IMPRoper CH2E C NH1 CH2E
+IMPRoper CH2G C    NH1  AM09   500.00   0    180.0000  ! same as IMPRoper CH2G C NH1 CH2E
+IMPRoper CH0  C    NH1  AM09   500.00 {sd=     0.031}    0   -180.0067  ! same as IMPRoper CH0 C NH1 CH2E
+IMPRoper CH3E C    NH1  AM09   500.00   0    180.0000  ! same as IMPRoper CH3E C NH1 CH2E
+
+! NBM internals (NM12->NH1, NM13->H)
+BOND NM09 NH1         239.0 1.460          ! NBM C1-N1, was BOND NM09 NM12
+ANGLe NM07 NM09 NH1   55.2 109.5           ! NBM C2-C1-N1, was ANGLe NM07 NM09 NM12
+ANGLe NM10 NM09 NH1   167.3 107.3          ! NBM H3-C1-N1, was ANGLe NM10 NM09 NM12
+ANGLe NM11 NM09 NH1   167.3 113.2          ! NBM H4-C1-N1, was ANGLe NM11 NM09 NM12
+ANGLe NM09 NH1  H     500.00 {sd=     0.031}    118.0987  ! same as ANGLe CH2E NH1 H
+DIHEdral NM04 NM07 NM09 NH1  1.4 3 0.0     ! NBM C3-C2-C1-N1, was DIHEdral NM04 NM07 NM09 NM12
+DIHEdral NM07 NM09 NH1  H    0.2 6 180.0   ! NBM C2-C1-N1-H1, was DIHEdral NM07 NM09 NM12 NM13
+
+! NBM amide, same peptide numbers as ADM
+ANGLe C NH1 NM09      500.00 {sd=     0.031}    124.1226
+DIHEdral CH1E C NH1 NM09  500.0 2 180.0
+DIHEdral CH2E C NH1 NM09  500.0 2 180.0
+DIHEdral CH2G C NH1 NM09  500.0 2 180.0
+DIHEdral CH0  C NH1 NM09  500.0 2 180.0
+DIHEdral CH3E C NH1 NM09  500.0 2 180.0
+DIHEdral O    C NH1 NM09  500.0 2   0.0
+DIHEdral C NH1 NM09 NM07  MULT 6   0.5   1 0.0000 0.4  2 0.0000  0.3   3 0.0000  0.2  4 0.0000  0.1   5 0.0000  0.05   6 0.0000
+IMPRoper NH1  C    NM09 H      500.00   0      0.0000
+IMPRoper CH1E C    NH1  NM09   500.00 {sd=     0.031}    0   -180.0067
+IMPRoper CH2E C    NH1  NM09   500.00 {sd=     0.031}    0   -180.0067
+IMPRoper CH2G C    NH1  NM09   500.00   0    180.0000
+IMPRoper CH0  C    NH1  NM09   500.00 {sd=     0.031}    0   -180.0067
+IMPRoper CH3E C    NH1  NM09   500.00   0    180.0000

@@ -65,6 +65,12 @@ dyna tors
         end loop main
         fix group ( resn PRO and not (name C or name O) )
 
+        ! 26-Oct-2026 (Adithya Subramanian Sahsranamam): HyT cage caps — rigid cage, free linker
+        fix group ( resn ADA and not (name C or name O or name CA or name H2 or name H3) )
+        fix group ( resn ADM and not (name N or name HN or name CA or name H3 or name H4) )
+        fix group ( resn NBA and not (name C or name O) )
+        fix group ( resn NBM and not (name N or name HN or name CA or name H3 or name H4) )
+
         !next loop is for all sugars defined in glycans-uu.top
         for $atom_id in id
             (   name c1 and 

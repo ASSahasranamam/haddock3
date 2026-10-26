@@ -34,7 +34,7 @@ checkversion 1.3
 !***********************************************************************!
 ! History:
 ! 2026-10-18: ATB dump residues APX ABX AVX ASX AOX AEA AEE ADA ADM NBA NBM FLA FLM copied verbatim (types relabeled to 4 chars).
-! 13-Feb-2026 (Adithya Subramanian Sahsranamam): added IVA (D-Isovaline) residue and D-like CA chirality via IMPRoper CB2 C N CB1; added no-op ACET patch for ACE-capped inputs.
+! 13-Feb-2026 (Adithya Subramanian Sahsranamam): added IVA (D-Isovaline) residue and D-like CA chirality via IMPRoper CB2 C N CB1.
 ! HADDOCK2.2, additions for CFE (CYS with iron cluster)
 ! CNS v1.3, revision 7, 1-10-2012, added IMPRoper NE2 CE1 CD2 HE2 for HIS residue
 ! CNS V1.3, revision 7, 11-08-2011, changed changes in CYF residue for CB and SG
@@ -3374,13 +3374,9 @@ RESIdue QSR ! Added by Rodrigo Honorato / Alexandre Bonvin 06/01/2021
 ! Charges, masses, bonds, angles, dihedrals, impropers, and LJ terms
 ! are the dump values. CNS atom types are CHARACTER*4 and global, so
 ! each ATB type is relabeled (see the ATOM comment). The numbers are not.
-! No peptide-link patch: the dump is the free acid/amine, and it has
-! no amide-junction parameters.
 ! Alkyl spacers: APX ABX AVX AHX ASX AOX (propyl, butyl, valeric, hexanoic, heptanoic, octanoic).
 ! PEG spacers: AEA (1 ethoxy), AEE (2 ethoxy). AET is reserved for the 3-ethoxy
 ! acid (0YSW); that dump has parameters only, no RESIdue block, so AET is not built.
-presidue NOP
-end
 
 !----------------------------------------------------------------------
 residue APX  ! propyl; ATB source 1WFO molid 32657
@@ -3999,11 +3995,11 @@ residue ADA  ! N-cap ATB WSCI molid 205520
     ATOM H4   TYPE=AD06 CHARge=0.130 MASS=1.0080 END  ! ATB type H4
     ATOM H5   TYPE=AD07 CHARge=0.130 MASS=1.0080 END  ! ATB type H5
     ATOM C3   TYPE=AD08 CHARge=0.842 MASS=12.0110 END  ! ATB type C3
-    ATOM C2   TYPE=AD09 CHARge=-0.495 MASS=12.0110 END  ! ATB type C2
+    ATOM CA   TYPE=AD09 CHARge=-0.495 MASS=12.0110 END  ! ATB type C2
     ATOM H2   TYPE=AD10 CHARge=0.137 MASS=1.0080 END  ! ATB type H2
     ATOM H3   TYPE=AD11 CHARge=0.137 MASS=1.0080 END  ! ATB type H3
-    ATOM C1   TYPE=AD12 CHARge=0.772 MASS=12.0110 END  ! ATB type C1
-    ATOM O2   TYPE=AD13 CHARge=-0.623 MASS=15.9994 END  ! ATB type O2
+    ATOM C   TYPE=AD12 CHARge=0.772 MASS=12.0110 END  ! ATB type C1
+    ATOM O   TYPE=AD13 CHARge=-0.623 MASS=15.9994 END  ! ATB type O2
     ATOM O1   TYPE=AD14 CHARge=-0.613 MASS=15.9994 END  ! ATB type O1
     ATOM H1   TYPE=AD15 CHARge=0.461 MASS=1.0080 END  ! ATB type H1
     ATOM C11  TYPE=AD16 CHARge=-0.653 MASS=12.0110 END  ! ATB type C111
@@ -4033,14 +4029,14 @@ residue ADA  ! N-cap ATB WSCI molid 205520
   BOND C4    H4  
   BOND C4    H5  
   BOND C4    C3  
-  BOND C3    C2  
+  BOND C3    CA  
   BOND C3    C11 
   BOND C3    C12 
-  BOND C2    H2  
-  BOND C2    H3  
-  BOND C2    C1  
-  BOND C1    O2  
-  BOND C1    O1  
+  BOND CA    H2  
+  BOND CA    H3  
+  BOND CA    C  
+  BOND C    O  
+  BOND C    O1  
   BOND O1    H1  
   BOND C11   H15 
   BOND C11   H16 
@@ -4075,22 +4071,22 @@ residue ADA  ! N-cap ATB WSCI molid 205520
   ANGLe H4    C4    H5  
   ANGLe H4    C4    C3  
   ANGLe H5    C4    C3  
-  ANGLe C4    C3    C2  
+  ANGLe C4    C3    CA  
   ANGLe C4    C3    C11 
   ANGLe C4    C3    C12 
-  ANGLe C2    C3    C11 
-  ANGLe C2    C3    C12 
+  ANGLe CA    C3    C11 
+  ANGLe CA    C3    C12 
   ANGLe C11   C3    C12 
-  ANGLe C3    C2    H2  
-  ANGLe C3    C2    H3  
-  ANGLe C3    C2    C1  
-  ANGLe H2    C2    H3  
-  ANGLe H2    C2    C1  
-  ANGLe H3    C2    C1  
-  ANGLe C2    C1    O2  
-  ANGLe C2    C1    O1  
-  ANGLe O2    C1    O1  
-  ANGLe C1    O1    H1  
+  ANGLe C3    CA    H2  
+  ANGLe C3    CA    H3  
+  ANGLe C3    CA    C  
+  ANGLe H2    CA    H3  
+  ANGLe H2    CA    C  
+  ANGLe H3    CA    C  
+  ANGLe CA    C    O  
+  ANGLe CA    C    O1  
+  ANGLe O    C    O1  
+  ANGLe C    O1    H1  
   ANGLe C3    C11   H15 
   ANGLe C3    C11   H16 
   ANGLe C3    C11   C9  
@@ -4127,22 +4123,11 @@ residue ADA  ! N-cap ATB WSCI molid 205520
   ANGLe C7    C12   H17 
   ANGLe C7    C12   H18 
   ANGLe H17   C12   H18 
-  DIHEdral C10   C9    C8    C7  
-  DIHEdral C5    C10   C9    C8  
-  DIHEdral C5    C4    C3    C2  
-  DIHEdral C4    C5    C6    C7  
-  DIHEdral C4    C3    C2    C1  
-  DIHEdral C3    C2    C1    O1  
-  DIHEdral C3    C11   C9    C8  
-  DIHEdral C2    C3    C11   C9  
-  DIHEdral C2    C3    C12   C7  
-  DIHEdral O2    C1    O1    H1  
-  DIHEdral C9    C10   C5    C4  
-  DIHEdral C9    C8    C7    C6  
-  DIHEdral C8    C7    C6    C5  
-  DIHEdral C6    C5    C4    C3  
-  DIHEdral C6    C7    C12   C3  
-  IMPRoper C1    C2    O2    O1  
+  ! cage: BONDs+ANGLes only (drop fused-chair DIHEdrals; TAD). Linker/acid kept.
+  DIHEdral C4    C3    CA    C  
+  DIHEdral C3    CA    C    O1  
+  DIHEdral O    C    O1    H1  
+  IMPRoper C    CA    O    O1  
   IMPRoper C5    C4    C6    C10 
   IMPRoper C7    C8    C6    C12 
   IMPRoper C9    C10   C8    C11 
@@ -4160,11 +4145,11 @@ residue ADM  ! C-cap ATB ZYZF molid 178547
     ATOM H5   TYPE=AM06 CHARge=0.116 MASS=1.0080 END  ! ATB type H5
     ATOM H6   TYPE=AM07 CHARge=0.116 MASS=1.0080 END  ! ATB type H6
     ATOM C2   TYPE=AM08 CHARge=0.688 MASS=12.0110 END  ! ATB type C2
-    ATOM C1   TYPE=AM09 CHARge=0.392 MASS=12.0110 END  ! ATB type C1
+    ATOM CA   TYPE=AM09 CHARge=0.392 MASS=12.0110 END  ! ATB type C1
     ATOM H3   TYPE=AM10 CHARge=-0.062 MASS=1.0080 END  ! ATB type H3
     ATOM H4   TYPE=AM11 CHARge=-0.062 MASS=1.0080 END  ! ATB type H4
-    ATOM N1   TYPE=AM12 CHARge=-0.985 MASS=14.0067 END  ! ATB type N1
-    ATOM H1   TYPE=AM13 CHARge=0.355 MASS=1.0080 END  ! ATB type H1
+    ATOM N   TYPE=AM12 CHARge=-0.985 MASS=14.0067 END  ! ATB type N1
+    ATOM HN   TYPE=AM13 CHARge=0.355 MASS=1.0080 END  ! ATB type H1
     ATOM H2   TYPE=AM14 CHARge=0.355 MASS=1.0080 END  ! ATB type H2
     ATOM C10  TYPE=AM15 CHARge=-0.674 MASS=12.0110 END  ! ATB type C101
     ATOM H16  TYPE=AM16 CHARge=0.116 MASS=1.0080 END  ! ATB type H161
@@ -4193,14 +4178,14 @@ residue ADM  ! C-cap ATB ZYZF molid 178547
   BOND C3    H5  
   BOND C3    H6  
   BOND C3    C2  
-  BOND C2    C1  
+  BOND C2    CA  
   BOND C2    C10 
   BOND C2    C11 
-  BOND C1    H3  
-  BOND C1    H4  
-  BOND C1    N1  
-  BOND N1    H1  
-  BOND N1    H2  
+  BOND CA    H3  
+  BOND CA    H4  
+  BOND CA    N  
+  BOND N    HN  
+  BOND N    H2  
   BOND C10   H16 
   BOND C10   H17 
   BOND C10   C8  
@@ -4234,21 +4219,21 @@ residue ADM  ! C-cap ATB ZYZF molid 178547
   ANGLe H5    C3    H6  
   ANGLe H5    C3    C2  
   ANGLe H6    C3    C2  
-  ANGLe C3    C2    C1  
+  ANGLe C3    C2    CA  
   ANGLe C3    C2    C10 
   ANGLe C3    C2    C11 
-  ANGLe C1    C2    C10 
-  ANGLe C1    C2    C11 
+  ANGLe CA    C2    C10 
+  ANGLe CA    C2    C11 
   ANGLe C10   C2    C11 
-  ANGLe C2    C1    H3  
-  ANGLe C2    C1    H4  
-  ANGLe C2    C1    N1  
-  ANGLe H3    C1    H4  
-  ANGLe H3    C1    N1  
-  ANGLe H4    C1    N1  
-  ANGLe C1    N1    H1  
-  ANGLe C1    N1    H2  
-  ANGLe H1    N1    H2  
+  ANGLe C2    CA    H3  
+  ANGLe C2    CA    H4  
+  ANGLe C2    CA    N  
+  ANGLe H3    CA    H4  
+  ANGLe H3    CA    N  
+  ANGLe H4    CA    N  
+  ANGLe CA    N    HN  
+  ANGLe CA    N    H2  
+  ANGLe HN    N    H2  
   ANGLe C2    C10   H16 
   ANGLe C2    C10   H17 
   ANGLe C2    C10   C8  
@@ -4285,20 +4270,10 @@ residue ADM  ! C-cap ATB ZYZF molid 178547
   ANGLe C6    C11   H18 
   ANGLe C6    C11   H19 
   ANGLe H18   C11   H19 
-  DIHEdral C9    C8    C7    C6  
-  DIHEdral C4    C9    C8    C7  
-  DIHEdral C4    C3    C2    C1  
-  DIHEdral C3    C4    C5    C6  
-  DIHEdral C3    C2    C1    N1  
-  DIHEdral C2    C1    N1    H1  
-  DIHEdral C2    C10   C8    C7  
-  DIHEdral C1    C2    C10   C8  
-  DIHEdral C1    C2    C11   C6  
-  DIHEdral C8    C9    C4    C3  
-  DIHEdral C8    C7    C6    C5  
-  DIHEdral C7    C6    C5    C4  
-  DIHEdral C5    C4    C3    C2  
-  DIHEdral C5    C6    C11   C2  
+  ! cage: BONDs+ANGLes only (drop fused-chair DIHEdrals; TAD). Linker/amine kept.
+  DIHEdral C4    C3    C2    CA  
+  DIHEdral C3    C2    CA    N  
+  DIHEdral C2    CA    N    HN  
   IMPRoper C4    C3    C5    C9  
   IMPRoper C6    C7    C5    C11 
   IMPRoper C8    C9    C7    C10 
@@ -4314,10 +4289,10 @@ residue NBA  ! N-cap ATB A71B molid 48194
     ATOM C3   TYPE=NB04 CHARge=-0.271 MASS=12.0110 END  ! ATB type C3
     ATOM H3   TYPE=NB05 CHARge=0.107 MASS=1.0080 END  ! ATB type H3
     ATOM H4   TYPE=NB06 CHARge=0.113 MASS=1.0080 END  ! ATB type H4
-    ATOM C2   TYPE=NB07 CHARge=-0.097 MASS=12.0110 END  ! ATB type C2
+    ATOM CA   TYPE=NB07 CHARge=-0.097 MASS=12.0110 END  ! ATB type C2
     ATOM H2   TYPE=NB08 CHARge=0.108 MASS=1.0080 END  ! ATB type H2
-    ATOM C1   TYPE=NB09 CHARge=0.690 MASS=12.0110 END  ! ATB type C1
-    ATOM O2   TYPE=NB10 CHARge=-0.591 MASS=15.9994 END  ! ATB type O2
+    ATOM C   TYPE=NB09 CHARge=0.690 MASS=12.0110 END  ! ATB type C1
+    ATOM O   TYPE=NB10 CHARge=-0.591 MASS=15.9994 END  ! ATB type O2
     ATOM O1   TYPE=NB11 CHARge=-0.636 MASS=15.9994 END  ! ATB type O1
     ATOM H1   TYPE=NB12 CHARge=0.477 MASS=1.0080 END  ! ATB type H1
     ATOM C6   TYPE=NB13 CHARge=0.082 MASS=12.0110 END  ! ATB type C6
@@ -4336,12 +4311,12 @@ residue NBA  ! N-cap ATB A71B molid 48194
   BOND C4    C5  
   BOND C3    H3  
   BOND C3    H4  
-  BOND C3    C2  
-  BOND C2    H2  
-  BOND C2    C1  
-  BOND C2    C6  
-  BOND C1    O2  
-  BOND C1    O1  
+  BOND C3    CA  
+  BOND CA    H2  
+  BOND CA    C  
+  BOND CA    C6  
+  BOND C    O  
+  BOND C    O1  
   BOND O1    H1  
   BOND C6    H8  
   BOND C6    C7  
@@ -4360,23 +4335,23 @@ residue NBA  ! N-cap ATB A71B molid 48194
   ANGLe C3    C4    C5  
   ANGLe C4    C3    H3  
   ANGLe C4    C3    H4  
-  ANGLe C4    C3    C2  
+  ANGLe C4    C3    CA  
   ANGLe H3    C3    H4  
-  ANGLe H3    C3    C2  
-  ANGLe H4    C3    C2  
-  ANGLe C3    C2    H2  
-  ANGLe C3    C2    C1  
-  ANGLe C3    C2    C6  
-  ANGLe H2    C2    C1  
-  ANGLe H2    C2    C6  
-  ANGLe C1    C2    C6  
-  ANGLe C2    C1    O2  
-  ANGLe C2    C1    O1  
-  ANGLe O2    C1    O1  
-  ANGLe C1    O1    H1  
-  ANGLe C2    C6    H8  
-  ANGLe C2    C6    C7  
-  ANGLe C2    C6    C5  
+  ANGLe H3    C3    CA  
+  ANGLe H4    C3    CA  
+  ANGLe C3    CA    H2  
+  ANGLe C3    CA    C  
+  ANGLe C3    CA    C6  
+  ANGLe H2    CA    C  
+  ANGLe H2    CA    C6  
+  ANGLe C    CA    C6  
+  ANGLe CA    C    O  
+  ANGLe CA    C    O1  
+  ANGLe O    C    O1  
+  ANGLe C    O1    H1  
+  ANGLe CA    C6    H8  
+  ANGLe CA    C6    C7  
+  ANGLe CA    C6    C5  
   ANGLe H8    C6    C7  
   ANGLe H8    C6    C5  
   ANGLe C7    C6    C5  
@@ -4390,21 +4365,21 @@ residue NBA  ! N-cap ATB A71B molid 48194
   ANGLe C6    C5    H7  
   ANGLe H6    C5    H7  
   DIHEdral C4    C8    C7    C6  
-  DIHEdral C4    C3    C2    C1  
+  DIHEdral C4    C3    CA    C  
   DIHEdral C3    C4    C5    C6  
-  DIHEdral C3    C2    C1    O1  
-  DIHEdral C2    C6    C7    C8  
-  DIHEdral C2    C6    C5    C4  
-  DIHEdral C1    C2    C6    C5  
-  DIHEdral O2    C1    O1    H1  
+  DIHEdral C3    CA    C    O1  
+  DIHEdral CA    C6    C7    C8  
+  DIHEdral CA    C6    C5    C4  
+  DIHEdral C    CA    C6    C5  
+  DIHEdral O    C    O1    H1  
   DIHEdral C7    C8    C4    C3  
-  DIHEdral C5    C4    C3    C2  
-  IMPRoper C1    C2    O2    O1  
+  DIHEdral C5    C4    C3    CA  
+  IMPRoper C    CA    O    O1  
   IMPRoper C7    C8    C6    H9  
   IMPRoper C8    H10   C4    C7  
-  IMPRoper C2    C1    C3    C6  
+  IMPRoper CA    C    C3    C6  
   IMPRoper C4    C3    C5    C8  
-  IMPRoper C6    C5    C2    C7  
+  IMPRoper C6    C5    CA    C7  
 end
 
 !----------------------------------------------------------------------
@@ -4421,11 +4396,11 @@ residue NBM  ! C-cap ATB EHYZ molid 2061472
     ATOM H7   TYPE=NM06 CHARge=0.029 MASS=1.0080 END  ! ATB type H7
     ATOM C2   TYPE=NM07 CHARge=-0.029 MASS=12.0110 END  ! ATB type C2
     ATOM H5   TYPE=NM08 CHARge=0.048 MASS=1.0080 END  ! ATB type H5
-    ATOM C1   TYPE=NM09 CHARge=0.024 MASS=12.0110 END  ! ATB type C1
+    ATOM CA   TYPE=NM09 CHARge=0.024 MASS=12.0110 END  ! ATB type C1
     ATOM H3   TYPE=NM10 CHARge=0.031 MASS=1.0080 END  ! ATB type H3
     ATOM H4   TYPE=NM11 CHARge=0.000 MASS=1.0080 END  ! ATB type H4
-    ATOM N1   TYPE=NM12 CHARge=-0.391 MASS=14.0067 END  ! ATB type N1
-    ATOM H1   TYPE=NM13 CHARge=0.161 MASS=1.0080 END  ! ATB type H1
+    ATOM N   TYPE=NM12 CHARge=-0.391 MASS=14.0067 END  ! ATB type N1
+    ATOM HN   TYPE=NM13 CHARge=0.161 MASS=1.0080 END  ! ATB type H1
     ATOM H2   TYPE=NM14 CHARge=0.161 MASS=1.0080 END  ! ATB type H2
     ATOM C7   TYPE=NM15 CHARge=-0.023 MASS=12.0110 END  ! ATB type C7
     ATOM H11  TYPE=NM16 CHARge=0.029 MASS=1.0080 END  ! ATB type H111
@@ -4445,13 +4420,13 @@ residue NBM  ! C-cap ATB EHYZ molid 2061472
   BOND C3    H7  
   BOND C3    C2  
   BOND C2    H5  
-  BOND C2    C1  
+  BOND C2    CA  
   BOND C2    C7  
-  BOND C1    H3  
-  BOND C1    H4  
-  BOND C1    N1  
-  BOND N1    H1  
-  BOND N1    H2  
+  BOND CA    H3  
+  BOND CA    H4  
+  BOND CA    N  
+  BOND N    HN  
+  BOND N    H2  
   BOND C7    H11 
   BOND C7    C6  
   BOND C7    C8  
@@ -4474,20 +4449,20 @@ residue NBM  ! C-cap ATB EHYZ molid 2061472
   ANGLe H6    C3    C2  
   ANGLe H7    C3    C2  
   ANGLe C3    C2    H5  
-  ANGLe C3    C2    C1  
+  ANGLe C3    C2    CA  
   ANGLe C3    C2    C7  
-  ANGLe H5    C2    C1  
+  ANGLe H5    C2    CA  
   ANGLe H5    C2    C7  
-  ANGLe C1    C2    C7  
-  ANGLe C2    C1    H3  
-  ANGLe C2    C1    H4  
-  ANGLe C2    C1    N1  
-  ANGLe H3    C1    H4  
-  ANGLe H3    C1    N1  
-  ANGLe H4    C1    N1  
-  ANGLe C1    N1    H1  
-  ANGLe C1    N1    H2  
-  ANGLe H1    N1    H2  
+  ANGLe CA    C2    C7  
+  ANGLe C2    CA    H3  
+  ANGLe C2    CA    H4  
+  ANGLe C2    CA    N  
+  ANGLe H3    CA    H4  
+  ANGLe H3    CA    N  
+  ANGLe H4    CA    N  
+  ANGLe CA    N    HN  
+  ANGLe CA    N    H2  
+  ANGLe HN    N    H2  
   ANGLe C2    C7    H11 
   ANGLe C2    C7    C6  
   ANGLe C2    C7    C8  
@@ -4505,17 +4480,17 @@ residue NBM  ! C-cap ATB EHYZ molid 2061472
   ANGLe H12   C8    H13 
   DIHEdral C5    C4    C3    C2  
   DIHEdral C4    C5    C6    C7  
-  DIHEdral C4    C3    C2    C1  
+  DIHEdral C4    C3    C2    CA  
   DIHEdral C3    C4    C8    C7  
-  DIHEdral C3    C2    C1    N1  
-  DIHEdral C2    C1    N1    H1  
+  DIHEdral C3    C2    CA    N  
+  DIHEdral C2    CA    N    HN  
   DIHEdral C2    C7    C6    C5  
   DIHEdral C2    C7    C8    C4  
-  DIHEdral C1    C2    C7    C6  
+  DIHEdral CA    C2    C7    C6  
   DIHEdral C6    C5    C4    C3  
   IMPRoper C5    H9    C4    C6  
   IMPRoper C6    C5    C7    H10 
-  IMPRoper C2    C1    C3    C7  
+  IMPRoper C2    CA    C3    C7  
 end
 
 !----------------------------------------------------------------------
@@ -4992,6 +4967,43 @@ presidue PPOM  ! peptide-like bond: previous C -> POM NAT (glutarimide attachmen
   add DIHEdral -C   +NAT +C6 +C9 mult 6
   add IMPRoper -C  -CE  +NAT -O
   add IMPRoper +NAT -C  +C6 +HN
+end
+
+presidue PADA  ! acid cap (ADA, NBA): C(=O) to next N, drop the OH
+  delete    ATOM -O1                        end
+  delete    ATOM -H1                        end
+  modify    ATOM -C  TYPE=C  CHARge= 0.500 end
+  modify    ATOM -O  TYPE=O  CHARge=-0.500 end
+  add BOND -C +N
+  add ANGLe -CA -C +N
+  add ANGLe -O  -C +N
+  add ANGLe -C  +N +CA
+  add ANGLe -C  +N +HN
+  add DIHEdral -CA -C +N +CA
+  add DIHEdral -O  -C +N +CA
+  add DIHEdral -C  +N +CA +C  mult 6
+  add DIHEdral -C  +N +CA +CB mult 6
+  add IMPRoper -C  -CA +N -O
+  add IMPRoper +N  -C  +CA +HN
+  add IMPRoper -CA -C  +N  +CA
+end
+
+presidue PADM  ! amine cap (ADM, NBM): previous C to N, drop one amine H
+  delete    ATOM +H2                        end
+  modify    ATOM +N  TYPE=NH1 CHARge=-0.570 end
+  modify    ATOM +HN TYPE=H   CHARge= 0.370 end
+  add BOND -C +N
+  add ANGLe -CA -C +N
+  add ANGLe -O  -C +N
+  add ANGLe -C  +N +CA
+  add ANGLe -C  +N +HN
+  add DIHEdral -CA -C +N +CA
+  add DIHEdral -O  -C +N +CA
+  add DIHEdral -C  +N +CA +C2 mult 6
+  add IMPRoper -C  -CA +N -O
+  add IMPRoper +N  -C  +CA +HN
+  add IMPRoper -CA -C  +N  +CA
+  ADD DONOr +HN +N
 end
 
  

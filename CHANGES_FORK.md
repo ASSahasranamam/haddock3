@@ -8,7 +8,7 @@ Fork-specific CNS topology/parameter work for peptide–PROTAC docking with **po
 |------|------|
 | `src/haddock/cns/toppar/protein-allhdg5-4.top` | `residue POM`, `presidue PPOM`; `presidue PVHL` fix; HyT `residue` APX/ABX/AVX/ASX/AOX/AEA/AEE/ADA/ADM/NBA/NBM/FLA/FLM |
 | `src/haddock/cns/toppar/protein-allhdg5-4.param` | POM bonded + AHX→NAT junction; VHP CTER `CAX`–`OC`; HyT ATB bonded/NONBONDED |
-| `src/haddock/cns/toppar/protein-allhdg5-4*.link` | `link PPOM … + POM`; CTER policy for POM/VHP; HyT `first/last NOP` |
+| `src/haddock/cns/toppar/protein-allhdg5-4*.link` | `link PPOM … + POM`; CTER policy for POM/VHP |
 | `src/haddock/cns/toppar/pom.top` / `pom.param` | Standalone POM copies (also embedded in protein toppar) |
 
 ## POM residue + PPOM presidue
@@ -63,7 +63,9 @@ Residue names match the current HyT inventory (`ADA`/`ABX`/`ADM` unchanged; PEG1
 
 - **`.top`**: `residue` blocks with ATB atom names and unique chemical types (`AD00`… / `AB00`…).
 - **`.param`**: bonded + NONBONDED from the same dump.
-- **`.link`**: `first NOP` / `last NOP` so topoaa does **not** apply NTER/CTER. The dump is the free acid/amine; there are no amide-junction parameters yet. Peptide `link PEPT` to ADA/ADM is **not** in this commit.
+- **`.link`**: `link PADA head - ADA tail + <AA>` and `link PADM head - <AA> tail + ADM` in all four files (same AA list as PPOM; no PRO/ACE as PADA tail).
+- **`presidue PADA`**: delete ADA acid `O1`/`H1`; bond `-C1` → peptide `+N` (SER `HN`/`CA`).
+- **`presidue PADM`**: delete ADM extra amine `H2`; bond peptide `-C` → `+N1` (keep `H1`). Uses `-CA` not PPOM’s `-CE` so IVA works.
 
 ## Operational note
 
