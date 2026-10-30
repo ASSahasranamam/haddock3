@@ -94,6 +94,86 @@ add_extra_particles_for_forcefield:
   group: 'force field'
   explevel: easy
 
+extra_forcefield_files:
+  default: []
+  type: list
+  minitems: 0
+  maxitems: 20
+  title: Extra OpenMM forcefield XML files.
+  short: Residue templates and parameters loaded after the main forcefield.
+  long: Paths to additional OpenMM ffxml files (custom residues, GAFF types,
+    junction parameters). Loaded after `forcefield` and the solvent model.
+    Ignored duplicates are skipped when `auto_force_field` prepends gaff-2.11
+    and the generated residue XML.
+  group: 'force field'
+  explevel: expert
+
+auto_force_field:
+  default: ''
+  type: file
+  title: Residue spec YAML for GAFF extra force field generation.
+  short: YAML of residues to parameterize; empty disables generation.
+  long: Path to a YAML mapping each custom residue to smiles (ACE-X-NME
+    calculation molecule, or X-NHMe / ACE-X for a cap), analog (ff14SB
+    residue for N/C-term charges, e.g. VAL/GLY/SER), and cap (false, N,
+    or C). Optional top-level `chain` and `ligand` name the peptide.
+    Names templates from the HADDOCK PDB. Writes
+    auto_ff/auto_force_field.xml and loads gaff-2.11.xml. Needs
+    AmberTools (antechamber/sqm) and openmmforcefields.
+  group: 'force field'
+  explevel: expert
+
+ligand_chain:
+  default: ''
+  type: string
+  minchars: 0
+  maxchars: 1
+  title: PDB chain ID of the peptide / ligand.
+  short: Chain that carries custom residues (e.g. B). Empty = all chains.
+  long: Peptide/ligand chain ID. Linker atom-name aliases (C5/C6/O6/O7
+    on AEA/ABX/AHX) are applied only on this chain. Protein chain is
+    untouched. HT1-3 still map to H1-3 on every chain N-terminus.
+  group: 'force field'
+  explevel: expert
+
+platform:
+  default: 'auto'
+  type: string
+  minchars: 3
+  maxchars: 20
+  choices:
+    - auto
+    - CUDA
+    - CPU
+    - OpenCL
+    - HIP
+    - Reference
+  title: OpenMM compute platform.
+  short: Device backend for the simulation (CUDA, CPU, OpenCL, HIP).
+  long: OpenMM platform used to run the simulation. `auto` tries CUDA,
+    then HIP, OpenCL, CPU. Set `CPU` to force CPU; `CUDA` to require a
+    GPU. CPU thread count follows `ncores`. GPU arithmetic precision is
+    set by `precision`.
+  group: simulation
+  explevel: easy
+
+precision:
+  default: 'mixed'
+  type: string
+  minchars: 5
+  maxchars: 6
+  choices:
+    - mixed
+    - single
+    - double
+  title: OpenMM GPU arithmetic precision.
+  short: mixed, single, or double (CUDA/OpenCL/HIP only).
+  long: Precision of forces on CUDA, OpenCL, and HIP. `mixed` is the usual
+    production choice (forces in single, integration in double). `single`
+    is faster. `double` is slowest. Ignored on CPU and Reference.
+  group: simulation
+  explevel: easy
+
 timestep_ps:
   default: 0.002
   type: float

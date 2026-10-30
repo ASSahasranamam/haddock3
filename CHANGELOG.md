@@ -1,5 +1,9 @@
 # Changelog
 
+- 2026-10-30: OpenMM `minimizeEnergy` capped at 2000 iterations (solvent eq + production) so L-BFGS cannot hang on explicit solvent
+- 2026-10-30: OpenMM remaps CNS atom names to ff14SB (OT1/OT2, HN, HT1-3 on N-term); linker C5/C6/O6/O7 only on ligand_chain AEA/ABX/AHX
+- 2026-10-30: OpenMM `platform` selects CUDA, CPU, OpenCL, HIP, or auto; `precision` is mixed/single/double on GPU
+- 2026-10-30: OpenMM `auto_force_field` takes a YAML spec (residue, ACE-X-NME SMILES, analog, cap) and writes GAFF XMLs from the HADDOCK PDB
 - 2026-10-25: Removed the duplicate `B1S`, `B1SL` and `A1SL` PRESidue definitions from `carbohydrate.top` that CNS reported as `RTFRDR-ERR` on every topology read - Issue #1717
 - 2026-10-25: Made the `timestep` parameter of `mdref` and `mdscoring` effective; the CNS scripts hardcoded `timest=0.002` - Issue #1680
 - 2026-10-23: Specify usage of charset utf-8 when generating a plotly figure - Issue #1734

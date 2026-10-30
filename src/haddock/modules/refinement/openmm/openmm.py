@@ -19,6 +19,7 @@ from openmm import (
     CustomExternalForce,
     LangevinMiddleIntegrator,
     MonteCarloBarostat,
+    Platform,
     System,
     )
 from openmm.app import (
@@ -56,6 +57,35 @@ from haddock.core.exceptions import ModuleError
 from haddock.core.typing import Optional, Union, ParamDict
 from haddock.libs.libontology import PDBFile
 from haddock.libs.libpdb import add_TER_on_chain_breaks
+
+# CNS / CHARMM atom names → ff14SB. HT* only on the chain N-terminus.
+# C5/C6/O6/O7 are linker aliases (AEA/ABX/AHX), never ADA cage carbons.
+# ponytail: methylene HB1/HB2 vs Amber HB2/HB3 is per-residue; only SER HB1→HB3.
+CNS_TO_FF14SB = {
+    "OT1": "O", "OT2": "OXT",
+    "HN": "H",
+    }
+NTERM_CNS_TO_FF14SB = {"HT1": "H1", "HT2": "H2", "HT3": "H3"}
+LINKER_CNS_TO_FF14SB = {"C5": "C", "C6": "C", "O6": "O", "O7": "OXT"}
+LINKER_RES = {"AEA", "ABX", "AHX"}
+
+
+def remap_cns_atom_name(name: str, nterm: bool = False, linker: bool = False) -> str:
+    name = name.strip()
+    if nterm and name in NTERM_CNS_TO_FF14SB:
+        return NTERM_CNS_TO_FF14SB[name]
+    if linker and name in LINKER_CNS_TO_FF14SB:
+        return LINKER_CNS_TO_FF14SB[name]
+    return CNS_TO_FF14SB.get(name, name)
+
+
+def _pdb_atom_field(name: str) -> str:
+    name = name.strip()
+    if len(name) >= 4:
+        return name[:4]
+    if name[:1].isdigit():
+        return f"{name:<4}"
+    return f" {name:<3}"
 
 
 class OPENMM:
@@ -107,6 +137,133 @@ class OPENMM:
         self.constraints = self.import_constraints()
         self.output_filename = self.model.file_name.replace(".pdb", "_omm.pdb")
 
+    def extra_ff_files(self) -> list[str]:
+        return [str(p) for p in (self.params.get("extra_forcefield_files") or [])]
+
+    def make_forcefield(self, solvent_model: str) -> ForceField:
+        return ForceField(
+            self.params["forcefield"],
+            solvent_model,
+            *self.extra_ff_files(),
+            )
+
+    def prep_openmm_topology(self, topology) -> None:
+        """PDBFile remaps ACE CA→CH3 and NHE→NH2; custom termini get N/C prefixes."""
+        ace_h = {"HA1": "HH31", "HA2": "HH32", "HA3": "HH33",
+                 "H1": "HH31", "H2": "HH32", "H3": "HH33"}
+        for residue in topology.residues():
+            if residue.name in ("CTN", "NH2"):
+                residue.name = "NHE"
+        custom = set(self.params.get("_auto_term_res") or ("IVA", "AEA", "ABX", "AHX"))
+        chain_nterm = set()
+        for chain in topology.chains():
+            residues = list(chain.residues())
+            if not residues:
+                continue
+            chain_nterm.add(residues[0].index)
+            if residues[0].name in custom:
+                residues[0].name = "N" + residues[0].name
+            if residues[-1].name in custom:
+                residues[-1].name = "C" + residues[-1].name
+        ligand_chain = (self.params.get("ligand_chain") or "").strip()
+        for atom in topology.atoms():
+            nterm = atom.residue.index in chain_nterm
+            chain_id = atom.residue.chain.id if atom.residue.chain else ""
+            linker = (
+                (not ligand_chain or chain_id == ligand_chain)
+                and atom.residue.name in LINKER_RES
+                )
+            atom.name = remap_cns_atom_name(atom.name, nterm=nterm, linker=linker)
+            if atom.residue.name == "SER" and atom.name == "HB1":
+                atom.name = "HB3"
+            if atom.residue.name == "ACE":
+                atom.name = ace_h.get(atom.name, atom.name)
+            if atom.residue.name in ("CTN", "NHE", "NH2") and atom.name in ("H1", "H2"):
+                atom.name = "HN1" if atom.name == "H1" else "HN2"
+
+    @staticmethod
+    def apply_template_bonds(topology, forcefield: ForceField) -> None:
+        """Add bonds from custom residue templates. CNS PDBs have no CONECT."""
+        existing = {
+            (min(a.index, b.index), max(a.index, b.index))
+            for a, b in topology.bonds()
+            }
+
+        def add(atom_a, atom_b):
+            key = (min(atom_a.index, atom_b.index), max(atom_a.index, atom_b.index))
+            if key not in existing:
+                topology.addBond(atom_a, atom_b)
+                existing.add(key)
+
+        templates = forcefield._templates
+        residues = list(topology.residues())
+        for residue in residues:
+            tmpl = templates.get(residue.name)
+            if tmpl is None:
+                continue
+            lookup = {atom.name: atom for atom in residue.atoms()}
+            for i, j in tmpl.bonds:
+                n1, n2 = tmpl.atoms[i].name, tmpl.atoms[j].name
+                if n1 in lookup and n2 in lookup:
+                    add(lookup[n1], lookup[n2])
+        for res_a, res_b in zip(residues, residues[1:]):
+            carbon = None
+            tmpl = templates.get(res_a.name)
+            if tmpl is not None:
+                lookup = {atom.name: atom for atom in res_a.atoms()}
+                for i in tmpl.externalBonds:
+                    atom = lookup.get(tmpl.atoms[i].name)
+                    if atom is not None and atom.element is not None and atom.element.symbol == "C":
+                        carbon = atom
+                        break
+            if carbon is None:
+                carbons = [
+                    atom for atom in res_a.atoms()
+                    if atom.element is not None
+                    and atom.element.symbol == "C"
+                    and atom.name in ("C", "C1")
+                    ]
+                carbon = carbons[0] if carbons else None
+            nitrogens = [
+                atom for atom in res_b.atoms()
+                if atom.element is not None
+                and atom.element.symbol == "N"
+                and atom.name in ("N", "N1")
+                ]
+            if carbon and nitrogens:
+                add(carbon, nitrogens[0])
+
+    def resolve_platform(self):
+        """Return OpenMM Platform and property dict (CUDA/CPU/OpenCL/HIP)."""
+        requested = (self.params.get("platform") or "auto").strip()
+        available = [
+            Platform.getPlatform(i).getName()
+            for i in range(Platform.getNumPlatforms())
+            ]
+        if requested.lower() == "auto":
+            for name in ("CUDA", "HIP", "OpenCL", "CPU", "Reference"):
+                if name in available:
+                    requested = name
+                    break
+        try:
+            platform = Platform.getPlatformByName(requested)
+        except Exception as err:
+            raise ModuleError(
+                f"OpenMM platform {requested!r} not available ({err}); "
+                f"have {available}"
+                ) from err
+        props = {}
+        if platform.getName() in ("CUDA", "OpenCL", "HIP"):
+            props["Precision"] = self.params.get("precision") or "mixed"
+        if platform.getName() == "CPU":
+            props["Threads"] = str(self.params.get("ncores") or 1)
+        return platform, props
+
+    def make_simulation(self, topology, system, integrator) -> Simulation:
+        platform, props = self.resolve_platform()
+        self.log.info(f"OpenMM platform {platform.getName()} {props}")
+        return Simulation(topology, system, integrator, platform, props)
+
     def import_constraints(self):  # type: ignore
         """Cast parameter string to proper openmm constraints."""
         if self.params["constraints"] == "HBonds":
@@ -150,17 +307,31 @@ class OPENMM:
         """Call Pdbfixer on the model pdb."""
         input_pdb_filepath = self.get_pdb_filepath()
         pdb_filepath = self.handle_chainbreaks(input_pdb_filepath)
+        pdb_filepath = self._rename_ff14sb_hydrogens(pdb_filepath)
         self.log.info(
             f"Fixing pdb: {self.model.file_name} (path {pdb_filepath})"
             )
         # creating PDBFixer
         fixer = PDBFixer(filename=pdb_filepath)
+        self.prep_openmm_topology(fixer.topology)
         fixer.findMissingResidues()
-        fixer.findNonstandardResidues()
-        fixer.replaceNonstandardResidues()
+        if self.extra_ff_files():
+            # Custom residues (ADA/IVA/CTN) are not CCD amino acids.
+            fixer.nonstandardResidues = []
+        else:
+            fixer.findNonstandardResidues()
+            fixer.replaceNonstandardResidues()
         fixer.findMissingAtoms()
         fixer.addMissingAtoms()
-        fixer.addMissingHydrogens(self.params["ph"])
+        if self.extra_ff_files():
+            hydrogen_ff = self.make_forcefield(
+                self.params["implicit_solvent_model"]
+                if self.params["implicit_solvent"]
+                else self.params["explicit_solvent_model"]
+                )
+            self.apply_template_bonds(fixer.topology, hydrogen_ff)
+        else:
+            fixer.addMissingHydrogens(self.params["ph"])
         # calling PDBFixer
         output_filepath = os.path.join(
             self.directory_dict["pdbfixer"],
@@ -172,6 +343,57 @@ class OPENMM:
             open(output_filepath, 'w'),
             keepIds=True,
             )
+
+    def _rename_ff14sb_hydrogens(self, pdb_filepath: str) -> str:
+        """ff14SB uses H not HN; SER uses HB3 not HB1; OT1/OT2 → O/OXT."""
+        # CNS keeps free-acid OH / extra NH2 unless PADA/PADM fired.
+        drop = {
+            "ADA": {"O1", "H1"},
+            "AEA": {"O2", "H2", "H3"},
+            "ABX": {"O2", "H5", "H9"},
+            "ADM": {"H2"},
+        }
+        lines = []
+        after_break = True
+        nterm_key = None
+        with open(pdb_filepath) as handle:
+            for line in handle:
+                if line.startswith("TER"):
+                    after_break = True
+                    lines.append(line)
+                    continue
+                if line.startswith(("ATOM", "HETATM")):
+                    name = line[12:16].strip()
+                    res = line[17:20]
+                    chain = line[21]
+                    resid = line[22:26]
+                    if name in drop.get(res.strip(), ()):
+                        continue
+                    key = (chain, resid)
+                    if after_break:
+                        nterm_key = key
+                        after_break = False
+                    ligand_chain = (self.params.get("ligand_chain") or "").strip()
+                    linker = (
+                        (not ligand_chain or chain.strip() == ligand_chain)
+                        and res.strip() in LINKER_RES
+                        )
+                    name = remap_cns_atom_name(
+                        name, nterm=(key == nterm_key), linker=linker,
+                        )
+                    if res == "SER" and name == "HB1":
+                        name = "HB3"
+                    if res.strip() == "CTN":
+                        if name == "H1":
+                            name = "HN1"
+                        elif name == "H2":
+                            name = "HN2"
+                        line = line[:17] + "NHE" + line[20:]
+                    line = line[:12] + _pdb_atom_field(name) + line[16:]
+                lines.append(line)
+        with open(pdb_filepath, "w") as handle:
+            handle.writelines(lines)
+        return pdb_filepath
 
     def create_solvation_box(self, solvent_model: str) -> Optional[str]:
         """Create solvation box for an explicit solvent simulation.
@@ -199,6 +421,7 @@ class OPENMM:
                 openmmpdb = PDBxFile(pdb_filepath)
             else:
                 openmmpdb = openmmpdbfile(pdb_filepath)
+            self.prep_openmm_topology(openmmpdb.topology)
             # Obtain initial input chains
             self.input_chains = [
                 chain.id
@@ -206,7 +429,7 @@ class OPENMM:
                 ]
             # creating Modeller
             modeller = Modeller(openmmpdb.topology, openmmpdb.positions)
-            usedForcefield = ForceField(forcefield, solvent_model)
+            usedForcefield = self.make_forcefield(solvent_model)
             modeller.deleteWater()
             modeller.addHydrogens(usedForcefield, pH=self.params["ph"])
             # check the existence of xray cell data
@@ -289,8 +512,9 @@ class OPENMM:
             # 1. Initiate the system and simulation objects
             # Load structure coordinates
             system_coordinates = openmmpdbfile(pdb_filepath)
+            self.prep_openmm_topology(system_coordinates.topology)
             # Initiate forcefiled object
-            forcefield = ForceField(self.params["forcefield"], solvent_model)
+            forcefield = self.make_forcefield(solvent_model)
             # system setup
             # should give an ERROR when system_constraints = 'None'.
             system = forcefield.createSystem(
@@ -322,7 +546,7 @@ class OPENMM:
             system.addForce(rest_force)
 
             # Initiate simulation object
-            simulation = Simulation(
+            simulation = self.make_simulation(
                 system_coordinates.topology,
                 system,
                 integrator,
@@ -348,8 +572,8 @@ class OPENMM:
 
             # 3. Run simulation under constraints
             # Process energy minimization prior to any dynamic simulation
-            self.log.info("Minimizing system energy")
-            simulation.minimizeEnergy()
+            self.log.info("Minimizing system energy (maxIterations=2000)")
+            simulation.minimizeEnergy(maxIterations=2000)
             # Set parameters
             eq_steps = self.params["solv_eq_timesteps"]
             nvt_sims = 7
@@ -692,7 +916,9 @@ class OPENMM:
 
         # Load pdb
         pdb = openmmpdbfile(inputPDBfile)
-        forcefield = ForceField(self.params['forcefield'], solvent_model)
+        self.prep_openmm_topology(pdb.topology)
+        forcefield = self.make_forcefield(solvent_model)
+        self.apply_template_bonds(pdb.topology, forcefield)
         # system setup
         nonbondedMethod = NoCutoff if self.params["implicit_solvent"] else PME
         # should give an ERROR when system_constraints = 'None'.
@@ -724,7 +950,7 @@ class OPENMM:
         log.info(f"simulation seed {get_seed} for {self.model.file_name}")
 
         # simulation
-        simulation = Simulation(pdb.topology, system, integrator)
+        simulation = self.make_simulation(pdb.topology, system, integrator)
         statereporter = statedatareporter.StateDataReporter(
             f'{self.directory_dict["simulation_stats"]}/observables_{self.identificator}_{replica_index}.dat', # noqa : E501
             50,
@@ -741,7 +967,8 @@ class OPENMM:
         log.info(f"Running on platform {platform.getName()}")
         log.info(f"Estimated platform speed: {platform.getSpeed()}")
         simulation.context.setPositions(pdb.positions)
-        simulation.minimizeEnergy()
+        log.info("Minimizing system energy (maxIterations=2000)")
+        simulation.minimizeEnergy(maxIterations=2000)
         log.info(f"Running NVT equilibration for {self.model.file_name}")
 
         # warming up the system with a NVT equilibration (canonical ensemble)

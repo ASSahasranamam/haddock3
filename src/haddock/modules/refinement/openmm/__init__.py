@@ -134,6 +134,22 @@ class HaddockModule(BaseHaddockModule):
         # Limit cpu usage
         self.set_max_cpu(self.params["ncores"])
 
+        if self.params.get("auto_force_field"):
+            from haddock.modules.refinement.openmm.auto_force_field import (
+                build_from_pdb,
+                gaff_xml_path,
+                )
+            model0 = previous_models[0]
+            pdb = Path(model0.path, model0.file_name)
+            xml, term_res = build_from_pdb(
+                pdb, Path("auto_ff"), self.params["auto_force_field"],
+                )
+            extra = [str(p) for p in (self.params.get("extra_forcefield_files") or [])]
+            prepend = [p for p in (gaff_xml_path(), str(xml.resolve())) if p not in extra]
+            self.params["extra_forcefield_files"] = prepend + extra
+            self.params["_auto_term_res"] = term_res
+            self.log(f"auto_force_field wrote {xml} termini={term_res}")
+
         # Build list of OPENMM jobs
         openmm_jobs: list[OPENMM] = []
         for i, model_to_be_simulated in enumerate(previous_models, start=1):
